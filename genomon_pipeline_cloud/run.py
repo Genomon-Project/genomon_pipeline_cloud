@@ -6,59 +6,37 @@ from ConfigParser import SafeConfigParser
 
 def run(args):
 
-    cparser = SafeConfigParser()
-    cparser.read(args.param_conf_file)
-
-    tmp_dir_name = tempfile.mkdtemp()
-    print >> sys.stdout, "Creating temporary directory: " +  tmp_dir_name
-
-    sample2seq = {}
+    sample_conf = {}
     with open(args.sample_conf_file, 'r') as hin:
         for line in hin:
             F = line.rstrip('\n').split(',')
-            sample2seq[F[0]] = [F[1], F[2]]
+            sample_conf[F[0]] = [F[1], F[2]]
+
+    param_conf = SafeConfigParser()
+    param_conf.read(args.param_conf_file)
+
+
+    # tmp_dir = tempfile.mkdtemp()
+    # temporary procedure
+    tmp_dir = os.getcwd() + "/tmp"
+    if not os.path.exists(tmp_dir):
+        os.makedirs(tmp_dir)
+        print >> sys.stdout, "Creating temporary directory: " +  tmp_dir
 
 
     ##########
-    # generate star-alignment-tasks.tsv
-    hout = open(tmp_dir_name + "/star-alignment-tasks.tsv", 'w') 
-    print >> hout, '\t'.join(["--env SAMPLE", 
-                              "--input INPUT1", 
-                              "--input INPUT2", 
-                              "--output-recursive OUTPUT_DIR",
-                              "--input-recursive REFERENCE",
-                              "--env STAR_OPTION",
-                              "--env SAMTOOLS_SORT_OPTION"])
+    # RNA
+    from tasks.star_alignment import *
+    from tasks.fusionfusion import *    
 
-    for sample in sample2seq:
-        print >> hout, '\t'.join([sample, 
-                                  sample2seq[sample][0], 
-                                  sample2seq[sample][1], 
-                                  args.output_dir + "/star/" + sample,
-                                  cparser.get("star-alignment", "star_reference"),
-                                  cparser.get("star-alignment", "star_option"),
-                                  cparser.get("star-alignment", "samtools_sort_option")]) 
-    hout.close()
-    ############
-
-
-    ##########
-    # generate fusionfusion-tasks.tsv
-    hout = open(tmp_dir_name + "/fusionfusion-tasks.tsv", 'w')
-    print >> hout, '\t'.join(["--env SAMPLE", 
-                              "--input INPUT", 
-                              "--output-recursive OUTPUT_DIR",
-                              "--input REFERENCE"])
-        
-    for sample in sample2seq:
-        print >> hout, '\t'.join([sample, 
-                                  args.output_dir + "/star/" + sample + "/" + sample + ".Chimeric.out.sam", 
-                                  args.output_dir + "/fusion/" + sample,
-                                  cparser.get("fusionfusion", "reference")]) 
-    hout.close()
-    ##########
-
-
+    star_alignment_task = Star_alignment(args.output_dir, tmp_dir, sample_conf, param_conf)
+    fusionfusion_task = Fusionfusion(args.output_dir, tmp_dir, sample_conf, param_conf)
+    
+    print
+    print star_alignment_task
+    print
+    print fusionfusion_task
+    """
     ##########
     # generate dsub-batch.sh file
     hout = open(tmp_dir_name + "/dsub-batch.sh", 'w')
@@ -66,8 +44,8 @@ def run(args):
     print >> hout, ""
 
     print >> hout, ' '.join(["dsub", 
-                             cparser.get("general", "instance_option"),
-                             cparser.get("star-alignment", "resource"),
+                             param_conf.get("general", "instance_option"),
+                             param_conf.get("star-alignment", "resource"),
                              "--logging " + args.output_dir + "/logging",
                              "--image friend1ws/star-alignment",
                              "--tasks " + tmp_dir_name + "/star-alignment-tasks.tsv",
@@ -76,8 +54,8 @@ def run(args):
 
     print >> hout, "" 
     print >> hout, ' '.join(["dsub",
-                             cparser.get("general", "instance_option"),
-                             cparser.get("fusionfusion", "resource"),
+                             param_conf.get("general", "instance_option"),
+                             param_conf.get("fusionfusion", "resource"),
                              "--logging " + args.output_dir + "/logging",
                              "--image friend1ws/fusionfusion",
                              "--tasks " + tmp_dir_name + "/fusionfusion-tasks.tsv",
@@ -99,5 +77,5 @@ def run(args):
     
     # remove the temporary directory
     shutil.rmtree(tmp_dir_name)
-
+    """
 

@@ -1,27 +1,27 @@
 #! /usr/bin/env python
 
 import pkg_resources
-
+from ..abstract_task import *
  
 class Star_alignment(Abstract_task):
 
     task_name = "star_alignment"
 
-    def __init__(self, sample_conf, param_conf):
-    
+    def __init__(self, output_dir, task_dir, sample_conf, param_conf):
+
         super(Star_alignment, self).__init__(
             pkg_resources.resource_filename("genomon_pipeline_cloud", "data/script/{}.sh".format(self.__class__.task_name)),
             "friend1ws/star_alignment",
-            get_resource_param("star_alignment"),
-            param_conf.log_dir)
+            param_conf.get("general", "instance_option") + ' ' + param_conf.get("star_alignment", "resource"),
+            output_dir + "/logging")
         
-        self.task_file = task_file_generation(sample_conf)
+        self.task_file = self.task_file_generation(output_dir, task_dir, sample_conf, param_conf)
 
 
-    def task_file_generation(self, dir_name, sample_conf, param_conf):
+    def task_file_generation(self, output_dir, task_dir, sample_conf, param_conf):
 
         # generate star-alignment-tasks.tsv
-        with open("{}/{}_tasks.tsv".format(dir_name, task_name), 'w') as hout:
+        with open("{}/{}_tasks.tsv".format(task_dir, self.__class__.task_name), 'w') as hout:
 
             print >> hout, '\t'.join(["--env SAMPLE",
                                       "--input INPUT1",
@@ -33,11 +33,11 @@ class Star_alignment(Abstract_task):
 
             for sample in sample_conf:
                 print >> hout, '\t'.join([sample,
-                                          sample2seq[sample][0],
-                                          sample2seq[sample][1],
-                                          args.output_dir + "/star/" + sample,
-                                          cparser.get("star-alignment", "star_reference"),
-                                          cparser.get("star-alignment", "star_option"),
-                                          cparser.get("star-alignment", "samtools_sort_option")])
+                                          sample_conf[sample][0],
+                                          sample_conf[sample][1],
+                                          output_dir + "/star/" + sample,
+                                          param_conf.get("star_alignment", "star_reference"),
+                                          param_conf.get("star_alignment", "star_option"),
+                                          param_conf.get("star_alignment", "samtools_sort_option")])
 
 
