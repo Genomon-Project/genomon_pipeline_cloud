@@ -2,6 +2,7 @@
 
 import sys, argparse, tempfile, shutil, os, subprocess, pkg_resources
 from ConfigParser import SafeConfigParser
+from batch_engine import *
 
 
 def run(args):
@@ -32,49 +33,15 @@ def run(args):
     star_alignment_task = Star_alignment(args.output_dir, tmp_dir, sample_conf, param_conf)
     fusionfusion_task = Fusionfusion(args.output_dir, tmp_dir, sample_conf, param_conf)
     
-    print
-    print star_alignment_task
-    print
-    print fusionfusion_task
+    factory = Dsub_factory()
+    batch_engine = Batch_engine(factory)
+
+    batch_engine.print_job(star_alignment_task)
+    batch_engine.execute(star_alignment_task) 
+
+    batch_engine.execute(fusionfusion_task)  
+
     """
-    ##########
-    # generate dsub-batch.sh file
-    hout = open(tmp_dir_name + "/dsub-batch.sh", 'w')
-    print >> hout, "#! /usr/bin/env bash"
-    print >> hout, ""
-
-    print >> hout, ' '.join(["dsub", 
-                             param_conf.get("general", "instance_option"),
-                             param_conf.get("star-alignment", "resource"),
-                             "--logging " + args.output_dir + "/logging",
-                             "--image friend1ws/star-alignment",
-                             "--tasks " + tmp_dir_name + "/star-alignment-tasks.tsv",
-                             "--script " + tmp_dir_name + "/star-alignment-script.sh",
-                            "--wait"])
-
-    print >> hout, "" 
-    print >> hout, ' '.join(["dsub",
-                             param_conf.get("general", "instance_option"),
-                             param_conf.get("fusionfusion", "resource"),
-                             "--logging " + args.output_dir + "/logging",
-                             "--image friend1ws/fusionfusion",
-                             "--tasks " + tmp_dir_name + "/fusionfusion-tasks.tsv",
-                             "--script " + tmp_dir_name + "/fusionfusion-script.sh"])
-    hout.close()
-    ##########
-
-
-    ##########
-    # copy script files
-    shutil.copyfile(pkg_resources.resource_filename("genomon_rna_gce", "script/star-alignment-script.sh"), tmp_dir_name + "/star-alignment-script.sh")
-    shutil.copyfile(pkg_resources.resource_filename("genomon_rna_gce", "script/fusionfusion-script.sh"), tmp_dir_name + "/fusionfusion-script.sh")
-    ##########
-
-        
-    ##########
-    # execute pipeline
-    subprocess.call(["bash", tmp_dir_name + "/dsub-batch.sh"])
-    
     # remove the temporary directory
     shutil.rmtree(tmp_dir_name)
     """

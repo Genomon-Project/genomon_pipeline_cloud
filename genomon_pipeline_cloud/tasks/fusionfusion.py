@@ -10,7 +10,7 @@ class Fusionfusion(Abstract_task):
     def __init__(self, output_dir, task_dir, sample_conf, param_conf):
     
         super(Fusionfusion, self).__init__(
-            pkg_resources.resource_filename("genomon_pipeline_cloud", "data/script/{}.sh".format(self.__class__.task_name)),
+            pkg_resources.resource_filename("genomon_pipeline_cloud", "script/{}.sh".format(self.__class__.task_name)),
             "friend1ws/fusionfusion",
             param_conf.get("general", "instance_option") + ' ' + param_conf.get("fusionfusion", "resource"),
             output_dir + "/logging")
@@ -21,7 +21,8 @@ class Fusionfusion(Abstract_task):
     def task_file_generation(self, output_dir, task_dir, sample_conf, param_conf):
 
         # generate fusionfusion_tasks.tsv
-        with open("{}/{}_tasks.tsv".format(task_dir, self.__class__.task_name), 'w') as hout:
+        task_file = "{}/{}_tasks.tsv".format(task_dir, self.__class__.task_name)
+        with open(task_file, 'w') as hout:
             
             print >> hout, '\t'.join(["--env SAMPLE",
                                       "--input INPUT",
@@ -33,3 +34,4 @@ class Fusionfusion(Abstract_task):
                                           output_dir + "/fusion/" + sample,
                                           param_conf.get("fusionfusion", "reference")])
 
+        return task_file

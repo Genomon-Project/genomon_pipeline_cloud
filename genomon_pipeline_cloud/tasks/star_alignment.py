@@ -10,7 +10,7 @@ class Star_alignment(Abstract_task):
     def __init__(self, output_dir, task_dir, sample_conf, param_conf):
 
         super(Star_alignment, self).__init__(
-            pkg_resources.resource_filename("genomon_pipeline_cloud", "data/script/{}.sh".format(self.__class__.task_name)),
+            pkg_resources.resource_filename("genomon_pipeline_cloud", "script/{}.sh".format(self.__class__.task_name)),
             "friend1ws/star_alignment",
             param_conf.get("general", "instance_option") + ' ' + param_conf.get("star_alignment", "resource"),
             output_dir + "/logging")
@@ -20,8 +20,9 @@ class Star_alignment(Abstract_task):
 
     def task_file_generation(self, output_dir, task_dir, sample_conf, param_conf):
 
-        # generate star-alignment-tasks.tsv
-        with open("{}/{}_tasks.tsv".format(task_dir, self.__class__.task_name), 'w') as hout:
+        # generate star_alignment_tasks.tsv
+        task_file = "{}/{}_tasks.tsv".format(task_dir, self.__class__.task_name)
+        with open(task_file, 'w') as hout:
 
             print >> hout, '\t'.join(["--env SAMPLE",
                                       "--input INPUT1",
@@ -40,4 +41,4 @@ class Star_alignment(Abstract_task):
                                           param_conf.get("star_alignment", "star_option"),
                                           param_conf.get("star_alignment", "samtools_sort_option")])
 
-
+        return task_file

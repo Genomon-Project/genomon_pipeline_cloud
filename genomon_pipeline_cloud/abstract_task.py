@@ -11,12 +11,14 @@ class Abstract_task(object):
         self.image = image
         self.resource_param = resource_param
         self.log_dir = log_dir
+        self.task_file = None
 
     def __str__(self):
         return '\n'.join(["script_file: " + self.script_file,
                           "image: " + self.image,
                           "resource_param: " + self.resource_param,
-                          "log_dir: " + self.log_dir
+                          "log_dir: " + self.log_dir,
+                          "task_file: " + self.task_file
                           ])
 
 
