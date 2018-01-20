@@ -9,6 +9,8 @@ def main():
     aparser.add_argument("output_dir", default = None, type = str,
                          help = "Output directory for Google Cloud Storage")
     aparser.add_argument("param_conf_file", help = "Parameter config file", type = str)
+    aparser.add_argument("--engine", choices = ["awsub", "dsub"], default = "awsub", type = str,
+                         help = "Batch job engine")
     args = aparser.parse_args()
 
     run(args)

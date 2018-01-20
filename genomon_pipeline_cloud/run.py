@@ -2,8 +2,8 @@
 
 import sys, argparse, tempfile, shutil, os, subprocess, pkg_resources
 from ConfigParser import SafeConfigParser
-from batch_engine import *
-
+# from batch_engine import *
+from batch_engine2 import *
 
 def run(args):
 
@@ -32,15 +32,33 @@ def run(args):
 
     star_alignment_task = Star_alignment(args.output_dir, tmp_dir, sample_conf, param_conf)
     fusionfusion_task = Fusionfusion(args.output_dir, tmp_dir, sample_conf, param_conf)
-    
-    factory = Dsub_factory()
+
+    """
+    if args.engine == "dsub":
+        factory = Dsub_factory()
+    else:
+        factory = Awsub_factory()
+ 
     batch_engine = Batch_engine(factory)
 
-    batch_engine.print_job(star_alignment_task)
-    batch_engine.execute(star_alignment_task) 
+    # import inspect
+    # print inspect.getsource(batch_engine.print_job)
 
-    batch_engine.execute(fusionfusion_task)  
+    batch_engine.print_command(star_alignment_task, param_conf.get("general", "instance_option"))
+    batch_engine.print_command(fusionfusion_task, param_conf.get("general", "instance_option"))
+    # batch_engine.execute(star_alignment_task) 
+    # batch_engine.execute(fusionfusion_task)  
+    """
 
+    if args.engine == "dsub":
+        factory = Dsub_factory()
+    else:
+        factory = Awsub_factory()
+
+    batch_engine = Batch_engine(factory, param_conf.get("general", "instance_option"))
+
+    batch_engine.print_command(star_alignment_task)
+    batch_engine.print_command(fusionfusion_task)  
     """
     # remove the temporary directory
     shutil.rmtree(tmp_dir_name)
