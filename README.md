@@ -5,8 +5,8 @@
 # Installation
 
 ```sh
-git clone git@github.com:friend1ws/genomon_rna_gce.git
-cd genomon_rna_gce
+git clone git@github.com:friend1ws/genomon_pipeline_cloud.git
+cd genomon_pipeline_cloud
 pip install . --upgrade
 ```
 
