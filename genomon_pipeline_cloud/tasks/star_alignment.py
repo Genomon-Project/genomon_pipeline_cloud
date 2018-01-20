@@ -5,7 +5,7 @@ from ..abstract_task import *
  
 class Star_alignment(Abstract_task):
 
-    task_name = "star_alignment"
+    task_name = "star-alignment"
 
     def __init__(self, output_dir, task_dir, sample_conf, param_conf):
 
@@ -21,7 +21,7 @@ class Star_alignment(Abstract_task):
     def task_file_generation(self, output_dir, task_dir, sample_conf, param_conf):
 
         # generate star_alignment_tasks.tsv
-        task_file = "{}/{}_tasks.tsv".format(task_dir, self.__class__.task_name)
+        task_file = "{}/{}-tasks.tsv".format(task_dir, self.__class__.task_name)
         with open(task_file, 'w') as hout:
 
             print >> hout, '\t'.join(["--env SAMPLE",

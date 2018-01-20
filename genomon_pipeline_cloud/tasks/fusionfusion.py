@@ -21,7 +21,7 @@ class Fusionfusion(Abstract_task):
     def task_file_generation(self, output_dir, task_dir, sample_conf, param_conf):
 
         # generate fusionfusion_tasks.tsv
-        task_file = "{}/{}_tasks.tsv".format(task_dir, self.__class__.task_name)
+        task_file = "{}/{}-tasks.tsv".format(task_dir, self.__class__.task_name)
         with open(task_file, 'w') as hout:
             
             print >> hout, '\t'.join(["--env SAMPLE",
