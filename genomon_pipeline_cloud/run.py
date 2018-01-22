@@ -42,8 +42,6 @@ def run(args):
     batch_engine.execute(star_alignment_task)
     batch_engine.execute(fusionfusion_task)  
 
-    """
     # remove the temporary directory
     shutil.rmtree(tmp_dir_name)
-    """
 
