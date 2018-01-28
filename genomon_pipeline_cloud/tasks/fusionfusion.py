@@ -28,10 +28,10 @@ class Fusionfusion(Abstract_task):
                                       "--input INPUT",
                                       "--output-recursive OUTPUT_DIR",
                                       "--input REFERENCE"])
-            for sample in sample_conf:
-                print >> hout, '\t'.join([sample,
-                                          output_dir + "/star/" + sample + "/" + sample + ".Chimeric.out.sam",
-                                          output_dir + "/fusion/" + sample,
+            for sample in sample_conf.fusion:
+                print >> hout, '\t'.join([sample[0],
+                                          output_dir + "/star/" + sample[0] + "/" + sample[0] + ".Chimeric.out.sam",
+                                          output_dir + "/fusion/" + sample[0],
                                           param_conf.get("fusionfusion", "reference")])
 
         return task_file

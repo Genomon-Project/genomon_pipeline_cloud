@@ -3,14 +3,13 @@
 import sys, argparse, tempfile, shutil, os, subprocess, multiprocessing, pkg_resources
 from ConfigParser import SafeConfigParser
 from batch_engine import *
+from sample_conf import Sample_conf
 
 def run(args):
 
-    sample_conf = {}
-    with open(args.sample_conf_file, 'r') as hin:
-        for line in hin:
-            F = line.rstrip('\n').split(',')
-            sample_conf[F[0]] = [F[1], F[2]]
+    sample_conf = Sample_conf()
+    sample_conf.parse_file(args.sample_conf_file)
+
 
     param_conf = SafeConfigParser()
     param_conf.read(args.param_conf_file)
@@ -54,7 +53,6 @@ def run(args):
 
     p2.join()
     p3.join()
-    
 
     # remove the temporary directory
     # shutil.rmtree(tmp_dir)

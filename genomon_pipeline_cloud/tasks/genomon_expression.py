@@ -28,7 +28,7 @@ class Genomon_expression(Abstract_task):
                                       "--input-recursive INPUT_DIR",
                                       "--output-recursive OUTPUT_DIR",
                                       "--env OPTION"])
-            for sample in sample_conf:
+            for sample in sample_conf.expression:
                 print >> hout, '\t'.join([sample,
                                           output_dir + "/star/" + sample,
                                           output_dir + "/expression/" + sample,

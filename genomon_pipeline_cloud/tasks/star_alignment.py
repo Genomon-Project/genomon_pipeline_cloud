@@ -32,10 +32,10 @@ class Star_alignment(Abstract_task):
                                       "--env STAR_OPTION",
                                       "--env SAMTOOLS_SORT_OPTION"])
 
-            for sample in sample_conf:
+            for sample in sample_conf.fastq:
                 print >> hout, '\t'.join([sample,
-                                          sample_conf[sample][0],
-                                          sample_conf[sample][1],
+                                          sample_conf.fastq[sample][0][0],
+                                          sample_conf.fastq[sample][1][0],
                                           output_dir + "/star/" + sample,
                                           param_conf.get("star_alignment", "star_reference"),
                                           param_conf.get("star_alignment", "star_option"),
