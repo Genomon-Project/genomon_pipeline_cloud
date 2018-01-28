@@ -25,8 +25,14 @@ class Dsub_factory(Abstract_factory):
 
     def execute_closure(self, general_param):
         def execute(task):
-            subprocess.call(self.generate_commands(task, general_param))
+            subprocess.check_call(self.generate_commands(task, general_param))
         return execute
+
+    def seq_execute_closure(self, general_param):
+        def seq_execute(tasks):
+            for task in tasks:
+                subprocess.check_call(self.generate_commands(task, general_param))
+        return seq_execute
 
     def print_command_closure(self, general_param):
         def print_command(task):
@@ -45,8 +51,14 @@ class Awsub_factory(Abstract_factory):
 
     def execute_closure(self, general_param):
         def execute(task):
-            subprocess.call(self.generate_commands(task, general_param))
+            subprocess.check_call(self.generate_commands(task, general_param))
         return execute
+
+    def seq_execute_closure(self, general_param):
+        def seq_execute(tasks):
+            for task in tasks:
+                subprocess.check_call(self.generate_commands(task, general_param))
+        return seq_execute
     
     def print_command_closure(self, general_param):
         def print_command(task):
@@ -65,6 +77,7 @@ class Batch_engine(object):
 
     def __init__(self, factory, general_param):
         self.execute = factory.execute_closure(general_param)
+        self.seq_execute = factory.seq_execute_closure(general_param)
         self.print_command = factory.print_command_closure(general_param)
 
 
