@@ -9,6 +9,8 @@ RUN apt-get -y update && \
     apt-get install -y libgeos-dev && \
     apt-get install -y libxml2-dev && \
     apt-get install -y libssl-dev && \
+    apt-get install -y python && \
+    apt-get install -y python-pip && \
     apt-get install -y git && \
     \
     Rscript -e "install.packages('devtools')" && \
@@ -19,12 +21,14 @@ RUN apt-get -y update && \
     Rscript -e "library(devtools);devtools::install_github('friend1ws/pmsignature')" && \
     \
     mkdir /tools && \
+    cd /tools && \
+    wget https://github.com/Genomon-Project/paplot/archive/v0.5.5.zip && \
+    unzip v0.5.5.zip; rm v0.5.5.zip && \
+    cd /tools/paplot-0.5.5; python setup.py build install && \
     \
     cd /tools && \
     wget https://github.com/Genomon-Project/genomon_Rscripts/archive/v0.1.3.zip && \
-    unzip v0.1.3.zip && \
-    \
-    git clone https://github.com/aokad/pmsignature-dockerfile.git /tools/pmsignature-dockerfile
+    unzip v0.1.3.zip; rm v0.1.3.zip
 
 # CMD: run
 CMD ["/bin/bash"]
