@@ -22,7 +22,7 @@ RUN apt-get -y update && \
     git clone https://github.com/otiai10/awsub.git && \
     \
     cd /tools && \
-    git clone https://github.com/aokad/genomon_pipeline_cloud.git && \
+    git clone https://github.com/Genomon-Project/genomon_pipeline_cloud.git && \
     cd genomon_pipeline_cloud && \
     pip install . --upgrade
 
