@@ -17,7 +17,7 @@ RUN apt-get -y update && \
     Rscript -e "install.packages('ggplot2')" && \
     Rscript -e "install.packages('Rcpp')" && \
     Rscript -e "install.packages('rjson')" && \
-    Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite(c('GenomicRanges', 'BSgenome.Hsapiens.UCSC.hg19'), ask=FALSE)" && \
+    Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite(c('GenomicRanges', 'BSgenome.Hsapiens.UCSC.hg19', 'TxDb.Hsapiens.UCSC.hg19.knownGene'), ask=FALSE)" && \
     Rscript -e "library(devtools);devtools::install_github('friend1ws/pmsignature')" && \
     \
     mkdir /tools && \
