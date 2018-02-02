@@ -45,7 +45,7 @@ class Genomon_qc(Abstract_task):
             for sample in sample_conf.qc:
                 print >> hout, '\t'.join([sample,
                                           output_dir + "/bam/" + sample,
-                                          output_dir + "/qc_test/" + sample,
+                                          output_dir + "/qc/" + sample,
                                           output_dir + "/fastq/" + sample + "/fastq_line_num.txt",
                                           param_conf.get("qc", "bait_file"),
                                           param_conf.get("qc", "gaptxt"),

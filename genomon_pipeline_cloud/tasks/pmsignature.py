@@ -34,9 +34,10 @@ class Pmsignature(Abstract_task):
                                       "--env TRIALNUM",
                                       "--env TXDB_TRANSCRIPT"])
 
+            # TODO: サンプルシートに記載されている結果だけ取ってくる
             if param_conf.getboolean("pmsignature", "enable"):
                 print >> hout, '\t'.join([output_dir + "/mutation/",
-                                          output_dir + "/pmsignature_test/sample",
+                                          output_dir + "/pmsignature/sample",
                                           "ind",
                                           param_conf.get("pmsignature", "bgflag"),
                                           param_conf.get("pmsignature", "bs_genome"),
@@ -48,7 +49,7 @@ class Pmsignature(Abstract_task):
 
             if param_conf.getboolean("signature", "enable"):
                 print >> hout, '\t'.join([output_dir + "/mutation/",
-                                          output_dir + "/signature_test/sample",
+                                          output_dir + "/pmsignature/sample",
                                           "full",
                                           param_conf.get("signature", "bgflag"),
                                           param_conf.get("signature", "bs_genome"),

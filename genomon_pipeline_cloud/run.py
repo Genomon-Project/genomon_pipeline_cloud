@@ -32,28 +32,37 @@ def run(args):
 
     ##########
     # RNA
-    from tasks.star_alignment import *
-    from tasks.fusionfusion import *    
-    from tasks.genomon_expression import *
+    if args.analysis_type == "rna":
+    
+        # paplot stage
+        from tasks.paplot import *
+        paplot_task = Paplot(args.output_dir, tmp_dir, sample_conf, param_conf, args.analysis_type)
+        proc_paplot = multiprocessing.Process(target = batch_engine.execute, args = (paplot_task,))
+        proc_paplot.start()
+        proc_paplot.join()
 
-    star_alignment_task = Star_alignment(args.output_dir, tmp_dir, sample_conf, param_conf)
-    fusionfusion_task = Fusionfusion(args.output_dir, tmp_dir, sample_conf, param_conf)
-    genomon_expression_task = Genomon_expression(args.output_dir, tmp_dir, sample_conf, param_conf)
-
-    # first stage    
-    p1 = multiprocessing.Process(target = batch_engine.execute, args = (star_alignment_task,))
-    p1.start()
-    p1.join()
-
-    # second stage
-    p2 = multiprocessing.Process(target = batch_engine.execute, args = (fusionfusion_task,))
-    p3 = multiprocessing.Process(target = batch_engine.execute, args = (genomon_expression_task,))
-    p2.start()
-    p3.start()
-
-    p2.join()
-    p3.join()
-
-    # remove the temporary directory
-    # shutil.rmtree(tmp_dir)
-
+    ##########
+    # DNA
+    elif args.analysis_type == "dna":
+        
+        # QC stage
+        from tasks.genomon_qc import *
+        qc_task = Genomon_qc(args.output_dir, tmp_dir, sample_conf, param_conf)
+        proc_qc = multiprocessing.Process(target = batch_engine.execute, args = (qc_task,))
+        proc_qc.start()
+        proc_qc.join()
+        
+        # pmsignature
+        from tasks.pmsignature import *
+        pmsignature_task = Pmsignature(args.output_dir, tmp_dir, sample_conf, param_conf)
+        proc_pmsignature = multiprocessing.Process(target = batch_engine.execute, args = (pmsignature_task,))
+        proc_pmsignature.start()
+        proc_pmsignature.join()
+        
+        # paplot stage
+        from tasks.paplot import *
+        paplot_task = Paplot(args.output_dir, tmp_dir, sample_conf, param_conf, args.analysis_type)
+        proc_paplot = multiprocessing.Process(target = batch_engine.execute, args = (paplot_task,))
+        proc_paplot.start()
+        proc_paplot.join()
+        

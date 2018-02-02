@@ -42,11 +42,11 @@ do
         echo pmsignature terminated abnormally.
         if [ ${MODE} = "ind" ]
         then
-            echo '{{"id":[],"ref":[],"alt":[],"strand":[],"mutation":[]}}' > ${output_pre}.${signum}.${MODE}.json
+            echo '{{"id":[],"ref":[],"alt":[],"strand":[],"mutation":[]}}' > ${output_pre}.${MODE}.result.${signum}.json
         else
-            echo '{{"id":[],"signature":[],"mutation":[]}}' > ${output_pre}.${signum}.full.json
+            echo '{{"id":[],"signature":[],"mutation":[]}}' > ${output_pre}.${MODE}.result.${signum}.json
         fi
     else
-        R --vanilla --slave --args ${output_pre}.${signum}.${MODE}.RData ${output_pre}.${signum}.${MODE}.json < /tools/genomon_Rscripts-0.1.3/pmsignature/convert_toJson_${MODE}.R
+        R --vanilla --slave --args ${output_pre}.${signum}.${MODE}.RData ${output_pre}.${MODE}.result.${signum}.json < /tools/genomon_Rscripts-0.1.3/pmsignature/convert_toJson_${MODE}.R
     fi
 done
