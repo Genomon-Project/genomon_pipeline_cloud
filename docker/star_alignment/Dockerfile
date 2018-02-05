@@ -7,7 +7,11 @@ RUN apt-get update && apt-get install -y \
     bzip2 \
     make \
     gcc \
-    zlib1g-dev
+    zlib1g-dev \
+    libbz2-dev \
+    liblzma-dev \
+    libcurl4-openssl-dev \
+    libssl-dev 
 
 ##############
 ## STAR
@@ -19,9 +23,9 @@ RUN wget https://github.com/alexdobin/STAR/archive/2.5.3a.tar.gz && \
 ########
 # Samtools
 
-RUN wget https://github.com/samtools/samtools/releases/download/1.3.1/samtools-1.3.1.tar.bz2 && \
-    tar jxvf samtools-1.3.1.tar.bz2 && \
-    cd samtools-1.3.1/htslib-1.3.1 && \
+RUN wget https://github.com/samtools/samtools/releases/download/1.7/samtools-1.7.tar.bz2 && \
+    tar jxvf samtools-1.7.tar.bz2 && \
+    cd samtools-1.7/htslib-1.7 && \
     ./configure §§ make && make install && \
     cd ../ && ./configure --without-curses && make && make install
 
