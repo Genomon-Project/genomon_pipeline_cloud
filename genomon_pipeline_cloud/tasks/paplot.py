@@ -11,8 +11,8 @@ class Paplot(Abstract_task):
 
         super(Paplot, self).__init__(
             pkg_resources.resource_filename("genomon_pipeline_cloud", "script/{}.sh".format(self.__class__.task_name)),
-            param_conf.get("paplot_" + run_conf.analysis_type, "image"),
-            param_conf.get("paplot_" + run_conf.analysis_type, "resource"),
+            param_conf.get("paplot", "image"),
+            param_conf.get("paplot", "resource"),
             output_dir + "/logging")
         
         self.task_file = self.task_file_generation(output_dir, task_dir, sample_conf, param_conf, run_conf)
@@ -76,18 +76,18 @@ class Paplot(Abstract_task):
                                       "--env REMARKS",
                                       "--env TITLE"])
 
-            if param_conf.getboolean("paplot_" + run_conf.analysis_type, "enable"):
-                remarks = param_conf.get("paplot_" + run_conf.analysis_type, "remarks")
+            if param_conf.getboolean("paplot", "enable"):
+                remarks = param_conf.get("paplot", "remarks")
                 remarks += "<ul><li>%s</li>" % (run_conf.pipeline_version)
-                for soft in sorted(param_conf.get("paplot_" + run_conf.analysis_type, "software").split(",")):
+                for soft in sorted(param_conf.get("paplot", "software").split(",")):
                     remarks += "<li>" + param_conf.get(soft, "image") + "</li>"
                 remarks += "</ul>"
                 
                 print >> hout, '\t'.join(['\t'.join(data),
-                                          param_conf.get("paplot_" + run_conf.analysis_type, "config_file"),
+                                          param_conf.get("paplot", "config_file"),
                                           output_dir + "/paplot/" + run_conf.sample_conf_name,
                                           remarks,
-                                          param_conf.get("paplot_" + run_conf.analysis_type, "title")])
+                                          param_conf.get("paplot", "title")])
 
         return task_file
 
