@@ -6,9 +6,10 @@ set -o xtrace
 
 # format
 
+input_dir=`realpath $(dirname ${INPUT_MUTATION1})/..`
 merged=${OUTPUT_DIR}/mutation_cut.${MODE}.txt
 
-for mutation_file in `ls ${INPUT_DIR}/*/*.genomon_mutation.result.filt.txt`
+for mutation_file in `ls ${input_dir}/*/*.genomon_mutation.result.filt.txt`
 do
     if [ `cat ${mutation_file} | grep -P '^[^#]' | wc -l` -gt 1 ]; then
     

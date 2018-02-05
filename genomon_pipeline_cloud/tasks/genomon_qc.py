@@ -7,24 +7,25 @@ class Genomon_qc(Abstract_task):
 
     task_name = "genomon-qc"
 
-    def __init__(self, output_dir, task_dir, sample_conf, param_conf):
+    def __init__(self, output_dir, task_dir, sample_conf, param_conf, run_conf):
 
         super(Genomon_qc, self).__init__(
             pkg_resources.resource_filename("genomon_pipeline_cloud", "script/{}.sh".format(self.__class__.task_name)),
-            "genomon/genomon_qc",
+            param_conf.get("qc", "image"),
             param_conf.get("qc", "resource"),
             output_dir + "/logging")
         
-        self.task_file = self.task_file_generation(output_dir, task_dir, sample_conf, param_conf)
+        self.task_file = self.task_file_generation(output_dir, task_dir, sample_conf, param_conf, run_conf)
 
 
-    def task_file_generation(self, output_dir, task_dir, sample_conf, param_conf):
+    def task_file_generation(self, output_dir, task_dir, sample_conf, param_conf, run_conf):
 
         data_type = "exome"
         if param_conf.get("qc", "wgs_flag") == "True":
             data_type = "wgs"
         
-        task_file = "{}/{}-tasks.tsv".format(task_dir, self.__class__.task_name)
+        #task_file = "{}/{}-tasks.tsv".format(task_dir, self.__class__.task_name)
+        task_file = "{}/{}-tasks-{}.tsv".format(task_dir, self.__class__.task_name, run_conf.analysis_timestamp)
         with open(task_file, 'w') as hout:
 
             print >> hout, '\t'.join(["--env SAMPLE",
@@ -50,7 +51,7 @@ class Genomon_qc(Abstract_task):
                                           param_conf.get("qc", "bait_file"),
                                           param_conf.get("qc", "gaptxt"),
                                           param_conf.get("qc", "genome_size_file"),
-                                          "# meta area",
+                                          run_conf.get_meta_info(param_conf.get("qc", "image")),
                                           data_type,
                                           param_conf.get("qc", "coverage_text"),
                                           param_conf.get("qc", "wgs_incl_bed_width"),
