@@ -11,7 +11,7 @@ class Intron_retention(Abstract_task):
 
         super(Intron_retention, self).__init__(
             pkg_resources.resource_filename("genomon_pipeline_cloud", "script/{}.sh".format(self.__class__.task_name)),
-            "genomon/intron-retention",
+            param_conf.get("intron_retention", "image"),
             param_conf.get("intron_retention", "resource"),
             output_dir + "/logging")
         

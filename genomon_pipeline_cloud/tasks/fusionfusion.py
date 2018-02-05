@@ -11,7 +11,7 @@ class Fusionfusion(Abstract_task):
     
         super(Fusionfusion, self).__init__(
             pkg_resources.resource_filename("genomon_pipeline_cloud", "script/{}.sh".format(self.__class__.task_name)),
-            "friend1ws/fusionfusion",
+            param_conf.get("fusionfusion", "image"),
             param_conf.get("fusionfusion", "resource"),
             output_dir + "/logging")
        

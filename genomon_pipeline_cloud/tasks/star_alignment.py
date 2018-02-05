@@ -11,7 +11,7 @@ class Star_alignment(Abstract_task):
 
         super(Star_alignment, self).__init__(
             pkg_resources.resource_filename("genomon_pipeline_cloud", "script/{}.sh".format(self.__class__.task_name)),
-            "friend1ws/star-alignment",
+            param_conf.get("star_alignment", "image"),
             param_conf.get("star_alignment", "resource"),
             output_dir + "/logging")
         

@@ -11,7 +11,7 @@ class Genomon_expression(Abstract_task):
 
         super(Genomon_expression, self).__init__(
             pkg_resources.resource_filename("genomon_pipeline_cloud", "script/{}.sh".format(self.__class__.task_name)),
-            "friend1ws/genomon_expression:0.4.0",
+            param_conf.get("genomon_expression", "image"),
             param_conf.get("genomon_expression", "resource"),
             output_dir + "/logging")
         
