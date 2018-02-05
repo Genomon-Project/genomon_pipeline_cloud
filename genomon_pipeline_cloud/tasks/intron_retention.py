@@ -26,12 +26,12 @@ class Intron_retention(Abstract_task):
             
             print >> hout, '\t'.join(["--env SAMPLE",
                                       "--input-recursive INPUT_DIR",
-                                      "--output OUTPUT_PATH",
+                                      "--output-recursive OUTPUT_DIR",
                                       "--env OPTION"])
             for sample in sample_conf.expression:
                 print >> hout, '\t'.join([sample,
                                           output_dir + "/star/" + sample,
-                                          output_dir + "/intron_retention/" + sample + '/' + sample + ".genomonIR.result.txt",
+                                          output_dir + "/intron_retention/" + sample,
                                           param_conf.get("intron_retention", "intron_retention_option")])
 
         return task_file

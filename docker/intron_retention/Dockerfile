@@ -25,12 +25,13 @@ RUN wget https://github.com/samtools/htslib/releases/download/1.7/htslib-1.7.tar
 
 RUN wget https://github.com/arq5x/bedtools2/releases/download/v2.27.0/bedtools-2.27.0.tar.gz && \
     tar zxvf bedtools-2.27.0.tar.gz && \
-    cd bedtools2 && make && export PATH=$PATH:$PWD/bin 
+    cd bedtools2 && make
+ENV PATH $PATH:/bedtools2/bin 
 
 RUN wget https://github.com/mengyao/Complete-Striped-Smith-Waterman-Library/archive/v1.1.tar.gz && \
     tar zxvf v1.1.tar.gz && cd Complete-Striped-Smith-Waterman-Library-1.1/src && \
-    gcc -Wall -O3 -pipe -fPIC -shared -rdynamic -o libssw.so ssw.c ssw.h && \
-    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD
+    gcc -Wall -O3 -pipe -fPIC -shared -rdynamic -o libssw.so ssw.c ssw.h
+ENV LD_LIBRARY_PATH /Complete-Striped-Smith-Waterman-Library-1.1/src
 
 RUN pip install --upgrade pip
 RUN pip install --upgrade setuptools
