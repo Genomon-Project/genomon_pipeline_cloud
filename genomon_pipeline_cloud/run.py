@@ -41,6 +41,20 @@ def run(args):
     # DNA
     elif args.analysis_type == "dna":
         
+        # BWA stage
+        from tasks.bwa_alignment import *
+        bwa_alignment_task = Bwa_alignment(args.output_dir, tmp_dir, sample_conf, param_conf)
+        p1 = multiprocessing.Process(target = batch_engine.execute, args = (bwa_alignment_task,))
+        p1.start()
+        p1.join()
+        
+        # Mutation call stage
+        from tasks.mutation_call import *
+        mutation_call_task = Mutation_call(args.output_dir, tmp_dir, sample_conf, param_conf)
+        p1 = multiprocessing.Process(target = batch_engine.execute, args = (mutation_call_task,))
+        p1.start()
+        p1.join()
+        
         # QC stage
         from tasks.genomon_qc import *
         qc_task = Genomon_qc(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
