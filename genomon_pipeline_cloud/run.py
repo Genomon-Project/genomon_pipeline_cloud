@@ -41,7 +41,6 @@ def run(args):
         from tasks.genomon_expression import *
         from tasks.intron_retention import *
 
-
         star_alignment_task = Star_alignment(args.output_dir, tmp_dir, sample_conf, param_conf)
         fusionfusion_task = Fusionfusion(args.output_dir, tmp_dir, sample_conf, param_conf)
         genomon_expression_task = Genomon_expression(args.output_dir, tmp_dir, sample_conf, param_conf)
@@ -119,12 +118,12 @@ def run(args):
         proc_pmsignature = multiprocessing.Process(target = batch_engine.execute, args = (pmsignature_task,))
         proc_pmsignature.start()
         proc_pmsignature.join()
-            
+        """
+    
     # paplot stage
     from tasks.paplot import *
     paplot_task = Paplot(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
     proc_paplot = multiprocessing.Process(target = batch_engine.execute, args = (paplot_task,))
     proc_paplot.start()
     proc_paplot.join()
-    """
 
