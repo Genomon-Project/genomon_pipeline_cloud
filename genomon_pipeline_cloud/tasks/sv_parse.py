@@ -25,27 +25,29 @@ class SV_parse(Abstract_task):
         with open(task_file, 'w') as hout:
             
             print >> hout, '\t'.join(["--env SAMPLE",
-                                      "--input INPUT_DIR",
+                                      "--input-recursive INPUT_DIR",
                                       "--output-recursive OUTPUT_DIR",
                                       "--env OPTION"])
     
             # List up the sample list
             sample_list_for_parse = []
             for tumor_sample, normal_sample, control_panel_name in sample_conf.sv_detection:
-                sample_list_for_parse = sample_list_for_parse + [tumor_sample, normal_sample] + sample_conf.control_panel[control_panel_name]
+                sample_list_for_parse.append(tumor_sample)
+                if normal_sample is not None: sample_list_for_parse.append(normal_sample)
+                if control_panel_name is not None: sample_list_for_parse = sample_list_for_parse + sample_conf.control_panel[control_panel_name]
             
             sample_list_for_parse = list(set(sample_list_for_parse))
 
             for sample_name in sorted(sample_list_for_parse):
-                if sample in sample_conf.bam_tofastq.keys() + sample_conf.fastq.keys():
-                    print >> hout, '\t'.join([sample,
-                                              output_dir + "/bam/" + sample,
-                                              output_dir + "/sv/" + sample,
-                                              param_conf.get("sv_parse", "sv_parse_option")])
-                elif sample in sample_conf.bam_import.keys():
-                    raise NotImplementedError("sv_parse for bam_import is not implemented: " + sample)
+                if sample_name in sample_conf.bam_tofastq.keys() + sample_conf.fastq.keys():
+                    print >> hout, '\t'.join([sample_name,
+                                              output_dir + "/bam/" + sample_name,
+                                              output_dir + "/sv/" + sample_name,
+                                              param_conf.get("sv_parse", "genomon_sv_parse_option")])
+                elif sample_name in sample_conf.bam_import.keys():
+                    raise NotImplementedError("sv_parse for bam_import is not implemented: " + sample_name)
                 else:
-                    raise ValueError(sample + " is not registered in any of [fastq], [bam_tofastq], [bam_import]") 
+                    raise ValueError(sample_name + " is not registered in any of [fastq], [bam_tofastq], [bam_import]") 
 
         return task_file
 

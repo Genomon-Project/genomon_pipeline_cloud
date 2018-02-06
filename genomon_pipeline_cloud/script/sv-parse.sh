@@ -7,7 +7,7 @@ set -o xtrace
 
 GenomonSV \
     parse \
-    ${INPUT_DIR}/${SAMPLE}.markedup.bam \
+    ${INPUT_DIR}/${SAMPLE}.markdup.bam \
     ${OUTPUT_DIR}/${SAMPLE} \
     ${OPTION}
 
