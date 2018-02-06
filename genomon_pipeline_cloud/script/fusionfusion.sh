@@ -20,4 +20,5 @@ PARAM="--grc"
 mv ${OUTPUT_DIR}/star.fusion.result.txt ${OUTPUT_DIR}/${SAMPLE}.star.fusion.result.txt
 mv ${OUTPUT_DIR}/fusion_fusion.result.txt ${OUTPUT_DIR}/${SAMPLE}.fusion_fusion.result.txt
 
+cp ${OUTPUT_DIR}/${SAMPLE}.fusion_fusion.result.txt ${OUTPUT_DIR}/${SAMPLE}.genomonFusion.result.filt.txt
 

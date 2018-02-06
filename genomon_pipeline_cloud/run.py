@@ -57,20 +57,22 @@ def run(args):
         p3 = multiprocessing.Process(target = batch_engine.execute, args = (genomon_expression_task,))
         p4 = multiprocessing.Process(target = batch_engine.execute, args = (intron_retention_task,))
 
-        # p2.start()
-        # p3.start()
+        p2.start()
+        p3.start()
         p4.start()
 
-        # p2.join()
-        # p3.join()
+        p2.join()
+        p3.join()
         p4.join()
-    
+
+        """    
         # paplot stage
         from tasks.paplot import *
         paplot_task = Paplot(args.output_dir, tmp_dir, sample_conf, param_conf, args.analysis_type)
         proc_paplot = multiprocessing.Process(target = batch_engine.execute, args = (paplot_task,))
         proc_paplot.start()
         proc_paplot.join()
+        """
 
     ##########
     # DNA
