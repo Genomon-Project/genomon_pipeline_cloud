@@ -5,10 +5,10 @@ DU145_150,s3://hgc-otiai10-test/examples/genomon_rna/sequence_data/small/DU145_1
 K562_150,s3://hgc-otiai10-test/examples/genomon_rna/sequence_data/small/K562_150/sequence1.txt,s3://hgc-otiai10-test/examples/genomon_rna/sequence_data/small/K562_150/sequence2.txt
 
 [fusion]
-MCF-7
-DU145_150
-K562_150
-Hela_wt_dox-
+MCF-7,None
+DU145_150,None
+K562_150,None
+Hela_wt_dox-,None
 
 [expression]
 MCF-7
@@ -22,7 +22,7 @@ DU145_150
 K562_150
 Hela_wt_dox-
 
-[summary]
+[qc]
 MCF-7
 DU145_150
 K562_150

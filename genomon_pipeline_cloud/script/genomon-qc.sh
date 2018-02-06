@@ -46,17 +46,5 @@ else
 fi
 
 # merge
-if [ -f ${FASTQ_LINE_NUM_FILE} ]; then
-
-    total_reads=`awk 'NR==2 {print $15}' $output_pre.bamstats`
-    fastq_reads_tmp=`cat ${FASTQ_LINE_NUM_FILE}`
-    fastq_reads=`expr $fastq_reads_tmp / 2`
-
-    if [ $total_reads -ne $fastq_reads ]; then
-        echo "Total read count is not good for this data. BAM file: $total_reads reads. FASTQ file: $fastq_reads reads." >&2
-        exit 1
-    fi
-fi
-
 genomon_qc merge $output_pre.coverage $output_pre.bamstats $output_pre.genomonQC.result.txt --meta "${META}"
 
