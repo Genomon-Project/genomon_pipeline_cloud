@@ -30,6 +30,7 @@ class SV_filt(Abstract_task):
                                       "--input-recursive TUMOR_BAM_DIR",
                                       "--input-recursive TUMOR_SV_DIR",
                                       "--input-recursive NORMAL_BAM_DIR",
+                                      "--input REFERENCE",
                                       "--input MERGED_JUNCTION",
                                       "--output-recursive OUTPUT_DIR",
                                       "--env GENOMONSV_FILT_OPTION",
@@ -37,12 +38,13 @@ class SV_filt(Abstract_task):
     
             for tumor_sample, normal_sample, control_panel_name in sample_conf.sv_detection:
 
-                print >> hout, '\t'.join([tumor_sample,
-                                          normal_sample,
-                                          control_panel_name,
+                print >> hout, '\t'.join([str(tumor_sample),
+                                          str(normal_sample),
+                                          str(control_panel_name),
                                           output_dir + "/bam/" + tumor_sample,
                                           output_dir + "/sv/" + tumor_sample,
                                           output_dir + "/bam/" + normal_sample if normal_sample is not None else '',
+                                          param_conf.get("sv_filt", "reference"),
                                           '',
                                           output_dir + "/sv/" + tumor_sample,
                                           param_conf.get("sv_filt", "genomon_sv_filt_option"),

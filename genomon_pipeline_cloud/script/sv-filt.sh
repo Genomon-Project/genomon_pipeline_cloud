@@ -8,12 +8,12 @@ TUMOR_BAM=${TUMOR_BAM_DIR}/${TUMOR_SAMPLE}.markdup.bam
 
 ARGUMENT="${TUMOR_BAM} ${TUMOR_SV_DIR}/${TUMOR_SAMPLE} ${REFERENCE}"
 
-if [ !_${CONTROL_PANEL} = "_None" ]
+if [ ! _${CONTROL_PANEL} = "_None" ]
 then
     ARGUMENT="${ARGUMENT} --non_matched_control_junction ${MERGED_JUNCTION}"
 fi
 
-if [ ! _${NORMAL_SAPLE} = "_None" ]
+if [ ! _${NORMAL_SAMPLE} = "_None" ]
 then
     NORMAL_BAM=${NORMAL_BAM_DIR}/${NORMAL_SAMPLE}.markdup.bam
     ARGUMNET="${ARGUMENT} --matched_control_bam ${NORMAL_BAM}"
@@ -24,5 +24,9 @@ then
     fi
 fi
 
+ARGUMENT="${ARGUMENT} ${GENOMONSV_FILT_OPTION}"
+
 GenomonSV filt ${ARGUMENT}
- 
+
+sv_utils filter ${TUMOR_SV_DIR}/${TUMOR_SAMPLE}.genomonSV.result.txt ${TUMOR_SV_DIR}/${TUMOR_SAMPLE}.genomonSV.result.filt.txt ${SV_UTILS_FILT_OPTION}
+
