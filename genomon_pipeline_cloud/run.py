@@ -79,12 +79,26 @@ def run(args):
     elif args.analysis_type == "dna":
         
         # BWA stage
-        from tasks.bwa_alignment import *
-        bwa_alignment_task = Bwa_alignment(args.output_dir, tmp_dir, sample_conf, param_conf)
-        p1 = multiprocessing.Process(target = batch_engine.execute, args = (bwa_alignment_task,))
+        # from tasks.bwa_alignment import *
+        # bwa_alignment_task = Bwa_alignment(args.output_dir, tmp_dir, sample_conf, param_conf)
+        # p1 = multiprocessing.Process(target = batch_engine.execute, args = (bwa_alignment_task,))
+        # p1.start()
+        # p1.join()
+
+        # from tasks.sv_parse import *
+        # sv_parse_task = SV_parse(args.output_dir, tmp_dir, sample_conf, param_conf)
+        # p1 = multiprocessing.Process(target = batch_engine.print_command, args = (sv_parse_task,))
+        # p1.start()
+        # p1.join()
+
+        from tasks.sv_filt import *
+        sv_filt_task = SV_filt(args.output_dir, tmp_dir, sample_conf, param_conf)
+        p1 = multiprocessing.Process(target = batch_engine.print_command, args = (sv_filt_task,))
         p1.start()
         p1.join()
-        
+
+
+        """        
         # Mutation call stage
         from tasks.mutation_call import *
         mutation_call_task = Mutation_call(args.output_dir, tmp_dir, sample_conf, param_conf)
@@ -105,11 +119,12 @@ def run(args):
         proc_pmsignature = multiprocessing.Process(target = batch_engine.execute, args = (pmsignature_task,))
         proc_pmsignature.start()
         proc_pmsignature.join()
-        
+            
     # paplot stage
     from tasks.paplot import *
     paplot_task = Paplot(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
     proc_paplot = multiprocessing.Process(target = batch_engine.execute, args = (paplot_task,))
     proc_paplot.start()
     proc_paplot.join()
-    
+    """
+
