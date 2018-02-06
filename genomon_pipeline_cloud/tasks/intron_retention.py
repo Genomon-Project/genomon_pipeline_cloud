@@ -28,7 +28,7 @@ class Intron_retention(Abstract_task):
                                       "--input-recursive INPUT_DIR",
                                       "--output-recursive OUTPUT_DIR",
                                       "--env OPTION"])
-            for sample in sample_conf.expression:
+            for sample in sample_conf.intron_retention:
                 print >> hout, '\t'.join([sample,
                                           output_dir + "/star/" + sample,
                                           output_dir + "/intron_retention/" + sample,
