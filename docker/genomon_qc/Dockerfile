@@ -52,7 +52,7 @@ RUN echo "deb http://deb.debian.org/debian stretch main" > /etc/apt/sources.list
     bash setup.sh /tools/ICGC && \
     \
     cd /tools && \
-    wget -nc https://github.com/Genomon-Project/GenomonQC/archive/v2.0.2.zip && \
+    wget -nc https://github.com/Genomon-Project/GenomonQC/archive/v2.0.2a.zip && \
     unzip v2.0.2.zip && \
     rm -f v2.0.2.zip && \
     cd GenomonQC-2.0.2 && \
