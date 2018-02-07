@@ -1,5 +1,5 @@
 [fastq]
-simulate,s3://genomon-resource/_GRCh37/sample/dna/simulate_N_read1.fq,genomon-resource/_GRCh37/sample/dna/simulate_N_read2.fq
+simulate,s3://genomon-resource/_GRCh37/sample/dna/simulate_N_read1.fq,s3://genomon-resource/_GRCh37/sample/dna/simulate_N_read2.fq
 
 [mutation_call]
 simulate,None,None
