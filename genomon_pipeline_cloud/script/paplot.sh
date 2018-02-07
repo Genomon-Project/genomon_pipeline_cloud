@@ -94,5 +94,5 @@ fi
 
 paplot index ${OUTPUT_DIR} --config_file ${CONFIG_FILE} --remarks "${REMARKS}"
 
-real_output=`realpath ${OUTPUT_DIR}`
-tar -zcvf ${real_output}/paplot.tar.gz ${real_output}/
+tar -zcvf ./paplot.tar.gz -C `dirname ${OUTPUT_DIR}/` `basename ${OUTPUT_DIR}`
+mv ./paplot.tar.gz ${OUTPUT_DIR}/
