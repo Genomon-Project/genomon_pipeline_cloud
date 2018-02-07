@@ -55,8 +55,8 @@ class Paplot(Abstract_task):
             items["qc"]       = to_oneliner("qc", sample_conf.qc, output_dir + "/qc", ".genomonQC.result.txt")
             items["sv"]       = to_oneliner("sv", sample_conf.sv_detection, output_dir + "/sv", ".genomonSV.result.filt.txt")
             # items["mutation"] = to_oneliner("mutation", sample_conf.mutation_call, output_dir + "/mutation", ".genomon_mutation.result.filt.txt")
-            items["signature"]  = to_oneliner_signature("full", output_dir + "/pmsignature/sample", param_conf.getint("signature", "signum_min"), param_conf.getint("signature", "signum_max"))
-            items["pmsignature"]= to_oneliner_signature("ind", output_dir + "/pmsignature/sample", param_conf.getint("pmsignature", "signum_min"), param_conf.getint("pmsignature", "signum_max"))
+            items["signature"]  = to_oneliner_signature("full", output_dir + "/pmsignature/" + run_conf.sample_conf_name, param_conf.getint("signature", "signum_min"), param_conf.getint("signature", "signum_max"))
+            items["pmsignature"]= to_oneliner_signature("ind", output_dir + "/pmsignature/" + run_conf.sample_conf_name, param_conf.getint("pmsignature", "signum_min"), param_conf.getint("pmsignature", "signum_max"))
         
         header = []
         data = []
