@@ -55,7 +55,7 @@ RUN echo "deb http://deb.debian.org/debian stretch main" > /etc/apt/sources.list
     wget -nc https://github.com/Genomon-Project/GenomonQC/archive/v2.0.2a.zip && \
     unzip v2.0.2a.zip && \
     rm -f v2.0.2a.zip && \
-    cd GenomonQC-2.0.2 && \
+    cd GenomonQC-2.0.2a && \
     python setup.py install
     
 CMD ["/bin/bash"]
