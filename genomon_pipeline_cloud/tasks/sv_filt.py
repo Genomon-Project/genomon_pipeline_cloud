@@ -7,7 +7,7 @@ class SV_filt(Abstract_task):
 
     task_name = "sv-filt"
 
-    def __init__(self, output_dir, task_dir, sample_conf, param_conf):
+    def __init__(self, output_dir, task_dir, sample_conf, param_conf, run_conf):
 
         super(SV_filt, self).__init__(
             pkg_resources.resource_filename("genomon_pipeline_cloud", "script/{}.sh".format(self.__class__.task_name)),
@@ -15,13 +15,14 @@ class SV_filt(Abstract_task):
             param_conf.get("sv_filt", "resource"),
             output_dir + "/logging")
         
-        self.task_file = self.task_file_generation(output_dir, task_dir, sample_conf, param_conf)
+        self.task_file = self.task_file_generation(output_dir, task_dir, sample_conf, param_conf, run_conf)
 
 
-    def task_file_generation(self, output_dir, task_dir, sample_conf, param_conf):
+    def task_file_generation(self, output_dir, task_dir, sample_conf, param_conf, run_conf):
 
         # generate fusionfusion_tasks.tsv
-        task_file = "{}/{}-tasks.tsv".format(task_dir, self.__class__.task_name)
+        #task_file = "{}/{}-tasks.tsv".format(task_dir, self.__class__.task_name)
+        task_file = "{}/{}-tasks-{}-{}.tsv".format(task_dir, self.__class__.task_name, run_conf.get_owner_info(), run_conf.analysis_timestamp)
         with open(task_file, 'w') as hout:
             
             print >> hout, '\t'.join(["--env TUMOR_SAMPLE",

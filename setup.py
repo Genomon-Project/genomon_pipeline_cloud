@@ -3,6 +3,7 @@
 from setuptools import setup, find_packages
 from codecs import open
 from os import path
+from genomon_pipeline_cloud import __version__
 
 here = path.abspath(path.dirname(__file__))
 
@@ -11,7 +12,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name = 'genomon_pipeline_cloud',
-    version = '0.1.0a1',
+    version = __version__,
     description = 'Python tools for executing Genomon pipeline in cloud environments.',
     url = 'https://github.com/Genomon-Project/genomon_pipeline_cloud',
     author = 'Yuichi Shiraishi, Ai Okada, Kenichi Chiba',

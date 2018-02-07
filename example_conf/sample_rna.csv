@@ -1,0 +1,15 @@
+[fastq]
+MCF-7,s3://hgc-otiai10-test/examples/genomon_rna/sequence_data/small/MCF-7/sequence1.txt,s3://hgc-otiai10-test/examples/genomon_rna/sequence_data/small/MCF-7/sequence2.txt
+
+[fusion]
+MCF-7,None
+
+[expression]
+MCF-7
+
+[intron_retention]
+MCF-7
+
+[qc]
+MCF-7
+

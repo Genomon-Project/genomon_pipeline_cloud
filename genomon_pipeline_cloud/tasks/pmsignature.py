@@ -37,7 +37,7 @@ class Pmsignature(Abstract_task):
         [header, data] = to_oneliner("mutation", sample_conf.mutation_call, output_dir + "/mutation", ".genomon_mutation.result.filt.txt")
         
         #task_file = "{}/{}-tasks.tsv".format(task_dir, self.__class__.task_name)
-        task_file = "{}/{}-tasks-{}.tsv".format(task_dir, self.__class__.task_name, run_conf.analysis_timestamp)
+        task_file = "{}/{}-tasks-{}-{}.tsv".format(task_dir, self.__class__.task_name, run_conf.get_owner_info(), run_conf.analysis_timestamp)
         with open(task_file, 'w') as hout:
 
             print >> hout, '\t'.join([header,

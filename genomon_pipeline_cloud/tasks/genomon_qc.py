@@ -25,7 +25,7 @@ class Genomon_qc(Abstract_task):
             data_type = "wgs"
         
         #task_file = "{}/{}-tasks.tsv".format(task_dir, self.__class__.task_name)
-        task_file = "{}/{}-tasks-{}.tsv".format(task_dir, self.__class__.task_name, run_conf.analysis_timestamp)
+        task_file = "{}/{}-tasks-{}-{}.tsv".format(task_dir, self.__class__.task_name, run_conf.get_owner_info(), run_conf.analysis_timestamp)
         with open(task_file, 'w') as hout:
 
             print >> hout, '\t'.join(["--env SAMPLE",

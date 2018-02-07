@@ -1,12 +1,11 @@
 #! /usr/bin/env python
 
 import os
-import pwd
 import subprocess
 import datetime
 
 date_format = "{year:0>4d}-{month:0>2d}-{day:0>2d} {hour:0>2d}:{min:0>2d}:{second:0>2d}"
-timestamp_format = "{year:0>4d}{month:0>2d}{day:0>2d}-{hour:0>2d}{min:0>2d}{second:0>2d}-{msecond:0>6d}"
+timestamp_format = "{year:0>4d}{month:0>2d}{day:0>2d}-{hour:0>2d}{min:0>2d}{second:0>2d}"
 
 #global run_conf
 
@@ -41,14 +40,13 @@ class Run_conf(object):
                                       day = now.day,
                                       hour = now.hour,
                                       min = now.minute,
-                                      second = now.second,
-                                      msecond = now.microsecond)
+                                      second = now.second)
 
         proc = subprocess.Popen(['genomon_pipeline_cloud --version 2>&1'], shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         self.pipeline_version = (proc.communicate()[0]).split("\n")[0]
-
+        
     def get_meta_info(self, image):
-
+        #import pwd
         #return "# Docker Image: %s\n# Analysis Date: %s\n# User: %s" % (
         #            image, 
         #            self.analysis_date, 
@@ -57,6 +55,10 @@ class Run_conf(object):
         return "# Docker Image: %s" % (
                     image
                 )
+
+    def get_owner_info(self):
+        import pwd
+        return pwd.getpwuid(os.getuid()).pw_name
 
 #run_conf = Run_conf()
 

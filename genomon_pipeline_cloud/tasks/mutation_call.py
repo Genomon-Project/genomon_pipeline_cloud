@@ -7,20 +7,21 @@ class Mutation_call(Abstract_task):
 
     task_name = "mutation-call"
 
-    def __init__(self, output_dir, task_dir, sample_conf, param_conf):
+    def __init__(self, output_dir, task_dir, sample_conf, param_conf, run_conf):
 
         super(Mutation_call, self).__init__(
             pkg_resources.resource_filename("genomon_pipeline_cloud", "script/{}.sh".format(self.__class__.task_name)),
-            "genomon/mutation_call",
+            param_conf.get("mutation_call", "image"),
             param_conf.get("mutation_call", "resource"),
             output_dir + "/logging")
         
-        self.task_file = self.task_file_generation(output_dir, task_dir, sample_conf, param_conf)
+        self.task_file = self.task_file_generation(output_dir, task_dir, sample_conf, param_conf, run_conf)
 
 
-    def task_file_generation(self, output_dir, task_dir, sample_conf, param_conf):
+    def task_file_generation(self, output_dir, task_dir, sample_conf, param_conf, run_conf):
 
-        task_file = "{}/{}-tasks.tsv".format(task_dir, self.__class__.task_name)
+        #task_file = "{}/{}-tasks.tsv".format(task_dir, self.__class__.task_name)
+        task_file = "{}/{}-tasks-{}-{}.tsv".format(task_dir, self.__class__.task_name, run_conf.get_owner_info(), run_conf.analysis_timestamp)
         with open(task_file, 'w') as hout:
 
             print >> hout, '\t'.join(["--env SAMPLE1",

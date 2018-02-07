@@ -5,7 +5,7 @@
 # Installation
 
 ```sh
-git clone git@github.com:friend1ws/genomon_pipeline_cloud.git
+git clone https://github.com/Genomon-Project/genomon_pipeline_cloud.git
 cd genomon_pipeline_cloud
 pip install . --upgrade
 ```
@@ -14,7 +14,7 @@ pip install . --upgrade
 
 ```sh
 genomon_pipeline_cloud \
-  example_conf/sample_awsub.csv \
-  s3://awsub-test-friend1ws/genomon_pipeline_cloud_test \
-  example_conf/param_awsub.cfg
+  example_conf/sample_dna.csv \
+  s3://{your_bucket}/genomon_pipeline_cloud_test \
+  example_conf/param_dna_awsub.cfg
 ```

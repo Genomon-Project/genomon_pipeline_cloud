@@ -41,89 +41,76 @@ def run(args):
         from tasks.genomon_expression import *
         from tasks.intron_retention import *
 
-        star_alignment_task = Star_alignment(args.output_dir, tmp_dir, sample_conf, param_conf)
-        fusionfusion_task = Fusionfusion(args.output_dir, tmp_dir, sample_conf, param_conf)
-        genomon_expression_task = Genomon_expression(args.output_dir, tmp_dir, sample_conf, param_conf)
-        intron_retention_task = Intron_retention(args.output_dir, tmp_dir, sample_conf, param_conf)
+        star_alignment_task = Star_alignment(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
+        fusionfusion_task = Fusionfusion(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
+        genomon_expression_task = Genomon_expression(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
+        intron_retention_task = Intron_retention(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
+        
+        p_star = multiprocessing.Process(target = batch_engine.execute, args = (star_alignment_task,))
+        p_star.start()
+        p_star.join()
 
-        # first stage    
-        p1 = multiprocessing.Process(target = batch_engine.execute, args = (star_alignment_task,))
-        p1.start()
-        p1.join()
+        p_fusion = multiprocessing.Process(target = batch_engine.execute, args = (fusionfusion_task,))
+        p_expression = multiprocessing.Process(target = batch_engine.execute, args = (genomon_expression_task,))
+        p_ir = multiprocessing.Process(target = batch_engine.execute, args = (intron_retention_task,))
 
-        # second stage
-        p2 = multiprocessing.Process(target = batch_engine.execute, args = (fusionfusion_task,))
-        p3 = multiprocessing.Process(target = batch_engine.execute, args = (genomon_expression_task,))
-        p4 = multiprocessing.Process(target = batch_engine.execute, args = (intron_retention_task,))
+        p_fusion.start()
+        p_expression.start()
+        p_ir.start()
 
-        p2.start()
-        p3.start()
-        p4.start()
-
-        p2.join()
-        p3.join()
-        p4.join()
-
-        """    
-        # paplot stage
-        from tasks.paplot import *
-        paplot_task = Paplot(args.output_dir, tmp_dir, sample_conf, param_conf, args.analysis_type)
-        proc_paplot = multiprocessing.Process(target = batch_engine.execute, args = (paplot_task,))
-        proc_paplot.start()
-        proc_paplot.join()
-        """
+        p_fusion.join()
+        p_expression.join()
+        p_ir.join()
+        
 
     ##########
     # DNA
     elif args.analysis_type == "dna":
-        
-        # BWA stage
-        # from tasks.bwa_alignment import *
-        # bwa_alignment_task = Bwa_alignment(args.output_dir, tmp_dir, sample_conf, param_conf)
-        # p1 = multiprocessing.Process(target = batch_engine.execute, args = (bwa_alignment_task,))
-        # p1.start()
-        # p1.join()
-
-        # from tasks.sv_parse import *
-        # sv_parse_task = SV_parse(args.output_dir, tmp_dir, sample_conf, param_conf)
-        # p1 = multiprocessing.Process(target = batch_engine.print_command, args = (sv_parse_task,))
-        # p1.start()
-        # p1.join()
-
+    
+        from tasks.bwa_alignment import *
+        from tasks.sv_parse import *
         from tasks.sv_filt import *
-        sv_filt_task = SV_filt(args.output_dir, tmp_dir, sample_conf, param_conf)
-        p1 = multiprocessing.Process(target = batch_engine.print_command, args = (sv_filt_task,))
-        p1.start()
-        p1.join()
-
-
-        """        
-        # Mutation call stage
         from tasks.mutation_call import *
-        mutation_call_task = Mutation_call(args.output_dir, tmp_dir, sample_conf, param_conf)
-        p1 = multiprocessing.Process(target = batch_engine.execute, args = (mutation_call_task,))
-        p1.start()
-        p1.join()
-        
-        # QC stage
         from tasks.genomon_qc import *
-        qc_task = Genomon_qc(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
-        proc_qc = multiprocessing.Process(target = batch_engine.execute, args = (qc_task,))
-        proc_qc.start()
-        proc_qc.join()
-        
-        # pmsignature
         from tasks.pmsignature import *
+        
+        bwa_alignment_task = Bwa_alignment(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
+        sv_parse_task = SV_parse(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
+        sv_filt_task = SV_filt(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
+        mutation_call_task = Mutation_call(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
+        qc_task = Genomon_qc(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
         pmsignature_task = Pmsignature(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
-        proc_pmsignature = multiprocessing.Process(target = batch_engine.execute, args = (pmsignature_task,))
-        proc_pmsignature.start()
-        proc_pmsignature.join()
-        """
+        
+        p_bwa = multiprocessing.Process(target = batch_engine.execute, args = (bwa_alignment_task,))
+        p_sv1 = multiprocessing.Process(target = batch_engine.print_command, args = (sv_parse_task,))
+        p_sv2 = multiprocessing.Process(target = batch_engine.print_command, args = (sv_filt_task,))
+        p_mutation = multiprocessing.Process(target = batch_engine.execute, args = (mutation_call_task,))
+        p_qc = multiprocessing.Process(target = batch_engine.execute, args = (qc_task,))
+        p_pmsignature = multiprocessing.Process(target = batch_engine.execute, args = (pmsignature_task,))
+        
+        p_bwa.start()
+        p_bwa.join()
+        
+        p_sv1.start()
+        p_mutation.start()
+        p_qc.start()
+        
+        p_sv1.join()
+        p_sv2.start()
+        
+        p_mutation.join()
+        p_pmsignature.start()
+        
+        p_sv2.join()
+        p_qc.join()
+        p_pmsignature.join()
+        
     
     # paplot stage
     from tasks.paplot import *
     paplot_task = Paplot(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
-    proc_paplot = multiprocessing.Process(target = batch_engine.execute, args = (paplot_task,))
-    proc_paplot.start()
-    proc_paplot.join()
-
+    
+    p_paplot = multiprocessing.Process(target = batch_engine.execute, args = (paplot_task,))
+    p_paplot.start()
+    p_paplot.join()
+    
