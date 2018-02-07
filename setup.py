@@ -10,12 +10,12 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
-    name = 'genomon_pipline_cloud',
+    name = 'genomon_pipeline_cloud',
     version = '0.1.0a1',
     description = 'Python tools for executing Genomon pipeline in cloud environments.',
-    url = 'https://github.com/friend1ws/genomon_pipeline_cloud',
-    author = 'Yuichi Shiraishi',
-    author_email = 'friend1ws@gmail.com',
+    url = 'https://github.com/Genomon-Project/genomon_pipeline_cloud',
+    author = 'Yuichi Shiraishi, Ai Okada, Kenichi Chiba',
+    author_email = 'genomon.devel@gmail.com',
     license = 'GPLv3',
     
     classifiers = [
