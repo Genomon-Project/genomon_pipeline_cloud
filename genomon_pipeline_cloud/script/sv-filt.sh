@@ -27,5 +27,7 @@ ARGUMENT="${ARGUMENT} ${GENOMONSV_FILT_OPTION}"
 
 GenomonSV filt ${ARGUMENT}
 
+sed -i "1i${META}" ${TUMOR_SV_DIR}/${TUMOR_SAMPLE}.genomonSV.result.txt
+
 sv_utils filter ${TUMOR_SV_DIR}/${TUMOR_SAMPLE}.genomonSV.result.txt ${TUMOR_SV_DIR}/${TUMOR_SAMPLE}.genomonSV.result.filt.txt ${SV_UTILS_FILT_OPTION}
 
