@@ -2,7 +2,6 @@
 
 set -o errexit
 set -o nounset
-set -o xtrace
 
 TUMOR_BAM=${TUMOR_BAM_DIR}/${TUMOR_SAMPLE}.markdup.bam
 

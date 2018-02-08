@@ -2,7 +2,6 @@
 
 set -o errexit
 set -o nounset
-set -o xtrace
 
 export LD_LIBRARY_PATH=/usr/local/lib
 OUTPUT_PREF=${OUTPUT_DIR}/${SAMPLE}

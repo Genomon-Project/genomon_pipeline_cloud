@@ -2,8 +2,6 @@
 
 set -o errexit
 set -o nounset
-set -o xtrace
-
 
 GenomonSV \
     parse \

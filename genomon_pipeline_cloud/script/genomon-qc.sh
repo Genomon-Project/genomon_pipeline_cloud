@@ -2,7 +2,6 @@
 
 set -o errexit
 set -o nounset
-set -o xtrace
 
 export bamstats=/tools/ICGC/bin/bam_stats.pl
 export bedtools=/usr/local/bin/bedtools

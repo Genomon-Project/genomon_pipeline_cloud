@@ -2,7 +2,6 @@
 
 set -o errexit
 set -o nounset
-set -o xtrace
 
 export PATH=/usr/local/bin:${PATH}
 export LD_LIBRARY_PATH=/usr/local/lib
@@ -102,7 +101,8 @@ then
     print_header=${print_header}"\t"${tmp_header}
 fi
 
-echo -e "$print_header" > ${OUTPUT_PREF}.genomon_mutation.result.txt
+echo "$META" > ${OUTPUT_PREF}.genomon_mutation.result.txt
+echo "$print_header" >> ${OUTPUT_PREF}.genomon_mutation.result.txt
 cat ${OUTPUT_PREF}.mutations_candidate.txt >> ${OUTPUT_PREF}.genomon_mutation.result.txt
 
 # filter candidates

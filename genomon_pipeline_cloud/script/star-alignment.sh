@@ -2,7 +2,6 @@
 
 set -o errexit
 set -o nounset
-set -o xtrace
 
 OUTPUT_PREF=${OUTPUT_DIR}/${SAMPLE}
 

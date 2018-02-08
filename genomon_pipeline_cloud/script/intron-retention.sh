@@ -2,8 +2,6 @@
 
 set -o errexit
 set -o nounset
-set -o xtrace
-
 
 intron_retention_utils \
     simple_count \

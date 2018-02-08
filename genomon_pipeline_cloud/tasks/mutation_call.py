@@ -20,7 +20,6 @@ class Mutation_call(Abstract_task):
 
     def task_file_generation(self, output_dir, task_dir, sample_conf, param_conf, run_conf):
 
-        #task_file = "{}/{}-tasks.tsv".format(task_dir, self.__class__.task_name)
         task_file = "{}/{}-tasks-{}-{}.tsv".format(task_dir, self.__class__.task_name, run_conf.get_owner_info(), run_conf.analysis_timestamp)
         with open(task_file, 'w') as hout:
 
@@ -30,6 +29,7 @@ class Mutation_call(Abstract_task):
                                       "--input-recursive INPUT_DIR1",
                                       "--input-recursive INPUT_DIR2",
                                       "--output-recursive OUTPUT_DIR",
+                                      "--env META",
                                       "--input-recursive REFERENCE",
                                       "--input-recursive HOTSPOT_DB",
                                       "--input-recursive ANNOTATION_DB",
@@ -54,6 +54,7 @@ class Mutation_call(Abstract_task):
                                           output_dir + "/bam/" + sample[0],
                                           sample2bam,
                                           output_dir + "/mutation/" + sample[0],
+                                          run_conf.get_meta_info(param_conf.get("mutation_call", "image")),
                                           param_conf.get("mutation_call", "reference"),
                                           param_conf.get("mutation_call", "hotspot_database"),
                                           param_conf.get("mutation_call", "annotation_database"),

@@ -2,7 +2,6 @@
 
 set -o errexit
 set -o nounset
-set -o xtrace
 
 genomon_root=`realpath $(dirname ${INPUT1})/../..`
 
