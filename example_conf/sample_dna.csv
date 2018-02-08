@@ -1,12 +1,12 @@
 [fastq]
-simulate,s3://genomon-resource/_GRCh37/sample/dna/simulate_N_read1.fq,s3://genomon-resource/_GRCh37/sample/dna/simulate_N_read2.fq
+5929_tumor,s3://genomon-resource/sample/exome/5929_tumor/sequence1.fastq,s3://genomon-resource/sample/exome/5929_tumor/sequence2.fastq
 
 [mutation_call]
-simulate,None,None
+5929_tumor,None,None
 
 [sv_detection]
-simulate,None,None
+5929_tumor,None,None
 
 [qc]
-simulate
+5929_tumor
 
