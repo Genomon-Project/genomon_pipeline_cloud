@@ -75,35 +75,29 @@ def run(args):
         from tasks.pmsignature import *
         
         bwa_alignment_task = Bwa_alignment(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
+        p_bwa = multiprocessing.Process(target = batch_engine.execute, args = (bwa_alignment_task,))
+
         sv_parse_task = SV_parse(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
         sv_filt_task = SV_filt(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
+        p_sv = multiprocessing.Process(target = batch_engine.seq_execute, args = ([sv_parse_task,sv_filt_task],))
+
         mutation_call_task = Mutation_call(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
-        qc_task = Genomon_qc(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
         pmsignature_task = Pmsignature(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
-        
-        p_bwa = multiprocessing.Process(target = batch_engine.execute, args = (bwa_alignment_task,))
-        p_sv1 = multiprocessing.Process(target = batch_engine.print_command, args = (sv_parse_task,))
-        p_sv2 = multiprocessing.Process(target = batch_engine.print_command, args = (sv_filt_task,))
-        p_mutation = multiprocessing.Process(target = batch_engine.execute, args = (mutation_call_task,))
+        p_mutation = multiprocessing.Process(target = batch_engine.seq_execute, args = ([mutation_call_task,pmsignature_task],))
+
+        qc_task = Genomon_qc(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
         p_qc = multiprocessing.Process(target = batch_engine.execute, args = (qc_task,))
-        p_pmsignature = multiprocessing.Process(target = batch_engine.execute, args = (pmsignature_task,))
         
         p_bwa.start()
         p_bwa.join()
         
-        p_sv1.start()
+        p_sv.start()
         p_mutation.start()
         p_qc.start()
-        
-        p_sv1.join()
-        p_sv2.start()
-        
+
+        p_sv.join()
         p_mutation.join()
-        p_pmsignature.start()
-        
-        p_sv2.join()
         p_qc.join()
-        p_pmsignature.join()
         
     
     # paplot stage
