@@ -1,5 +1,5 @@
 [fastq]
-MCF-7,s3://genomon-resource/sample/rna/MCF-7-small/test1.fastq,genomon-resource/sample/rna/MCF-7-small/test2.fastq
+MCF-7,s3://genomon-resource/sample/rna/MCF-7-small/test1.fastq,s3://genomon-resource/sample/rna/MCF-7-small/test2.fastq
 
 [fusion]
 MCF-7,None
