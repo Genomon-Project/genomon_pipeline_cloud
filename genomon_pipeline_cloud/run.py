@@ -93,10 +93,11 @@ def run(args):
         
         p_sv.start()
         p_mutation.start()
-        p_qc.start()
 
         p_sv.join()
         p_mutation.join()
+
+        p_qc.start()
         p_qc.join()
         
     
