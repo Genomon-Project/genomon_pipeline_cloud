@@ -18,3 +18,5 @@ genomon_pipeline_cloud \
   s3://{your_bucket}/genomon_pipeline_cloud_test \
   example_conf/param_dna_awsub.cfg
 ```
+
+see detail https://github.com/Genomon-Project/genomon_pipeline_cloud/wiki
