@@ -19,4 +19,4 @@ genomon_pipeline_cloud \
   example_conf/param_dna_awsub.cfg
 ```
 
-see detail https://github.com/Genomon-Project/genomon_pipeline_cloud/wiki
+see detail :green_book: https://github.com/Genomon-Project/genomon_pipeline_cloud/wiki
