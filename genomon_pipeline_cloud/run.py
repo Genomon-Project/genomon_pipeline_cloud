@@ -27,6 +27,8 @@ def run(args):
     # preparing batch job engine
     if args.engine == "dsub":
         factory = Dsub_factory()
+    elif args.engine == "azmon":
+        factory = Azmon_factory()
     else:
         factory = Awsub_factory()
 
@@ -93,11 +95,10 @@ def run(args):
         
         p_sv.start()
         p_mutation.start()
+        p_qc.start()
 
         p_sv.join()
         p_mutation.join()
-
-        p_qc.start()
         p_qc.join()
         
     

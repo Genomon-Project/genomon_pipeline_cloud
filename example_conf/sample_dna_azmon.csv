@@ -1,0 +1,14 @@
+[fastq]
+5929_tumor,https://azmonsa.blob.core.windows.net/input/5929T/sequence1.fastq,https://azmonsa.blob.core.windows.net/input/5929T/sequence2.fastq
+5929_control,https://azmonsa.blob.core.windows.net/input/5929N/sequence1.fastq,https://azmonsa.blob.core.windows.net/input/5929N/sequence2.fastq
+
+[mutation_call]
+5929_tumor,5929_control,None
+
+[sv_detection]
+5929_tumor,5929_control,None
+
+[qc]
+5929_tumor
+5929_control
+

@@ -1,0 +1,15 @@
+[fastq]
+MCF-7,https://azmonsa.blob.core.windows.net/input/MCF-7-small/test1.fastq,https://azmonsa.blob.core.windows.net/input/MCF-7-small/test2.fastq
+
+[fusion]
+MCF-7,None
+
+[expression]
+MCF-7
+
+[intron_retention]
+MCF-7
+
+[qc]
+MCF-7
+
