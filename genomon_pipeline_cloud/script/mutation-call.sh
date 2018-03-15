@@ -16,9 +16,10 @@ INPUT_BAM1=${INPUT_DIR1}/${SAMPLE1}.markdup.bam
 if [ _${SAMPLE2} = "_None" ]; then 
 
     # Fisher's Exact Test
-    option1=`echo ${FISHER_SINGLE_OPTION} | cut -d "'" -f 1`
-    option2=`echo ${FISHER_SINGLE_OPTION} | cut -d "'" -f 2`
-    fisher single -o ${OUTPUT_PREF}.fisher_mutations.txt --ref_fa ${REFERENCE} -1 ${INPUT_BAM1} --samtools_path ${SAMTOOLS} ${option1} "${option2}"
+    if [ "_${FISHER_SINGLE_SAMTOOLS}" != "_" ]; then
+        FISHER_SINGLE_OPTION="${FISHER_SINGLE_OPTION} --samtools_params "
+    fi
+    fisher single -o ${OUTPUT_PREF}.fisher_mutations.txt --ref_fa ${REFERENCE} -1 ${INPUT_BAM1} --samtools_path ${SAMTOOLS} ${FISHER_SINGLE_OPTION} "${FISHER_SINGLE_SAMTOOLS}"
 
     # Local realignment using blat. The candidate mutations are varidated.
     mutfilter realignment --target_mutation_file ${OUTPUT_PREF}.fisher_mutations.txt -1 ${INPUT_BAM1} --output ${OUTPUT_PREF}.realignment_mutations.txt --ref_genome ${REFERENCE} --blat_path ${BLAT} ${REALIGNMENT_OPTION}
@@ -31,23 +32,26 @@ else
     INPUT_BAM2=${INPUT_DIR2}/${SAMPLE2}.markdup.bam
 
     # Fisher's Exact Test
-    option1=`echo ${FISHER_PAIR_OPTION} | cut -d "'" -f 1`
-    option2=`echo ${FISHER_PAIR_OPTION} | cut -d "'" -f 2`
-    fisher comparison -o ${OUTPUT_PREF}.fisher_mutations.txt --ref_fa ${REFERENCE} -1 ${INPUT_BAM1} -2 ${INPUT_BAM2} --samtools_path ${SAMTOOLS} ${option1} "${option2}"
+    if [ "_${FISHER_PAIR_SAMTOOLS}" != "_" ]; then
+        FISHER_PAIR_OPTION="${FISHER_PAIR_OPTION} --samtools_params "
+    fi
+    fisher comparison -o ${OUTPUT_PREF}.fisher_mutations.txt --ref_fa ${REFERENCE} -1 ${INPUT_BAM1} -2 ${INPUT_BAM2} --samtools_path ${SAMTOOLS} ${FISHER_PAIR_OPTION} "${FISHER_PAIR_SAMTOOLS}"
     
     # Identifying mutations in cancer hotspot
-    option1=`echo ${HOTSPOT_OPTION} | cut -d "'" -f 1`
-    option2=`echo ${HOTSPOT_OPTION} | cut -d "'" -f 2`
-    hotspotCall ${option1} "${option2}" ${INPUT_BAM1} ${INPUT_BAM2} ${OUTPUT_PREF}.hotspot_mutations.txt ${HOTSPOT_DB}/GRCh37_hotspot_database_v20170919.txt 
+    if [ "_${HOTSPOT_SAMTOOLS}" != "_" ]; then
+        HOTSPOT_OPTION="${HOTSPOT_OPTION} -S "
+    fi
+    hotspotCall ${HOTSPOT_OPTION} "${HOTSPOT_SAMTOOLS}" ${INPUT_BAM1} ${INPUT_BAM2} ${OUTPUT_PREF}.hotspot_mutations.txt ${HOTSPOT_DB}/GRCh37_hotspot_database_v20170919.txt 
     mutil merge_hotspot -i ${OUTPUT_PREF}.hotspot_mutations.txt -f ${OUTPUT_PREF}.fisher_mutations.txt -o ${OUTPUT_PREF}.fisher_hotspot_mutations.txt --hotspot_header
     
     # Local realignment using blat. The candidate mutations are varidated.
     mutfilter realignment --target_mutation_file ${OUTPUT_PREF}.fisher_hotspot_mutations.txt -1 ${INPUT_BAM1} -2 ${INPUT_BAM2} --output ${OUTPUT_PREF}.realignment_mutations.txt --ref_genome ${REFERENCE} --blat_path ${BLAT} ${REALIGNMENT_OPTION}
     
     # Annotation if the candidate is near Indel. 
-    option1=`echo ${INDEL_OPTION} | cut -d "'" -f 1`
-    option2=`echo ${INDEL_OPTION} | cut -d "'" -f 2`
-    mutfilter indel --target_mutation_file ${OUTPUT_PREF}.realignment_mutations.txt -2 ${INPUT_BAM2} --output ${OUTPUT_PREF}.indel_mutations.txt --samtools_path ${SAMTOOLS} ${option1} "${option2}"
+    if [ "_${INDEL_SAMTOOLS}" != "_" ]; then
+        INDEL_OPTION="${INDEL_OPTION} --samtools_params "
+    fi
+    mutfilter indel --target_mutation_file ${OUTPUT_PREF}.realignment_mutations.txt -2 ${INPUT_BAM2} --output ${OUTPUT_PREF}.indel_mutations.txt --samtools_path ${SAMTOOLS} ${INDEL_OPTION} "${INDEL_SAMTOOLS}"
     
     # Annotation if the candidate is near the breakpoint. 
     mutfilter breakpoint --target_mutation_file ${OUTPUT_PREF}.indel_mutations.txt -2 ${INPUT_BAM2} --output ${OUTPUT_PREF}.breakpoint_mutations.txt ${BREAKPOINT_OPTION}
