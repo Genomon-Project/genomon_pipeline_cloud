@@ -98,7 +98,35 @@ class Awsub_factory(Abstract_factory):
 
         return commands
 
+class Ecsub_factory(Abstract_factory):
+    
+    s3_wdir = ""
+    wdir = "/tmp/ecsub"
+    
+    def execute_closure(self, general_param):
+        def execute(task):
+            subprocess.check_call(self.generate_commands(task, general_param))
+        return execute
 
+    def seq_execute_closure(self, general_param):
+        def seq_execute(tasks):
+            for task in tasks:
+                subprocess.check_call(self.generate_commands(task, general_param))
+        return seq_execute
+    
+    def print_command_closure(self, general_param):
+        def print_command(task):
+            print ' '.join(self.generate_commands(task, general_param))
+        return print_command
+
+    def generate_commands(self, task, general_param):
+
+        commands = ["ecsub", "submit"] + general_param.split(' ') + task.resource_param.split(' ') + \
+                     ["--script", task.script_file, "--image", task.image, "--tasks", task.task_file] + \
+                     ["--aws-s3-bucket", self.s3_wdir, "--wdir", self.wdir]
+
+        return commands
+        
 class Batch_engine(object):
 
     def __init__(self, factory, general_param):

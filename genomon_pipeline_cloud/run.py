@@ -29,6 +29,10 @@ def run(args):
         factory = Dsub_factory()
     elif args.engine == "azmon":
         factory = Azmon_factory()
+    elif args.engine == "ecsub":
+        factory = Ecsub_factory()
+        factory.s3_wdir = args.output_dir + "/ecsub"
+        factory.wdir = "/tmp/ecsub"
     else:
         factory = Awsub_factory()
 
