@@ -4,7 +4,8 @@ import abc, subprocess
 
 class Abstract_factory(object):
     __metaclass__ = abc.ABCMeta
-
+    dryrun = False
+    
     def __init__(self):
         pass
 
@@ -20,6 +21,10 @@ class Abstract_factory(object):
     def generate_commands(self, task, general_param):
         pass
 
+    def base_commands(self, commands):
+        if self.dryrun:
+            return ["echo", ">>"] + commands
+        return commands
 
 class Dsub_factory(Abstract_factory):
 
@@ -44,7 +49,7 @@ class Dsub_factory(Abstract_factory):
         commands = ["dsub"] + general_param.split(' ') + task.resource_param.split(' ') + \
                      ["--logging", task.log_dir, "--script", task.script_file, \
                       "--image", task.image, "--tasks", task.task_file, "--wait"]
-        return commands
+        return self.base_commands(commands)
 
 
 class Azmon_factory(Abstract_factory):
@@ -70,7 +75,7 @@ class Azmon_factory(Abstract_factory):
         commands = ["azurebatchmon"] + general_param.split(' ') + task.resource_param.split(' ') + \
                      ["--script", task.script_file, "--image", task.image, "--tasks", task.task_file]
 
-        return commands
+        return self.base_commands(commands)
 
 
 class Awsub_factory(Abstract_factory):
@@ -96,7 +101,7 @@ class Awsub_factory(Abstract_factory):
         commands = ["awsub"] + general_param.split(' ') + task.resource_param.split(' ') + \
                      ["--script", task.script_file, "--image", task.image, "--tasks", task.task_file]
 
-        return commands
+        return self.base_commands(commands)
 
 class Ecsub_factory(Abstract_factory):
     
@@ -125,7 +130,7 @@ class Ecsub_factory(Abstract_factory):
                      ["--script", task.script_file, "--image", task.image, "--tasks", task.task_file] + \
                      ["--aws-s3-bucket", self.s3_wdir, "--wdir", self.wdir]
 
-        return commands
+        return self.base_commands(commands)
         
 class Batch_engine(object):
 

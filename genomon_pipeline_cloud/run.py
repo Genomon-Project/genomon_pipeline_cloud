@@ -36,6 +36,7 @@ def run(args):
     else:
         factory = Awsub_factory()
 
+    factory.dryrun = args.dryrun
     batch_engine = Batch_engine(factory, param_conf.get("general", "instance_option"))
 
     ##########

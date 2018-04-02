@@ -14,6 +14,7 @@ def main():
     aparser.add_argument("param_conf_file", help = "Parameter config file", type = str)
     aparser.add_argument("--engine", choices = ["awsub", "dsub", "azmon", "ecsub"], default = "awsub", type = str,
                          help = "Batch job engine")
+    aparser.add_argument("--dryrun", help = "For dry run ", action = 'store_true')
     args = aparser.parse_args()
 
     run(args)
