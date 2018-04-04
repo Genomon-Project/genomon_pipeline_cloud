@@ -2,13 +2,14 @@
 
 set -o errexit
 # set -o nounset
-# set -o xtrace
+set -o xtrace
 
 # rna
 
 if test -n "${INPUT_STARQC1}"
 then
     dir_starqc=`realpath $(dirname ${INPUT_STARQC1})/..`
+    set +o xtrace
     for input in `ls ${dir_starqc}/*/*.Log.final.out`
     do
         while read line
@@ -20,8 +21,8 @@ then
             then
                 if test -n "$header";
                 then
-                    header=${header}'\t'$h
-                    data=${data}'\t'$d
+                    header=${header}$'\t'$h
+                    data=${data}$'\t'$d
                 else
                     header=$h
                     data=$d
@@ -42,7 +43,7 @@ then
             input_starqc_tsv=${tempfile}
         fi
     done
-    
+    set -o xtrace
     paplot qc ${input_starqc_tsv} ${OUTPUT_DIR} ${TITLE} --config_file ${CONFIG_FILE} --title 'QC graphs' --overview 'Quality Control of bam.' --ellipsis qc
 fi
 
