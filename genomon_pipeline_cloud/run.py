@@ -44,8 +44,8 @@ def run(args):
     
     # upload config files
     storage = Storage(dryrun = args.dryrun)
-    storage.upload(args.sample_conf_file, run_conf.sample_conf_storage_path)
-    storage.upload(args.param_conf_file, run_conf.param_conf_storage_path)
+    storage.upload(args.sample_conf_file, run_conf.sample_conf_storage_path, create_bucket = True)
+    storage.upload(args.param_conf_file, run_conf.param_conf_storage_path, create_bucket = True)
     
     ##########
     # RNA

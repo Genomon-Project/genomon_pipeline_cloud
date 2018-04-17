@@ -5,7 +5,7 @@ import subprocess
 
 class Storage(object):
 
-    def __init__(self, region = None, zone = None, dryrun = None):
+    def __init__(self, region = None, zone = None, dryrun = False):
 
         """
         if region is None and zone is None:
@@ -18,12 +18,12 @@ class Storage(object):
         self.dryrun = dryrun
 
     def upload(self, local_file_path, storage_path, create_bucket = False):
-
+        print ("=== Storage upload ===")
+        print ("local_file_path: %s" % (local_file_path))
+        print ("storage_path: %s" % (storage_path))
+        print ("create_bucket: %s" % (create_bucket))
+        
         if self.dryrun:
-            print ("=== Storage upload ===")
-            print ("local_file_path: %s" % (local_file_path))
-            print ("storage_path: %s" % (storage_path))
-            print ("create_bucket: %s" % (create_bucket))
             return
             
         if storage_path.startswith("s3://"):
@@ -48,23 +48,21 @@ class Storage(object):
     # upload
     # #####################
     def __upload_to_aws(self, local_file_path, storage_path, create_bucket = False):
-    
-        import boto3
-        
+
         # Extract AWS S3 bucket name of the storage_path argument
         target_bucket_name = self.__get_bucket_name_from_storage_path(storage_path)
 
         if not self.__check_bucket_exist_aws(target_bucket_name):
             if create_bucket:
-                s3 = boto3.client("s3")
-                s3.create_bucket(Bucket = target_bucket_name)
+                self.__create_bucket_aws(bucket_name = target_bucket_name)
             else:
                 print >> sys.stderr, "No bucket: " + target_bucket_name
                 sys.exit(1)
 
         # Upload to the S3
+        import boto3
         storage_file_name = '/'.join(re.sub(r'^s3://', '', storage_path).split('/')[1:])
-        s3.upload_file(local_file_path, target_bucket_name, storage_file_name) 
+        boto3.client("s3").upload_file(local_file_path, target_bucket_name, storage_file_name) 
 
 
     def __upload_to_gcs(self, local_file_path, storage_path, create_bucket = False):
@@ -126,15 +124,11 @@ class Storage(object):
     # #####################
     def __create_bucket_aws(self, bucket_name):
         
-        proc = subprocess.Popen(["aws", "s3", "mb", 's3://' + bucket_name], stdout = subprocess.PIPE, stderr = subprocess.PIPE)
+        proc = subprocess.Popen(["aws", "s3", "mb", "s3://",  bucket_name], stdout = subprocess.PIPE, stderr = subprocess.PIPE)
         out, err = proc.communicate()
         if proc.returncode == 1:
-            if "ServiceException" in err:
-                print >> sys.stderr, "Bucket " + bucket_name + " already exists."
-                sys.exit(1)
-            else:
-                print >> sys.stderr, "An Error happend while creating Buckt " + bucket_name + "."
-                sys.exit(1)
+            print >> sys.stderr, "An Error happend while creating Buckt " + bucket_name + "."
+            sys.exit(1)
                 
     def __create_bucket_gcs(self, bucket_name):
 

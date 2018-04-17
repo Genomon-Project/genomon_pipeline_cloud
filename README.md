@@ -7,8 +7,17 @@
 ```sh
 git clone https://github.com/Genomon-Project/genomon_pipeline_cloud.git
 cd genomon_pipeline_cloud
-pip install . --upgrade
+python setup.py build install
 ```
+
+# External Prerequisites:
+
+Install one of the following batch job engines:
+
+ - [awsub](https://github.com/otiai10/awsub/r)
+ - [ecsub (AWS only)](https://github.com/aokad/ecsub)
+ - azuremon (Micosoft Azure only)
+
 
 # Quick Start
 
