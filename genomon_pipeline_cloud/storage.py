@@ -54,6 +54,7 @@ class Storage(object):
 
         if not self.__check_bucket_exist_aws(target_bucket_name):
             if create_bucket:
+                print ("bucket %s is not exist." % (target_bucket_name))
                 self.__create_bucket_aws(bucket_name = target_bucket_name)
             else:
                 print >> sys.stderr, "No bucket: " + target_bucket_name
@@ -124,10 +125,10 @@ class Storage(object):
     # #####################
     def __create_bucket_aws(self, bucket_name):
         
-        proc = subprocess.Popen(["aws", "s3", "mb", "s3://",  bucket_name], stdout = subprocess.PIPE, stderr = subprocess.PIPE)
+        proc = subprocess.Popen(["aws", "s3", "mb", "s3://" + bucket_name], stdout = subprocess.PIPE, stderr = subprocess.PIPE)
         out, err = proc.communicate()
-        if proc.returncode == 1:
-            print >> sys.stderr, "An Error happend while creating Buckt " + bucket_name + "."
+        if proc.returncode != 0:
+            print(err)
             sys.exit(1)
                 
     def __create_bucket_gcs(self, bucket_name):
