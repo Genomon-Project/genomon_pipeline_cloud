@@ -1,4 +1,4 @@
-__version__ = '0.1.0'
+__version__ = '0.1.1'
 
 import argparse
 from genomon_pipeline_cloud.run import run
@@ -10,7 +10,7 @@ def main():
     aparser.add_argument('analysis_type', choices=['dna', 'rna'], help = "analysis type")
     aparser.add_argument("sample_conf_file", default = None, type = str, help = "Sample config file")
     aparser.add_argument("output_dir", default = None, type = str,
-                         help = "Output directory for Google Cloud Storage")
+                         help = "Output directory for Google Cloud Storage or AWS S3 bucket")
     aparser.add_argument("param_conf_file", help = "Parameter config file", type = str)
     aparser.add_argument("--engine", choices = ["awsub", "dsub", "azmon", "ecsub"], default = "awsub", type = str,
                          help = "Batch job engine")
