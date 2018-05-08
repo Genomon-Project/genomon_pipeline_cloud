@@ -22,7 +22,7 @@ Install one of the following batch job engines:
 # Quick Start
 
 ```sh
-genomon_pipeline_cloud \
+genomon_pipeline_cloud dna \
   example_conf/sample_dna.csv \
   s3://{your_bucket}/genomon_pipeline_cloud_test \
   example_conf/param_dna_awsub.cfg
