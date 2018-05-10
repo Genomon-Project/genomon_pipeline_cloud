@@ -1,8 +1,9 @@
 #! /usr/bin/env python
 
+import os
 import pkg_resources
 from ..abstract_task import *
- 
+
 class Bwa_alignment(Abstract_task):
 
     task_name = "bwa-alignment"
@@ -14,7 +15,7 @@ class Bwa_alignment(Abstract_task):
             param_conf.get("bwa_alignment", "image"),
             param_conf.get("bwa_alignment", "resource"),
             output_dir + "/logging")
-        
+
         self.task_file = self.task_file_generation(output_dir, task_dir, sample_conf, param_conf, run_conf)
 
 
@@ -26,20 +27,36 @@ class Bwa_alignment(Abstract_task):
         with open(task_file, 'w') as hout:
 
             print >> hout, '\t'.join(["--env SAMPLE",
-                                      "--input INPUT1",
-                                      "--input INPUT2",
+                                      "--input INPUT_BAM",
+                                      "--input FASTQ1",
+                                      "--input FASTQ2",
                                       "--output-recursive OUTPUT_DIR",
                                       "--input-recursive REFERENCE",
+                                      "--env BAMTOFASTQ_OPTION",
                                       "--env BWA_OPTION",
                                       "--env BAMSORT_OPTION",
                                       "--env BAMMARKDUP_OPTION"])
 
             for sample in sample_conf.fastq:
                 print >> hout, '\t'.join([sample,
+                                          '',
                                           sample_conf.fastq[sample][0][0],
                                           sample_conf.fastq[sample][1][0],
                                           output_dir + "/bam/" + sample,
                                           param_conf.get("bwa_alignment", "bwa_reference"),
+                                          '',
+                                          param_conf.get("bwa_alignment", "bwa_option"),
+                                          param_conf.get("bwa_alignment", "bamsort_option"),
+                                          param_conf.get("bwa_alignment", "bammarkduplicates_option")])
+
+            for sample in sample_conf.bam_tofastq:
+                print >> hout, '\t'.join([sample,
+                                          sample_conf.bam_tofastq[sample],
+                                          '',
+                                          '',
+                                          output_dir + "/bam/" + sample,
+                                          param_conf.get("bwa_alignment", "bwa_reference"),
+                                          param_conf.get("bwa_alignment", "bamtofastq_option"),
                                           param_conf.get("bwa_alignment", "bwa_option"),
                                           param_conf.get("bwa_alignment", "bamsort_option"),
                                           param_conf.get("bwa_alignment", "bammarkduplicates_option")])

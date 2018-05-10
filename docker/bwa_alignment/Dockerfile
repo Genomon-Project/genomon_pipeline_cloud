@@ -12,14 +12,6 @@ RUN echo "deb http://deb.debian.org/debian stretch main" > /etc/apt/sources.list
     mkdir -p /tools && \
     \
     cd /tools && \
-    echo "build BLAT v.34" && \
-    wget http://hgdownload.soe.ucsc.edu/admin/exe/userApps.v349.src.tgz && \
-    tar -xzvf userApps.v349.src.tgz && \
-    rm -f userApps.v349.src.tgz && \
-    cd userApps && \
-    make && \
-    \ 
-    cd /tools && \
     echo "build bwa-0.7.8" && \
     wget http://sourceforge.net/projects/bio-bwa/files/bwa-0.7.8.tar.bz2 && \
     tar xjvf bwa-0.7.8.tar.bz2 && \
@@ -32,15 +24,6 @@ RUN echo "deb http://deb.debian.org/debian stretch main" > /etc/apt/sources.list
     tar xjvf samtools-1.2.tar.bz2 && \
     rm -f samtools-1.2.tar.bz2 && \
     cd samtools-1.2 && \
-    make && \
-    make install && \
-    \ 
-    cd /tools && \
-    echo "build bedtools-2.24.0" && \
-    wget -nc https://github.com/arq5x/bedtools2/archive/v2.24.0.tar.gz && \
-    tar xzvf v2.24.0.tar.gz && \
-    rm -f v2.24.0.tar.gz && \
-    cd bedtools2-2.24.0 && \
     make && \
     make install && \
     \ 
@@ -66,15 +49,6 @@ RUN echo "deb http://deb.debian.org/debian stretch main" > /etc/apt/sources.list
     make && \
     make install && \
     \ 
-    cd /tools && \
-    echo "build htslib-1.3" && \
-    wget -nc https://sourceforge.net/projects/samtools/files/samtools/1.3/htslib-1.3.tar.bz2 && \
-    tar xvf htslib-1.3.tar.bz2 && \
-    rm -f htslib-1.3.tar.bz2 && \
-    cd htslib-1.3 && \
-    make && \
-    make install && \
-    \
     echo "export LD_LIBRARY_PATH=/usr/local/lib" >> /root/.bashrc
 
 CMD ["/bin/bash"]
