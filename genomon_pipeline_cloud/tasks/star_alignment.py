@@ -2,7 +2,7 @@
 
 import pkg_resources
 from ..abstract_task import *
- 
+
 class Star_alignment(Abstract_task):
 
     task_name = "star-alignment"
@@ -14,7 +14,7 @@ class Star_alignment(Abstract_task):
             param_conf.get("star_alignment", "image"),
             param_conf.get("star_alignment", "resource"),
             output_dir + "/logging")
-        
+
         self.task_file = self.task_file_generation(output_dir, task_dir, sample_conf, param_conf, run_conf)
 
 
@@ -26,19 +26,34 @@ class Star_alignment(Abstract_task):
         with open(task_file, 'w') as hout:
 
             print >> hout, '\t'.join(["--env SAMPLE",
-                                      "--input INPUT1",
-                                      "--input INPUT2",
+                                      "--input INPUT_BAM",
+                                      "--input FASTQ1",
+                                      "--input FASTQ2",
                                       "--output-recursive OUTPUT_DIR",
                                       "--input-recursive REFERENCE",
+                                      "--env BAMTOFASTQ_OPTION",
                                       "--env STAR_OPTION",
                                       "--env SAMTOOLS_SORT_OPTION"])
 
             for sample in sample_conf.fastq:
                 print >> hout, '\t'.join([sample,
+                                          '',
                                           sample_conf.fastq[sample][0][0],
                                           sample_conf.fastq[sample][1][0],
                                           output_dir + "/star/" + sample,
                                           param_conf.get("star_alignment", "star_reference"),
+                                          '',
+                                          param_conf.get("star_alignment", "star_option"),
+                                          param_conf.get("star_alignment", "samtools_sort_option")])
+
+            for sample in sample_conf.bam_tofastq:
+                print >> hout, '\t'.join([sample,
+                                          sample_conf.bam_tofastq[sample],
+                                          '',
+                                          '',
+                                          output_dir + "/star/" + sample,
+                                          param_conf.get("star_alignment", "star_reference"),
+                                          param_conf.get("star_alignment", "bamtofastq_option"),
                                           param_conf.get("star_alignment", "star_option"),
                                           param_conf.get("star_alignment", "samtools_sort_option")])
 
