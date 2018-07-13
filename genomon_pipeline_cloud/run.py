@@ -84,7 +84,10 @@ def run(args):
     
         from tasks.bwa_alignment import Bwa_alignment
         from tasks.sv_parse import SV_parse
+        from tasks.sv_merge import SV_merge
         from tasks.sv_filt import SV_filt
+        from tasks.control_call import Control_call
+        from tasks.control_merge import Control_merge
         from tasks.mutation_call import Mutation_call
         from tasks.genomon_qc import Genomon_qc
         from tasks.pmsignature import Pmsignature
@@ -93,11 +96,15 @@ def run(args):
         p_bwa = multiprocessing.Process(target = batch_engine.execute, args = (bwa_alignment_task,))
 
         sv_parse_task = SV_parse(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
+        sv_merge_task = SV_merge(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
         sv_filt_task = SV_filt(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
-        p_sv = multiprocessing.Process(target = batch_engine.seq_execute, args = ([sv_parse_task,sv_filt_task],))
+        p_sv = multiprocessing.Process(target = batch_engine.seq_execute, args = ([sv_parse_task,sv_merge_task,sv_filt_task],))
 
+        control_call_task = Control_call(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
+        control_merge_task = Control_merge(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
         mutation_call_task = Mutation_call(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
         pmsignature_task = Pmsignature(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
+        # p_mutation = multiprocessing.Process(target = batch_engine.seq_execute, args = ([control_call_task,control_merge_task,mutation_call_task,pmsignature_task],))
         p_mutation = multiprocessing.Process(target = batch_engine.seq_execute, args = ([mutation_call_task,pmsignature_task],))
 
         qc_task = Genomon_qc(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)

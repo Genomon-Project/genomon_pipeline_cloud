@@ -9,7 +9,7 @@ ARGUMENT="${TUMOR_BAM} ${TUMOR_SV_DIR}/${TUMOR_SAMPLE} ${REFERENCE}"
 
 if [ ! _${CONTROL_PANEL} = "_None" ]
 then
-    ARGUMENT="${ARGUMENT} --non_matched_control_junction ${MERGED_JUNCTION}"
+    ARGUMENT="${ARGUMENT} --non_matched_control_junction ${MERGED_JUNCTION}/${CONTROL_PANEL}.merged.junction.control.bedpe.gz"
 fi
 
 if [ ! _${NORMAL_SAMPLE} = "_None" ]
@@ -17,7 +17,7 @@ then
     NORMAL_BAM=${NORMAL_BAM_DIR}/${NORMAL_SAMPLE}.markdup.bam
     ARGUMNET="${ARGUMENT} --matched_control_bam ${NORMAL_BAM}"
 
-    if [ !_${CONTROL_PANEL} = "_None" ]
+    if [ ! _${CONTROL_PANEL} = "_None" ]
     then
         ARGUMNET="${ARGUMENT} --matched_control_label ${NORMAL_SAMPLE}"
     fi

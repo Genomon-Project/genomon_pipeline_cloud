@@ -32,7 +32,7 @@ class SV_filt(Abstract_task):
                                       "--input-recursive NORMAL_BAM_DIR",
                                       "--env META",
                                       "--input REFERENCE",
-                                      "--input MERGED_JUNCTION",
+                                      "--input-recursive MERGED_JUNCTION",
                                       "--output-recursive OUTPUT_DIR",
                                       "--env GENOMONSV_FILT_OPTION",
                                       "--env SV_UTILS_FILT_OPTION"])
@@ -47,7 +47,7 @@ class SV_filt(Abstract_task):
                                           output_dir + "/bam/" + normal_sample if normal_sample is not None else '',
                                           run_conf.get_meta_info(param_conf.get("sv_filt", "image")),
                                           param_conf.get("sv_filt", "reference"),
-                                          '',
+                                          output_dir + "/sv/control_panel/" + control_panel_name if control_panel_name is not None else '',
                                           output_dir + "/sv/" + tumor_sample,
                                           param_conf.get("sv_filt", "genomon_sv_filt_option"),
                                           param_conf.get("sv_filt", "sv_utils_filt_option")])
