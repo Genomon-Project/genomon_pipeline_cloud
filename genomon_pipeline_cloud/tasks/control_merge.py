@@ -44,6 +44,7 @@ class Control_merge(Abstract_task):
 
             for cnt in range(1, max_count+1):
                 header_li.append("--input-recursive INPUT_DIR_" + str(cnt))
+                header_li.append("--env SAMPLE_" + str(cnt))
             
             print >> hout, '\t'.join(header_li)
 
@@ -58,8 +59,10 @@ class Control_merge(Abstract_task):
 
                     for sample in sample_conf.control_panel[panel_name]:
                         record.append(output_dir + "/mutation/control_panel/" + sample)
+                        record.append(sample)
 
                     for cnt in range(len(sample_conf.control_panel[panel_name]), max_count):
+                        record.append("")
                         record.append("")
             
                     print >> hout, '\t'.join(record)

@@ -5,11 +5,9 @@ set -o errexit
 echo -n > ${OUTPUT_DIR}/${PANEL_NAME}.control_info.txt
 for i in `seq 1 $MAX_COUNT`; do
     TMP_INPUT_DIR=$(eval echo \$INPUT_DIR_${i})
-    if [ "${TMP_INPUT_DIR-UNDEF}" != "UNDEF" ]; then
-        if [ "$TMP_INPUT_DIR" != "" ]; then
-            SAMPLE=`echo ${TMP_INPUT_DIR} | awk -F "/" '{ print $NF }'`
-            echo "${SAMPLE}\t${TMP_INPUT_DIR}/${SAMPLE}" >> ${OUTPUT_DIR}/${PANEL_NAME}.control_info.txt
-        fi
+    TMP_SAMPLE=$(eval echo \$SAMPLE_${i})
+    if [ "$TMP_INPUT_DIR" != "" ]; then
+        echo "${TMP_SAMPLE}\t${TMP_INPUT_DIR}/${TMP_SAMPLE}" >> ${OUTPUT_DIR}/${PANEL_NAME}.control_info.txt
     fi
 done
 

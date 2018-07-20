@@ -10,13 +10,11 @@ TARGET_VCF=""
 count=0
 for i in `seq 1 $MAX_COUNT`; do
     TMP_INPUT_DIR=$(eval echo \$INPUT_DIR_${i}) 
-    if [ "${TMP_INPUT_DIR-UNDEF}" != "UNDEF" ]; then
-        if [ "$TMP_INPUT_DIR" != "" ]; then
-            SAMPLE=`echo ${TMP_INPUT_DIR} | awk -F "/" '{ print $NF }'`
-            VCF_FILE=${TMP_INPUT_DIR}/${SAMPLE}.control.vcf.gz
-            TARGET_VCF="$TARGET_VCF $VCF_FILE"
-            count=$(expr $count + 1)
-        fi
+    TMP_SAMPLE=$(eval echo \$SAMPLE_${i}) 
+    if [ "$TMP_INPUT_DIR" != "" ]; then
+        VCF_FILE=${TMP_INPUT_DIR}/${TMP_SAMPLE}.control.vcf.gz
+        TARGET_VCF="$TARGET_VCF $VCF_FILE"
+        count=$(expr $count + 1)
     fi
 done
 
