@@ -28,11 +28,27 @@ class Fusionfusion(Abstract_task):
             print >> hout, '\t'.join(["--env SAMPLE",
                                       "--input INPUT",
                                       "--output-recursive OUTPUT_DIR",
-                                      "--input REFERENCE"])
-            for sample in sample_conf.fusion:
-                print >> hout, '\t'.join([sample[0],
-                                          output_dir + "/star/" + sample[0] + "/" + sample[0] + ".Chimeric.out.sam",
-                                          output_dir + "/fusion/" + sample[0],
-                                          param_conf.get("fusionfusion", "reference")])
+                                      "--env OPTION",
+                                      "--env FILT_OPTION",
+                                      "--input REFERENCE",
+                                      "--input-recursive MERGED_COUNT_DIR",
+                                      "--env PANEL_NAME"])
+
+            for sample, panel_name  in sample_conf.fusion:
+                record = [sample,
+                          output_dir + "/star/" + sample + "/" + sample + ".Chimeric.out.sam",
+                          output_dir + "/fusion/" + sample,
+                          param_conf.get("fusionfusion", "fusionfusion_option"),
+                          param_conf.get("fusionfusion", "filt_option"),
+                          param_conf.get("fusionfusion", "reference")]
+
+                if panel_name != None:
+                     record.append(output_dir + "/fusion/control_panel/" + panel_name)
+                     record.append(panel_name)
+                else:
+                     record.append("")
+                     record.append("")
+
+                print >> hout, '\t'.join(record)
 
         return task_file

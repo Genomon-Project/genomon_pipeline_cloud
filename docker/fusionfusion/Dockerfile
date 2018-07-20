@@ -34,6 +34,11 @@ RUN apt-get update && apt-get install -y \
     libkrb5-3 \
     libpng12-0
 
+RUN wget https://github.com/friend1ws/fusion_utils/archive/v0.2.0.tar.gz && \
+    tar xzvf v0.2.0.tar.gz && \
+    cd fusion_utils-0.2.0 && \
+    python setup.py install
+
 RUN cd  /usr/local/bin && \
     wget http://hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/blat/blat
 RUN chmod a+x /usr/local/bin/blat

@@ -52,11 +52,15 @@ def run(args):
     if args.analysis_type == "rna":
 
         from tasks.star_alignment import Star_alignment
+        from tasks.fusion_count import Fusion_count   
+        from tasks.fusion_merge import Fusion_merge 
         from tasks.fusionfusion import Fusionfusion    
         from tasks.genomon_expression import Genomon_expression
         from tasks.intron_retention import Intron_retention
 
         star_alignment_task = Star_alignment(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
+        fusion_count_task = Fusion_count(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
+        fusion_merge_task = Fusion_merge(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
         fusionfusion_task = Fusionfusion(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
         genomon_expression_task = Genomon_expression(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
         intron_retention_task = Intron_retention(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
@@ -65,7 +69,7 @@ def run(args):
         p_star.start()
         p_star.join()
 
-        p_fusion = multiprocessing.Process(target = batch_engine.execute, args = (fusionfusion_task,))
+        p_fusion = multiprocessing.Process(target = batch_engine.seq_execute, args = ([fusion_count_task, fusion_merge_task, fusionfusion_task],))
         p_expression = multiprocessing.Process(target = batch_engine.execute, args = (genomon_expression_task,))
         p_ir = multiprocessing.Process(target = batch_engine.execute, args = (intron_retention_task,))
 
