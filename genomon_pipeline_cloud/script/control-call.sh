@@ -8,6 +8,8 @@ export LD_LIBRARY_PATH=/usr/local/lib
 OUTPUT_PREF=${OUTPUT_DIR}/${SAMPLE}
 REFERENCE=${REFERENCE}/GRCh37.fa
 
+mkdir -p ${OUTPUT_DIR}
+
 # INPUT_BAM1: target
 INPUT_BAM=${INPUT_DIR}/${SAMPLE}.markdup.bam
 

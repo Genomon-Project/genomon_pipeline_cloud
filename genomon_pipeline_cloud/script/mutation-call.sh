@@ -10,6 +10,8 @@ REFERENCE=${REFERENCE}/GRCh37.fa
 SAMTOOLS=/usr/local/bin/samtools
 BLAT=/tools/userApps/bin/blat
 
+mkdir -p ${OUTPUT_DIR}
+
 # INPUT_BAM1: target
 INPUT_BAM1=${INPUT_DIR1}/${SAMPLE1}.markdup.bam
 

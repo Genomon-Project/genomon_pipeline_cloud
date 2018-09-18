@@ -8,6 +8,8 @@ set -o nounset
 input_dir=`realpath $(dirname ${INPUT_MUTATION1})/..`
 merged=${OUTPUT_DIR}/mutation_cut.${MODE}.txt
 
+mkdir -p ${OUTPUT_DIR}
+
 for mutation_file in `ls ${input_dir}/*/*.genomon_mutation.result.filt.txt`
 do
     if [ `cat ${mutation_file} | grep -P '^[^#]' | wc -l` -gt 1 ]; then

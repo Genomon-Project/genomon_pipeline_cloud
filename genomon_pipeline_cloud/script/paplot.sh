@@ -4,6 +4,8 @@ set -o errexit
 # set -o nounset
 set -o xtrace
 
+mkdir -p ${OUTPUT_DIR}
+
 # rna
 
 if test -n "${INPUT_STARQC1}"

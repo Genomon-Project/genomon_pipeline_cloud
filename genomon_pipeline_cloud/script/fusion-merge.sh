@@ -2,6 +2,8 @@
 
 set -o errexit
 
+mkdir -p ${OUTPUT_DIR}
+
 echo -n > ${OUTPUT_DIR}/${PANEL_NAME}.Chimeric.count.list
 for i in `seq 1 $MAX_COUNT`; do
     TMP_INPUT_DIR=$(eval echo \$INPUT_DIR_${i})

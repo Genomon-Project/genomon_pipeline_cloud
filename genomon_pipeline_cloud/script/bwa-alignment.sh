@@ -6,6 +6,7 @@ set -o nounset
 export LD_LIBRARY_PATH=/usr/local/lib
 OUTPUT_PREF=${OUTPUT_DIR}/${SAMPLE}
 REFERENCE=${REFERENCE}/GRCh37.fa
+mkdir -p ${OUTPUT_DIR}
 
 if [ "${INPUT_BAM-UNDEF}" != "UNDEF" ]; then
     if [ "$INPUT_BAM" != "" ]; then

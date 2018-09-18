@@ -4,6 +4,7 @@ set -o errexit
 set -o xtrace
 
 OUTPUT_PREF=${OUTPUT_DIR}/${SAMPLE}
+mkdir -p ${OUTPUT_DIR}
 
 if [ "_${MERGED_COUNT_DIR}" != "_" ]; then
     OPTION="${OPTION} --pooled_control_file ${MERGED_COUNT_DIR}/${PANEL_NAME}.merged.Chimeric.count"

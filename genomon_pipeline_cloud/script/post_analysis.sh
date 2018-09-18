@@ -4,6 +4,7 @@ set -o errexit
 set -o nounset
 
 genomon_root=`realpath $(dirname ${INPUT1})/../..`
+mkdir -p ${OUTPUT_DIR}
 
 genomon_pa ${MODE} \
     ${OUTPUT_DIR} \

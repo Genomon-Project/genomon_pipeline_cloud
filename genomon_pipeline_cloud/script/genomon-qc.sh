@@ -12,6 +12,8 @@ export samtools=/usr/local/bin/samtools
 input_file=${INPUT_DIR}/${SAMPLE}.markdup.bam
 output_pre=${OUTPUT_DIR}/${SAMPLE}
 
+mkdir -p ${OUTPUT_DIR}
+
 # bamstats
 genomon_qc bamstats $input_file $output_pre.bamstats \
     --perl5lib $perl5lib \

@@ -22,10 +22,13 @@ Install one of the following batch job engines:
 # Quick Start
 
 ```sh
+export YOUR_BUCKET=s3://aokad-ana-tokyo
+
 genomon_pipeline_cloud dna \
   example_conf/sample_dna.csv \
-  s3://{your_bucket}/genomon_pipeline_cloud_test \
-  example_conf/param_dna_awsub.cfg
+  ${YOUR_BUCKET}/genomon_pipeline_cloud_test \
+  example_conf/param_dna_ecsub.cfg \
+  --engine ecsub
 ```
 
 see detail :notebook: https://github.com/Genomon-Project/genomon_pipeline_cloud/wiki

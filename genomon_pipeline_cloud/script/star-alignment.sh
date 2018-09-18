@@ -4,6 +4,7 @@ set -o errexit
 set -o nounset
 
 OUTPUT_PREF=${OUTPUT_DIR}/${SAMPLE}
+mkdir -p ${OUTPUT_DIR}
 
 if [ "${INPUT_BAM-UNDEF}" != "UNDEF" ]; then
     if [ "$INPUT_BAM" != "" ]; then

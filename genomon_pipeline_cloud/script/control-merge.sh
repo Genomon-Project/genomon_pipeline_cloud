@@ -6,6 +6,8 @@ export PATH=/usr/local/bin:${PATH}
 export LD_LIBRARY_PATH=/usr/local/lib
 OUTPUT_PREF=${OUTPUT_DIR}/${PANEL_NAME}
 
+mkdir -p ${OUTPUT_DIR}
+
 TARGET_VCF=""
 count=0
 for i in `seq 1 $MAX_COUNT`; do
