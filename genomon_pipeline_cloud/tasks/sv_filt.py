@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 
+import os
 import pkg_resources
 from ..abstract_task import *
  
@@ -28,8 +29,10 @@ class SV_filt(Abstract_task):
                                       "--env NORMAL_SAMPLE",
                                       "--env CONTROL_PANEL",
                                       "--input-recursive TUMOR_BAM_DIR",
+                                      "--env TUMOR_BAM",
                                       "--input-recursive TUMOR_SV_DIR",
                                       "--input-recursive NORMAL_BAM_DIR",
+                                      "--env NORMAL_BAM",
                                       "--env META",
                                       "--input REFERENCE",
                                       "--input-recursive MERGED_JUNCTION",
@@ -39,12 +42,25 @@ class SV_filt(Abstract_task):
     
             for tumor_sample, normal_sample, control_panel_name in sample_conf.sv_detection:
 
+                tumor_bam = sample_conf.bam_file[tumor_sample]
+                tumor_bam_dir = os.path.dirname(tumor_bam)
+                tumor_bam_file = os.path.basename(tumor_bam)
+
+                normal_bam_dir = ""
+                normal_bam_file = ""
+                if normal_sample is not None:
+                    normal_bam = sample_conf.bam_file[normal_sample]
+                    normal_bam_dir = os.path.dirname(normal_bam)
+                    normal_bam_file = os.path.basename(normal_bam)
+
                 print >> hout, '\t'.join([str(tumor_sample),
                                           str(normal_sample),
                                           str(control_panel_name),
-                                          output_dir + "/bam/" + tumor_sample,
+                                          tumor_bam_dir,
+                                          tumor_bam_file,
                                           output_dir + "/sv/" + tumor_sample,
-                                          output_dir + "/bam/" + normal_sample if normal_sample is not None else '',
+                                          normal_bam_dir,
+                                          normal_bam_file,
                                           run_conf.get_meta_info(param_conf.get("sv_filt", "image")),
                                           param_conf.get("sv_filt", "reference"),
                                           output_dir + "/sv/control_panel/" + control_panel_name if control_panel_name is not None else '',

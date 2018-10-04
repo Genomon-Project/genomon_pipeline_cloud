@@ -9,7 +9,7 @@ export ld_library_path=/usr/local/bin
 export perl5lib=/tools/ICGC/lib/perl5:/tools/ICGC/lib/perl5/x86_64-linux-gnu-thread-multi
 export samtools=/usr/local/bin/samtools
 
-input_file=${INPUT_DIR}/${SAMPLE}.markdup.bam
+input_file=${INPUT_DIR}/${INPUT_BAM}
 output_pre=${OUTPUT_DIR}/${SAMPLE}
 
 mkdir -p ${OUTPUT_DIR}

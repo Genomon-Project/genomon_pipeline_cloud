@@ -13,7 +13,7 @@ BLAT=/tools/userApps/bin/blat
 mkdir -p ${OUTPUT_DIR}
 
 # INPUT_BAM1: target
-INPUT_BAM1=${INPUT_DIR1}/${SAMPLE1}.markdup.bam
+INPUT_BAM1=${INPUT_DIR1}/${INPUT_BAM1}
 
 if [ _${SAMPLE2} = "_None" ]; then 
 
@@ -31,7 +31,7 @@ if [ _${SAMPLE2} = "_None" ]; then
 
 else
     # INPUT_BAM2: pair
-    INPUT_BAM2=${INPUT_DIR2}/${SAMPLE2}.markdup.bam
+    INPUT_BAM2=${INPUT_DIR2}/${INPUT_BAM2}
 
     # Fisher's Exact Test
     if [ "_${FISHER_PAIR_SAMTOOLS}" != "_" ]; then

@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 
+import os
 import pkg_resources
 from ..abstract_task import *
  
@@ -28,6 +29,8 @@ class Mutation_call(Abstract_task):
                                       "--env CONTROL_BAM_LIST",
                                       "--input-recursive INPUT_DIR1",
                                       "--input-recursive INPUT_DIR2",
+                                      "--env INPUT_BAM1",
+                                      "--env INPUT_BAM2",
                                       "--output-recursive OUTPUT_DIR",
                                       "--env META",
                                       "--input-recursive REFERENCE",
@@ -49,15 +52,30 @@ class Mutation_call(Abstract_task):
                                       "--env ACTIVE_EXAC_FLAG"])
 
             for sample in sample_conf.mutation_call:
-                sample2 = sample[1] if sample[1] != None else "None"
-                sample2bam = output_dir+"/bam/"+sample[1] if sample[1] != None else ""
+
+                sample_tumor = sample[0]
+                sample_normal = sample[1] if sample[1] != None else "None"
                 control_panel = sample[2] if sample[2] != None else "None"
-                print >> hout, '\t'.join([sample[0],
-                                          sample2,
+
+                tumor_bam = sample_conf.bam_file[sample_tumor]
+                tumor_bam_dir = os.path.dirname(tumor_bam)
+                tumor_bam_file = os.path.basename(tumor_bam)
+                
+                normal_bam_dir = "" 
+                normal_bam_file = "" 
+                if sample_normal != "None": 
+                    normal_bam = sample_conf.bam_file[sample_normal]
+                    normal_bam_dir = os.path.dirname(normal_bam)
+                    normal_bam_file = os.path.basename(normal_bam)
+
+                print >> hout, '\t'.join([sample_tumor,
+                                          sample_normal,
                                           control_panel,
-                                          output_dir + "/bam/" + sample[0],
-                                          sample2bam,
-                                          output_dir + "/mutation/" + sample[0],
+                                          tumor_bam_dir,
+                                          normal_bam_dir,
+                                          tumor_bam_file,
+                                          normal_bam_file,
+                                          output_dir + "/mutation/" + sample_tumor,
                                           run_conf.get_meta_info(param_conf.get("mutation_call", "image")),
                                           param_conf.get("mutation_call", "reference"),
                                           param_conf.get("mutation_call", "hotspot_database"),

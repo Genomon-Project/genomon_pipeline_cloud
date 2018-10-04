@@ -3,7 +3,7 @@
 set -o errexit
 set -o nounset
 
-TUMOR_BAM=${TUMOR_BAM_DIR}/${TUMOR_SAMPLE}.markdup.bam
+TUMOR_BAM=${TUMOR_BAM_DIR}/${TUMOR_BAM}
 
 ARGUMENT="${TUMOR_BAM} ${TUMOR_SV_DIR}/${TUMOR_SAMPLE} ${REFERENCE}"
 
@@ -14,7 +14,7 @@ fi
 
 if [ ! _${NORMAL_SAMPLE} = "_None" ]
 then
-    NORMAL_BAM=${NORMAL_BAM_DIR}/${NORMAL_SAMPLE}.markdup.bam
+    NORMAL_BAM=${NORMAL_BAM_DIR}/${NORMAL_BAM}
     ARGUMNET="${ARGUMENT} --matched_control_bam ${NORMAL_BAM}"
 
     if [ ! _${CONTROL_PANEL} = "_None" ]

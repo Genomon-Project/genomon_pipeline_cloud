@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 
+import os
 import pkg_resources
 from ..abstract_task import *
  
@@ -27,6 +28,7 @@ class SV_parse(Abstract_task):
             
             print >> hout, '\t'.join(["--env SAMPLE",
                                       "--input-recursive INPUT_DIR",
+                                      "--env INPUT_BAM",
                                       "--output-recursive OUTPUT_DIR",
                                       "--env OPTION"])
     
@@ -40,9 +42,15 @@ class SV_parse(Abstract_task):
             sample_list_for_parse = list(set(sample_list_for_parse))
 
             for sample_name in sorted(sample_list_for_parse):
-                if sample_name in sample_conf.bam_tofastq.keys() + sample_conf.fastq.keys():
+                if sample_name in sample_conf.bam_tofastq.keys() + sample_conf.fastq.keys() + sample_conf.bam_import.keys():
+
+                    bam = sample_conf.bam_file[sample_name]
+                    bam_dir = os.path.dirname(bam)
+                    bam_file = os.path.basename(bam)
+
                     print >> hout, '\t'.join([sample_name,
-                                              output_dir + "/bam/" + sample_name,
+                                              bam_dir,
+                                              bam_file,
                                               output_dir + "/sv/" + sample_name,
                                               param_conf.get("sv_parse", "genomon_sv_parse_option")])
                 elif sample_name in sample_conf.bam_import.keys():

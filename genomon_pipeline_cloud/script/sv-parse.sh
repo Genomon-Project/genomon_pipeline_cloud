@@ -7,7 +7,7 @@ mkdir -p ${OUTPUT_DIR}
 
 GenomonSV \
     parse \
-    ${INPUT_DIR}/${SAMPLE}.markdup.bam \
+    ${INPUT_DIR}/${INPUT_BAM} \
     ${OUTPUT_DIR}/${SAMPLE} \
     ${OPTION}
 

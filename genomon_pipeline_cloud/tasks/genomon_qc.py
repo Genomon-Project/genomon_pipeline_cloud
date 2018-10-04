@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 
+import os
 import pkg_resources
 from ..abstract_task import *
  
@@ -30,6 +31,7 @@ class Genomon_qc(Abstract_task):
 
             print >> hout, '\t'.join(["--env SAMPLE",
                                       "--input-recursive INPUT_DIR",
+                                      "--env INPUT_BAM",
                                       "--output-recursive OUTPUT_DIR",
                                       "--input BAIT_FILE",
                                       "--input GAPTXT",
@@ -43,8 +45,14 @@ class Genomon_qc(Abstract_task):
                                       "--env SAMTOOLS_PARAMS"])
 
             for sample in sample_conf.qc:
+
+                bam = sample_conf.bam_file[sample]
+                bam_dir = os.path.dirname(bam)
+                bam_file = os.path.basename(bam)
+
                 print >> hout, '\t'.join([sample,
-                                          output_dir + "/bam/" + sample,
+                                          bam_dir,
+                                          bam_file,
                                           output_dir + "/qc/" + sample,
                                           param_conf.get("qc", "bait_file"),
                                           param_conf.get("qc", "gaptxt"),
