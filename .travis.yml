@@ -5,6 +5,11 @@ language: python
 python:
   - "2.7"
 
+env:
+  matrix:
+    - MODE=dna
+    - MODE=rna
+    
 before_script:
  - mkdir ~/.aws;
    echo "[default]" > ~/.aws/credentials;
@@ -21,8 +26,7 @@ before_script:
 
 script:
   - python setup.py build install
-  - genomon_pipeline_cloud dna test/sample_dna.csv ${AWS_S3_BUCKET}/genomon_pipeline_cloud/dna test/param_dna_ecsub.cfg --engine ecsub
-  - genomon_pipeline_cloud rna test/sample_rna.csv ${AWS_S3_BUCKET}/genomon_pipeline_cloud/rna test/param_rna_ecsub.cfg --engine ecsub
+  - genomon_pipeline_cloud ${MODE} test/sample_${MODE}.csv ${AWS_S3_BUCKET}/genomon_pipeline_cloud/${MODE} test/param_${MODE}_ecsub.cfg --engine ecsub
 
 notifications:
   emails:
