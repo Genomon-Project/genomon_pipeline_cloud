@@ -17,6 +17,7 @@ before_script:
    unzip master.zip;
    cd ecsub-master;
    python setup.py build install;
+   cd ..;
 
 script:
   - python setup.py build install
