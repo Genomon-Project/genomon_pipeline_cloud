@@ -1,0 +1,29 @@
+sudo: false
+
+language: python
+
+python:
+  - "2.7"
+
+before_script:
+ - mkdir ~/.aws;
+   echo "[default]" > ~/.aws/credentials;
+   echo "aws_access_key_id = ${AWS_ACCESS_KEY_ID}" >> ~/.aws/credentials;
+   echo "aws_secret_access_key = ${AWS_SECRET_ACCESS_KEY}" >> ~/.aws/credentials;
+   echo "[default]" > ~/.aws/config;
+   echo "region = ${AWS_DEFAULT_REGION}" >> ~/.aws/config;
+   echo "output = ${AWS_DEFAULT_OUTPUT}" >> ~/.aws/config;
+ - wget https://github.com/aokad/ecsub/archive/master.zip;
+   cd ecsub-master;
+   python setup.py build install;
+
+script:
+  - python setup.py build install
+  - genomon_pipeline_cloud dna test/sample_dna.csv ${AWS_S3_BUCKET}/genomon_pipeline_cloud/dna test/param_dna_ecsub.cfg --engine ecsub
+  - genomon_pipeline_cloud rna test/sample_rna.csv ${AWS_S3_BUCKET}/genomon_pipeline_cloud/rna test/param_rna_ecsub.cfg --engine ecsub
+
+notifications:
+  emails:
+    - aiokada@hgc.jp
+  on_success: change
+  on_failure: always

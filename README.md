@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/Genomon-Project/genomon_pipeline_cloud.svg?branch=master)](https://travis-ci.org/Genomon-Project/genomon_pipeline_cloud)
+![Python](https://img.shields.io/badge/python-2.7-blue.svg)
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 # genomon_pipeline_cloud
