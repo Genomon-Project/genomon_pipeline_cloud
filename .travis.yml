@@ -14,6 +14,7 @@ before_script:
    echo "region = ${AWS_DEFAULT_REGION}" >> ~/.aws/config;
    echo "output = ${AWS_DEFAULT_OUTPUT}" >> ~/.aws/config;
  - wget https://github.com/aokad/ecsub/archive/master.zip;
+   unzip master.zip;
    cd ecsub-master;
    python setup.py build install;
 
