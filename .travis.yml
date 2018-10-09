@@ -27,6 +27,8 @@ script:
   - python setup.py build install
   - pwd
   - genomon_pipeline_cloud ${MODE} test/sample_${MODE}.csv ${AWS_S3_BUCKET}/genomon_pipeline_cloud/${MODE} test/param_${MODE}_ecsub.cfg --engine ecsub --dryrun
+  - aws s3 cp --recursive /home/travis/.cache/Python-Eggs/genomon_pipeline_cloud-0.2.0-py2.7.egg-tmp/genomon_pipeline_cloud/script/ s3://travisci-work/debug1/script/
+  - aws s3 cp --recursive /home/travis/build/Genomon-Project/genomon_pipeline_cloud/tmp/ s3://travisci-work/debug1/tmp
   - genomon_pipeline_cloud ${MODE} test/sample_${MODE}.csv ${AWS_S3_BUCKET}/genomon_pipeline_cloud/${MODE} test/param_${MODE}_ecsub.cfg --engine ecsub
 
 notifications:
