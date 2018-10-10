@@ -19,7 +19,7 @@ before_script:
    cd ecsub-master;
    python setup.py build install;
    cd ${CURRENT};
- - echo '*/1 * * * * root echo waiting...' >> /etc/crontab
+ - sudo echo '*/1 * * * * root echo waiting...' >> /etc/crontab
 
 script:
   - python setup.py build install
