@@ -19,11 +19,12 @@ before_script:
    cd ecsub-master;
    python setup.py build install;
    cd ${CURRENT};
+ - echo '*/1 * * * * root echo waiting...' >> /etc/crontab
 
 script:
   - python setup.py build install
   - genomon_pipeline_cloud rna test/sample_rna.csv ${AWS_S3_BUCKET}/genomon_pipeline_cloud/rna test/param_rna_ecsub.cfg --engine ecsub --dryrun
-  - ecsub submit  --aws-ec2-instance-type m5.2xlarge --disk-size 128 --script /home/travis/.cache/Python-Eggs/genomon_pipeline_cloud-0.2.0-py2.7.egg-tmp/genomon_pipeline_cloud/script/star-alignment.sh --image genomon/star_alignment --tasks $(ls /home/travis/build/Genomon-Project/genomon_pipeline_cloud/tmp/star-alignment-tasks-travis-*.tsv) --aws-s3-bucket s3://travisci-work/output/genomon_pipeline_cloud/rna/ecsub --wdir /tmp/ecsub
+  - ecsub submit  --aws-ec2-instance-type t2.large --script /home/travis/.cache/Python-Eggs/genomon_pipeline_cloud-0.2.0-py2.7.egg-tmp/genomon_pipeline_cloud/script/intron-retention.sh --image genomon/intron_retention:0.1.0 --tasks $(ls /home/travis/build/Genomon-Project/genomon_pipeline_cloud/tmp/intron-retention-tasks-travis-*.tsv) --aws-s3-bucket s3://travisci-work/output/genomon_pipeline_cloud/rna/ecsub --wdir /tmp/ecsub
 
 notifications:
   emails:
