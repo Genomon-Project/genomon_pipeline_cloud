@@ -7,7 +7,10 @@ python:
 
 env:
   matrix:
-    - MODE=rna
+    - STAGE=star
+    - STAGE=ir
+    - STAGE=ex
+    - STAGE=fusion
     
 before_script:
  - mkdir ~/.aws;
@@ -19,17 +22,20 @@ before_script:
    echo "output = ${AWS_DEFAULT_OUTPUT}" >> ~/.aws/config;
  - wget https://github.com/aokad/ecsub/archive/master.zip;
    unzip master.zip;
+   CURRENT=$(pwd);
    cd ecsub-master;
    python setup.py build install;
-   cd ..;
+   cd $(CURRENT);
 
 script:
   - python setup.py build install
-  - pwd
-  - genomon_pipeline_cloud ${MODE} test/sample_${MODE}.csv ${AWS_S3_BUCKET}/genomon_pipeline_cloud/${MODE} test/param_${MODE}_ecsub.cfg --engine ecsub --dryrun
-  - aws s3 cp --recursive /home/travis/.cache/Python-Eggs/genomon_pipeline_cloud-0.2.0-py2.7.egg-tmp/genomon_pipeline_cloud/script/ s3://travisci-work/debug1/script/
-  - aws s3 cp --recursive /home/travis/build/Genomon-Project/genomon_pipeline_cloud/tmp/ s3://travisci-work/debug1/tmp
-  - genomon_pipeline_cloud ${MODE} test/sample_${MODE}.csv ${AWS_S3_BUCKET}/genomon_pipeline_cloud/${MODE} test/param_${MODE}_ecsub.cfg --engine ecsub
+  - genomon_pipeline_cloud rna test/sample_rna.csv ${AWS_S3_BUCKET}/genomon_pipeline_cloud/rna test/param_rna_ecsub.cfg --engine ecsub --dryrun
+  - if [ ${STAGE} == star ]; then ecsub submit  --aws-ec2-instance-type t2.2xlarge --disk-size 128 --script /home/travis/.cache/Python-Eggs/genomon_pipeline_cloud-0.2.0-py2.7.egg-tmp/genomon_pipeline_cloud/script/star-alignment.sh --image genomon/star_alignment --tasks /home/travis/build/Genomon-Project/genomon_pipeline_cloud/tmp/star-alignment-tasks-travis-20181009-042707.tsv --aws-s3-bucket s3://travisci-work/output/genomon_pipeline_cloud/rna/ecsub --wdir /tmp/ecsub; fi
+  - if [ ${STAGE} == ir ]; then ecsub submit  --aws-ec2-instance-type t2.large --script /home/travis/.cache/Python-Eggs/genomon_pipeline_cloud-0.2.0-py2.7.egg-tmp/genomon_pipeline_cloud/script/intron-retention.sh --image genomon/intron_retention:0.1.0 --tasks /home/travis/build/Genomon-Project/genomon_pipeline_cloud/tmp/intron-retention-tasks-travis-20181009-042707.tsv --aws-s3-bucket s3://travisci-work/output/genomon_pipeline_cloud/rna/ecsub --wdir /tmp/ecsub; fi
+  - if [ ${STAGE} == ex ]; then ecsub submit  --aws-ec2-instance-type t2.large --script /home/travis/.cache/Python-Eggs/genomon_pipeline_cloud-0.2.0-py2.7.egg-tmp/genomon_pipeline_cloud/script/genomon-expression.sh --image genomon/genomon_expression:0.1.0 --tasks /home/travis/build/Genomon-Project/genomon_pipeline_cloud/tmp/genomon-expression-tasks-travis-20181009-042707.tsv --aws-s3-bucket s3://travisci-work/output/genomon_pipeline_cloud/rna/ecsub --wdir /tmp/ecsub; fi
+  - if [ ${STAGE} == fusion ]; then ecsub submit  --aws-ec2-instance-type t2.medium --script /home/travis/.cache/Python-Eggs/genomon_pipeline_cloud-0.2.0-py2.7.egg-tmp/genomon_pipeline_cloud/script/fusion-count.sh --image genomon/fusionfusion --tasks /home/travis/build/Genomon-Project/genomon_pipeline_cloud/tmp/fusion-count-tasks-travis-20181009-042707.tsv --aws-s3-bucket s3://travisci-work/output/genomon_pipeline_cloud/rna/ecsub --wdir /tmp/ecsub;
+    ecsub submit  --aws-ec2-instance-type t2.medium --script /home/travis/.cache/Python-Eggs/genomon_pipeline_cloud-0.2.0-py2.7.egg-tmp/genomon_pipeline_cloud/script/fusion-merge.sh --image genomon/fusionfusion --tasks /home/travis/build/Genomon-Project/genomon_pipeline_cloud/tmp/fusion-merge-tasks-travis-20181009-042707.tsv --aws-s3-bucket s3://travisci-work/output/genomon_pipeline_cloud/rna/ecsub --wdir /tmp/ecsub;
+    ecsub submit  --aws-ec2-instance-type t2.large --script /home/travis/.cache/Python-Eggs/genomon_pipeline_cloud-0.2.0-py2.7.egg-tmp/genomon_pipeline_cloud/script/fusionfusion.sh --image genomon/fusionfusion --tasks /home/travis/build/Genomon-Project/genomon_pipeline_cloud/tmp/fusionfusion-tasks-travis-20181009-042707.tsv --aws-s3-bucket s3://travisci-work/output/genomon_pipeline_cloud/rna/ecsub --wdir /tmp/ecsub; fi
 
 notifications:
   emails:
