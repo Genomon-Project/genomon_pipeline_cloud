@@ -25,7 +25,7 @@ before_script:
    CURRENT=$(pwd);
    cd ecsub-master;
    python setup.py build install;
-   cd $(CURRENT);
+   cd ${CURRENT};
 
 script:
   - python setup.py build install
