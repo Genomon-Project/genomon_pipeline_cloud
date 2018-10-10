@@ -1,10 +1,15 @@
-sudo: true
+sudo: false
 
 language: python
 
 python:
   - "2.7"
-    
+
+env:
+  matrix:
+    - MODE=dna
+    - MODE=rna
+
 before_script:
  - mkdir ~/.aws;
    echo "[default]" > ~/.aws/credentials;
@@ -19,15 +24,14 @@ before_script:
    cd ecsub-master;
    python setup.py build install;
    cd ${CURRENT};
- - sudo echo '*/1 * * * * root echo waiting...' >> /etc/crontab
 
 script:
   - python setup.py build install
-  - genomon_pipeline_cloud rna test/sample_rna.csv ${AWS_S3_BUCKET}/genomon_pipeline_cloud/rna test/param_rna_ecsub.cfg --engine ecsub --dryrun
-  - ecsub submit  --aws-ec2-instance-type t2.large --script /home/travis/.cache/Python-Eggs/genomon_pipeline_cloud-0.2.0-py2.7.egg-tmp/genomon_pipeline_cloud/script/intron-retention.sh --image genomon/intron_retention:0.1.0 --tasks $(ls /home/travis/build/Genomon-Project/genomon_pipeline_cloud/tmp/intron-retention-tasks-travis-*.tsv) --aws-s3-bucket s3://travisci-work/output/genomon_pipeline_cloud/rna/ecsub --wdir /tmp/ecsub
+  - genomon_pipeline_cloud ${MODE} test/sample_${MODE}.csv ${AWS_S3_BUCKET}/genomon_pipeline_cloud/${MODE} test/param_${MODE}_ecsub.cfg --engine ecsub
 
 notifications:
   emails:
     - aiokada@hgc.jp
   on_success: change
   on_failure: always
+
