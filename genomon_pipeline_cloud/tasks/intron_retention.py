@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 
+import os
 import pkg_resources
 from ..abstract_task import *
  
@@ -27,11 +28,19 @@ class Intron_retention(Abstract_task):
             
             print >> hout, '\t'.join(["--env SAMPLE",
                                       "--input-recursive INPUT_DIR",
+                                      "--env INPUT_BAM",
                                       "--output-recursive OUTPUT_DIR",
                                       "--env OPTION"])
+
             for sample in sample_conf.intron_retention:
+
+                bam = sample_conf.bam_file[sample]
+                bam_dir = os.path.dirname(bam)
+                bam_file = os.path.basename(bam)
+
                 print >> hout, '\t'.join([sample,
-                                          output_dir + "/star/" + sample,
+                                          bam_dir,
+                                          bam_file,
                                           output_dir + "/intron_retention/" + sample,
                                           param_conf.get("intron_retention", "intron_retention_option")])
 

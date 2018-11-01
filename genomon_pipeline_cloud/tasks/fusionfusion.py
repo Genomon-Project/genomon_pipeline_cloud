@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 
+import os
 import pkg_resources
 from ..abstract_task import *
  
@@ -35,8 +36,12 @@ class Fusionfusion(Abstract_task):
                                       "--env PANEL_NAME"])
 
             for sample, panel_name  in sample_conf.fusion:
+
+                bam = sample_conf.bam_file[sample]
+                bam_dir = os.path.dirname(bam)
+
                 record = [sample,
-                          output_dir + "/star/" + sample + "/" + sample + ".Chimeric.out.sam",
+                          bam_dir +"/"+ sample + ".Chimeric.out.sam",
                           output_dir + "/fusion/" + sample,
                           param_conf.get("fusionfusion", "fusionfusion_option"),
                           param_conf.get("fusionfusion", "filt_option"),

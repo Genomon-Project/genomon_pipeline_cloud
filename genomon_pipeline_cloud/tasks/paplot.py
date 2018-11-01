@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 
+import os
 import pkg_resources
 from ..abstract_task import *
  
@@ -45,10 +46,26 @@ class Paplot(Abstract_task):
             
             return ["\t".join(header), "\t".join(data)]
             
+        def to_oneliner_starqc(tag, stage, bam_files, output_suffix):
+            
+            header = []
+            data = []
+            counter = 0
+            for sample in stage:
+                counter += 1
+                header.append("--input INPUT_" + tag.upper() + str(counter))
+                if type(sample) == type(()):
+                    sample = sample[0]
+                bam = bam_files[sample]
+                bam_dir = os.path.dirname(bam)
+                data.append("%s/%s%s" % (bam_dir, sample, output_suffix))
+            
+            return ["\t".join(header), "\t".join(data)]
+        
         items = {"star": ["", ""], "fusion": ["", ""], "qc": ["", ""], "sv": ["", ""], "mutation": ["", ""], "signature": ["", ""], "pmsignature": ["", ""]}
 
         if run_conf.analysis_type == "rna":
-            items["star"]     = to_oneliner("starqc", sample_conf.qc, output_dir + "/star", ".Log.final.out")
+            items["star"]     = to_oneliner_starqc("starqc", sample_conf.qc, sample_conf.bam_file, ".Log.final.out")
             items["fusion"]   = to_oneliner("fusion", sample_conf.fusion, output_dir + "/fusion", ".genomonFusion.result.filt.txt")
 
         elif run_conf.analysis_type == "dna":

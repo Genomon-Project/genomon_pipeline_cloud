@@ -23,7 +23,7 @@ class Sample_conf(object):
         #
     
 
-    def parse_file(self, file_path, output_dir):
+    def parse_file(self, file_path, output_dir, analysis_type):
 
         file_ext = os.path.splitext(file_path)[1]
 
@@ -59,7 +59,7 @@ class Sample_conf(object):
             file_data_trimmed.append(line_data)
 
 
-        self.parse_data(file_data_trimmed, output_dir)
+        self.parse_data(file_data_trimmed, output_dir, analysis_type)
 
 
     def parse_csv(self, file_path):
@@ -103,7 +103,7 @@ class Sample_conf(object):
         return _file_data
 
 
-    def parse_data(self, _data, output_dir):
+    def parse_data(self, _data, output_dir, analysis_type):
     
         mode = ''
        
@@ -195,7 +195,10 @@ class Sample_conf(object):
                         raise ValueError(err_msg)
                 """
                 self.fastq[sampleID] = [sequence1, sequence2]
-                self.bam_file[sampleID] = output_dir+"/bam/"+sampleID+"/"+sampleID+".markdup.bam"
+                if analysis_type == "rna":
+                    self.bam_file[sampleID] = output_dir+"/star/"+sampleID+"/"+sampleID+".Aligned.sortedByCoord.out.bam"
+                elif analysis_type == "dna":
+                    self.bam_file[sampleID] = output_dir+"/bam/"+sampleID+"/"+sampleID+".markdup.bam"
 
             elif mode == 'bam_tofastq':
 
@@ -225,7 +228,10 @@ class Sample_conf(object):
                         raise ValueError(err_msg)
                 """
                 self.bam_tofastq[sampleID] = sequences
-                self.bam_file[sampleID] = output_dir+"/bam/"+sampleID+"/"+sampleID+".markdup.bam"
+                if analysis_type == "rna":
+                    self.bam_file[sampleID] = output_dir+"/star/"+sampleID+"/"+sampleID+".Aligned.sortedByCoord.out.bam"
+                elif analysis_type == "dna":
+                    self.bam_file[sampleID] = output_dir+"/bam/"+sampleID+"/"+sampleID+".markdup.bam"
                 
             elif mode == 'bam_import':
 

@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 
+import os
 import pkg_resources
 from ..abstract_task import *
  
@@ -40,8 +41,12 @@ class Fusion_count(Abstract_task):
             control_sample_li_uniq = list(set(control_sample_li))
 
             for sample in control_sample_li_uniq:
+
+                bam = sample_conf.bam_file[sample]
+                bam_dir = os.path.dirname(bam)
+
                 print >> hout, '\t'.join([sample,
-                                          output_dir + "/star/" + sample + "/" + sample + ".Chimeric.out.sam",
+                                          bam_dir + "/" + sample + ".Chimeric.out.sam",
                                           output_dir + "/fusion/control_panel/" + sample,
                                           run_conf.get_meta_info(param_conf.get("fusion_count_control", "image")),
                                           param_conf.get("fusion_count_control", "chimera_utils_count_option")])
