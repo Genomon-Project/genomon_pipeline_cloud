@@ -55,10 +55,10 @@ RUN pip install Cython && \
     pip install pyVCF && \
     \
     cd /tools && \
-    wget -nc https://github.com/Genomon-Project/GenomonMutationFilter/archive/v0.2.2.zip && \
-    unzip v0.2.2.zip && \
-    rm -f v0.2.2.zip && \
-    cd GenomonMutationFilter-0.2.2 && \
+    wget -nc https://github.com/Genomon-Project/GenomonMutationFilter/archive/v0.2.3.zip && \
+    unzip v0.2.3.zip && \
+    rm -f v0.2.3.zip && \
+    cd GenomonMutationFilter-0.2.3 && \
     python setup.py install && \
     \
     cd /tools && \
