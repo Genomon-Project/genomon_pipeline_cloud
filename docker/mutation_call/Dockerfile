@@ -55,17 +55,17 @@ RUN pip install Cython && \
     pip install pyVCF && \
     \
     cd /tools && \
-    wget -nc https://github.com/Genomon-Project/GenomonMutationFilter/archive/v0.2.3.zip && \
-    unzip v0.2.3.zip && \
-    rm -f v0.2.3.zip && \
-    cd GenomonMutationFilter-0.2.3 && \
+    wget -nc https://github.com/Genomon-Project/GenomonMutationFilter/archive/v0.2.6.zip && \
+    unzip v0.2.6.zip && \
+    rm -f v0.2.6.zip && \
+    cd GenomonMutationFilter-0.2.6 && \
     python setup.py install && \
     \
     cd /tools && \
-    wget -nc https://github.com/Genomon-Project/GenomonFisher/archive/v0.4.0.zip && \
-    unzip v0.4.0.zip && \
-    rm -f v0.4.0.zip && \
-    cd GenomonFisher-0.4.0 && \
+    wget -nc https://github.com/Genomon-Project/GenomonFisher/archive/v0.4.1.zip && \
+    unzip v0.4.1.zip && \
+    rm -f v0.4.1.zip && \
+    cd GenomonFisher-0.4.1 && \
     python setup.py install && \
     \
     cd /tools && \
@@ -76,10 +76,10 @@ RUN pip install Cython && \
     python setup.py install && \
     \
     cd /tools && \
-    wget -nc https://github.com/ken0-1n/mutation_util/archive/v0.5.0.zip && \
-    unzip v0.5.0.zip && \
-    rm -f v0.5.0.zip && \
-    cd mutation_util-0.5.0 && \
+    wget -nc https://github.com/ken0-1n/mutation_util/archive/v0.5.2.zip && \
+    unzip v0.5.2.zip && \
+    rm -f v0.5.2.zip && \
+    cd mutation_util-0.5.2 && \
     python setup.py install && \
     \
     cd /tools && \
