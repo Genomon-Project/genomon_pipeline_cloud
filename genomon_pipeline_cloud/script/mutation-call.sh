@@ -6,6 +6,7 @@ set -o nounset
 export PATH=/usr/local/bin:${PATH}
 export LD_LIBRARY_PATH=/usr/local/lib
 OUTPUT_PREF=${OUTPUT_DIR}/${SAMPLE1}
+INTERVAL_LIST=${REFERENCE}/${FISHER_INTERVAL_LIST}
 REFERENCE=${REFERENCE}/GRCh37.fa
 SAMTOOLS=/usr/local/bin/samtools
 BLAT=/tools/userApps/bin/blat
@@ -18,6 +19,9 @@ INPUT_BAM1=${INPUT_DIR1}/${INPUT_BAM1}
 if [ _${SAMPLE2} = "_None" ]; then 
 
     # Fisher's Exact Test
+    if [ "_${FISHER_INTERVAL_LIST}" != "_" ]; then
+        FISHER_PAIR_OPTION="${FISHER_SINGLE_OPTION} -L ${INTERVAL_LIST} "
+    fi
     if [ "_${FISHER_SINGLE_SAMTOOLS}" != "_" ]; then
         FISHER_SINGLE_OPTION="${FISHER_SINGLE_OPTION} --samtools_params "
     fi
@@ -34,6 +38,9 @@ else
     INPUT_BAM2=${INPUT_DIR2}/${INPUT_BAM2}
 
     # Fisher's Exact Test
+    if [ "_${FISHER_INTERVAL_LIST}" != "_" ]; then
+        FISHER_PAIR_OPTION="${FISHER_PAIR_OPTION} -L ${INTERVAL_LIST} "
+    fi
     if [ "_${FISHER_PAIR_SAMTOOLS}" != "_" ]; then
         FISHER_PAIR_OPTION="${FISHER_PAIR_OPTION} --samtools_params "
     fi

@@ -62,10 +62,10 @@ RUN pip install Cython && \
     python setup.py install && \
     \
     cd /tools && \
-    wget -nc https://github.com/Genomon-Project/GenomonFisher/archive/v0.4.1.zip && \
-    unzip v0.4.1.zip && \
-    rm -f v0.4.1.zip && \
-    cd GenomonFisher-0.4.1 && \
+    wget -nc https://github.com/Genomon-Project/GenomonFisher/archive/v0.4.2.zip && \
+    unzip v0.4.2.zip && \
+    rm -f v0.4.2.zip && \
+    cd GenomonFisher-0.4.2 && \
     python setup.py install && \
     \
     cd /tools && \
