@@ -133,6 +133,14 @@ class Ecsub_factory(Abstract_factory):
         return self.base_commands(commands)
     
     def print_summary(self, run_conf, log_dir):
+        def accessor(obj, key):
+            if key in obj:
+                return obj[key]
+            t_key_list = [s for s in obj.keys() if key.lower().replace("_", "").replace("-", "").replace(".", "") == s.lower().replace("_", "").replace("-", "").replace(".", "")]
+            if len(t_key_list) == 0:
+                return None
+            return obj[t_key_list[0]]
+        
         import glob
         import json
         
@@ -146,27 +154,27 @@ class Ecsub_factory(Abstract_factory):
             files = glob.glob("%s/log/summary*.log" % (d))
             for f in sorted(files):
                 summary = json.load(open(f))
-                for j in summary["Jobs"]:
+                for j in accessor(summary, "Jobs"):
                     job = {
-                        "ClusterName": summary["ClusterName"],
-                        "Ec2instancetype": j["Ec2instancetype"],
-                        "Ec2InstanceDiskSize": summary["Ec2InstanceDiskSize"],
-                        "Spot": j["Spot"],
-                        "WorkHours": j["WorkHours"]
+                        "ClusterName": accessor(summary, "ClusterName"),
+                        "Ec2InstanceType": accessor(j, "Ec2InstanceType"),
+                        "Ec2InstanceDiskSize": accessor(summary, "Ec2InstanceDiskSize"),
+                        "Spot": accessor(j, "Spot"),
+                        "WorkHours": accessor(j, "WorkHours")
                     }
-                    job["OdPrice"] = j["OdPrice"]
-                    if j["Spot"]:
-                        job["SpotPrice"] = j["SpotPrice"]
-                        job["WorkHours*Price"] = j["WorkHours"] * j["SpotPrice"]
+                    job["OdPrice"] = accessor(j, "OdPrice")
+                    if accessor(j, "Spot"):
+                        job["SpotPrice"] = accessor(j, "SpotPrice")
+                        job["WorkHours*Price"] = accessor(j, "WorkHours") * accessor(j, "SpotPrice")
                     else:
-                        job["WorkHours*Price"] = j["WorkHours"] * j["OdPrice"]
+                        job["WorkHours*Price"] = accessor(j, "WorkHours") * accessor(j, "OdPrice")
                     
                     if len(header) == 0:
                         header = ",".join(sorted(job.keys()))
                         
                     jobs.append(job)
                     sim_cost += job["WorkHours*Price"]
-                    od_cost += j["WorkHours"] * j["OdPrice"]
+                    od_cost += accessor(j, "WorkHours") * accessor(j, "OdPrice")
         
         log_file = "%s/summary-%s.csv" % (log_dir, run_conf.analysis_timestamp)
         print ("Total cost of this instance usage is %.3f USD. See detail, %s" % (sim_cost, log_file))
