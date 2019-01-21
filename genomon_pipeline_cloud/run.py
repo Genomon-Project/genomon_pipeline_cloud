@@ -8,7 +8,8 @@ from run_conf import Run_conf
 from storage import Storage
 
 def run(args):
-
+    args.output_dir = args.output_dir.rstrip("/")
+    
     sample_conf = Sample_conf()
     sample_conf.parse_file(args.sample_conf_file, args.output_dir, args.analysis_type)
     

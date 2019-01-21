@@ -14,14 +14,16 @@ then
     set +o xtrace
     for input in `ls ${dir_starqc}/*/*.Log.final.out`
     do
+        unset data
+        unset header
         while read line
         do
             h=`echo ${line} | sed -e "s/ | /|/" | cut -f 1 -d \| -s`
             d=`echo ${line} | sed -e "s/ | /|/" | cut -f 2 -d \| -s | sed -e "s/%//"`
     
-            if test -n "$h";
+            if test "$h" != "";
             then
-                if test -n "$header";
+                if test "$header" != "";
                 then
                     header=${header}$'\t'$h
                     data=${data}$'\t'$d
