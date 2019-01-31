@@ -48,16 +48,16 @@ RUN echo "deb http://deb.debian.org/debian stretch main" > /etc/apt/sources.list
 
 # python package
 RUN pip install --upgrade pip
-RUN pip install pysam==0.9.1.4 && \
-    pip install numpy==1.12.1 && \
-    pip install scipy==0.19.0 && \
+RUN pip install pysam==0.15.1 && \
+    pip install numpy==1.15.2 && \
+    pip install scipy==1.1.0 && \
     pip install PyVCF==0.6.8 && \
     \
     cd /tools && \
-    wget -nc https://github.com/Genomon-Project/GenomonMutationFilter/archive/v0.2.6.zip && \
-    unzip v0.2.6.zip && \
-    rm -f v0.2.6.zip && \
-    cd GenomonMutationFilter-0.2.6 && \
+    wget -nc https://github.com/Genomon-Project/GenomonMutationFilter/archive/v0.2.7.zip && \
+    unzip v0.2.7.zip && \
+    rm -f v0.2.7.zip && \
+    cd GenomonMutationFilter-0.2.7 && \
     python setup.py install && \
     \
     cd /tools && \
