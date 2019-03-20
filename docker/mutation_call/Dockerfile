@@ -54,10 +54,10 @@ RUN pip install pysam==0.15.1 && \
     pip install PyVCF==0.6.8 && \
     \
     cd /tools && \
-    wget -nc https://github.com/Genomon-Project/GenomonMutationFilter/archive/v0.2.7.zip && \
-    unzip v0.2.7.zip && \
-    rm -f v0.2.7.zip && \
-    cd GenomonMutationFilter-0.2.7 && \
+    wget -nc https://github.com/Genomon-Project/GenomonMutationFilter/archive/v0.2.8.zip && \
+    unzip v0.2.8.zip && \
+    rm -f v0.2.8.zip && \
+    cd GenomonMutationFilter-0.2.8 && \
     python setup.py install && \
     \
     cd /tools && \
@@ -75,17 +75,17 @@ RUN pip install pysam==0.15.1 && \
     python setup.py install && \
     \
     cd /tools && \
-    wget -nc https://github.com/ken0-1n/mutation_util/archive/v0.5.2.zip && \
-    unzip v0.5.2.zip && \
-    rm -f v0.5.2.zip && \
-    cd mutation_util-0.5.2 && \
+    wget -nc https://github.com/ken0-1n/mutation_util/archive/v0.5.3.zip && \
+    unzip v0.5.3.zip && \
+    rm -f v0.5.3.zip && \
+    cd mutation_util-0.5.3 && \
     python setup.py install && \
     \
     cd /tools && \
-    wget -nc https://github.com/ken0-1n/GenomonHotspotCall/archive/v0.1.0.zip && \
-    unzip v0.1.0.zip && \
-    rm -f v0.1.0.zip && \
-    cd GenomonHotspotCall-0.1.0 && \
+    wget -nc https://github.com/ken0-1n/GenomonHotspotCall/archive/v0.2.0.zip && \
+    unzip v0.2.0.zip && \
+    rm -f v0.2.0.zip && \
+    cd GenomonHotspotCall-0.2.0 && \
     python setup.py install && \
     \
     echo "export LD_LIBRARY_PATH=/usr/local/lib" >> /root/.bashrc
