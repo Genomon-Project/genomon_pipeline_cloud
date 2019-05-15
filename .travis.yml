@@ -28,7 +28,7 @@ before_script:
 
 script:
   - python setup.py build install
-  - genomon_pipeline_cloud ${MODE} test/sample_${MODE}.csv ${AWS_S3_BUCKET}/${MODE} test/param_${MODE}_ecsub.cfg --engine ecsub
+  - travis_wait 30 genomon_pipeline_cloud ${MODE} test/sample_${MODE}.csv ${AWS_S3_BUCKET}/${MODE} test/param_${MODE}_ecsub.cfg --engine ecsub
 
 notifications:
   emails:

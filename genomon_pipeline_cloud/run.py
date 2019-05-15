@@ -133,8 +133,8 @@ def run(args):
         
     
     # paplot stage
-    from tasks.paplot import Paplot
-    paplot_task = Paplot(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
+    import genomon_pipeline_cloud.tasks.paplot as paplot
+    paplot_task = paplot.Paplot(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
     
     p_paplot = multiprocessing.Process(target = batch_engine.execute, args = (paplot_task,))
     p_paplot.start()
