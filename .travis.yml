@@ -7,39 +7,47 @@ matrix:
     - name: "Python 3.8 and dna"
       python: 3.8-dev
       dist: xenial
-      env: MODE=dna
-      env: EXEC=1
+      env: 
+        - MODE=dna
+        - EXEC=1
     - name: "Python 3.8 and rna"
       python: 3.8-dev
       dist: xenial
-      env: MODE=rna
-      env: EXEC=1
+      env: 
+        - MODE=rna
+        - EXEC=1
     - name: "Python 3.7 and dna"
       python: 3.7
       dist: xenial
-      env: MODE=dna
-      env: EXEC=1
+      env:
+        - MODE=dna
+        - EXEC=1
     - name: "Python 3.7 and rna"
       python: 3.7
       dist: xenial
-      env: MODE=rna
-      env: EXEC=1
+      env:
+        - MODE=rna
+        - EXEC=1
     - name: "Python 3.6 and dna"
-      python: 3.7
-      env: MODE=dna
-      env: EXEC=0
+      python: 3.6
+      env:
+        - MODE=dna
+        - EXEC=0
     - name: "Python 3.6 and rna"
       python: 3.6
-      env: MODE=rna
-      env: EXEC=0
+      env:
+        - MODE=rna
+        - EXEC=0
     - name: "Python 2.7 and dna"
-      dist: xenial
-      env: MODE=dna
-      env: EXEC=0
+      python: 2.7
+      env:
+        - MODE=dna
+        - EXEC=0
     - name: "Python 2.7 and rna"
-      dist: xenial
-      env: MODE=rna
-      env: EXEC=0
+      python: 2.7
+      env:
+        - MODE=rna
+        - EXEC=0
 
 before_script:
  - mkdir ~/.aws;
