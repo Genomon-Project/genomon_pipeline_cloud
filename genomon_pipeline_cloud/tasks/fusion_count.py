@@ -10,7 +10,7 @@ class Fusion_count(abstract_task.Abstract_task):
     def __init__(self, output_dir, task_dir, sample_conf, param_conf, run_conf):
 
         super(Fusion_count, self).__init__(
-            "%s/script/%s.sh" % (os.path.dirname(__file__), self.__class__.task_name),
+            self.__class__.task_name,
             param_conf.get("fusion_count_control", "image"),
             param_conf.get("fusion_count_control", "resource"),
             output_dir + "/logging")

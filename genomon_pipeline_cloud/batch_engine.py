@@ -129,7 +129,7 @@ class Ecsub_factory(Abstract_factory):
         commands = ["ecsub", "submit"] + general_param.split(' ') + task.resource_param.split(' ') + \
                      ["--script", task.script_file, "--image", task.image, "--tasks", task.task_file] + \
                      ["--aws-s3-bucket", self.s3_wdir, "--wdir", self.wdir]
-
+        
         return self.base_commands(commands)
     
     def print_summary(self, run_conf, log_dir):

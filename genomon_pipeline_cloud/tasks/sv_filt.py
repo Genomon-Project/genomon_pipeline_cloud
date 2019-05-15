@@ -10,7 +10,7 @@ class SV_filt(abstract_task.Abstract_task):
     def __init__(self, output_dir, task_dir, sample_conf, param_conf, run_conf):
 
         super(SV_filt, self).__init__(
-            "%s/script/%s.sh" % (os.path.dirname(__file__), self.__class__.task_name),
+            self.__class__.task_name,
             param_conf.get("sv_filt", "image"),
             param_conf.get("sv_filt", "resource"),
             output_dir + "/logging")

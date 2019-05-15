@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-import os
 import genomon_pipeline_cloud.abstract_task as abstract_task
  
 class Control_merge(abstract_task.Abstract_task):
@@ -10,7 +9,7 @@ class Control_merge(abstract_task.Abstract_task):
     def __init__(self, output_dir, task_dir, sample_conf, param_conf, run_conf):
 
         super(Control_merge, self).__init__(
-            "%s/script/%s.sh" % (os.path.dirname(__file__), self.__class__.task_name),
+            self.__class__.task_name,
             param_conf.get("control_merge", "image"),
             param_conf.get("control_merge", "resource"),
             output_dir + "/logging")

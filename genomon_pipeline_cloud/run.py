@@ -142,36 +142,3 @@ def run(args):
     
     if args.engine == "ecsub":
         factory.print_summary(run_conf, log_dir)
-
-if __name__ == "__main__":
-
-    import argparse
-    
-    aparser = argparse.ArgumentParser(prog = "genomon_pipeline_cloud")
-    aparser.add_argument("--version", action = "version", version = "genomon_pipeline_cloud-0.0.0")
-    aparser.add_argument("--output_dir", type = str, default = "./test")
-    aparser.add_argument("--engine", choices = ["awsub", "dsub", "azmon", "ecsub"], type = str, default = "ecsub")
-    aparser.add_argument("--dryrun", action = 'store_true')
-    aparser.add_argument('analysis_type', choices=['dna', 'rna'])
-    aparser.add_argument("sample_conf_file", type = str)
-    aparser.add_argument("param_conf_file", type = str)
-    
-    class C:
-        pass
-    
-    dna = C()
-    aparser.parse_args(args=['dna', 
-                             os.path.dirname(__file__) + "/../example_conf/sample_dna.csv",
-                             os.path.dirname(__file__) + "/../example_conf/param_dna_ecsub.cfg",
-                             "--dryrun"], 
-                        namespace = dna)
-    run(dna)
-    
-    
-    rna = C()
-    aparser.parse_args(args=['rna', 
-                             os.path.dirname(__file__) + "/../example_conf/sample_rna.csv",
-                             os.path.dirname(__file__) + "/../example_conf/param_rna_ecsub.cfg",
-                             "--dryrun"], 
-                        namespace = rna)
-    run(rna)

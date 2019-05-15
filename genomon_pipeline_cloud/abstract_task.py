@@ -1,13 +1,15 @@
 #! /usr/bin/env python
 
 import abc
+import os
 
 class Abstract_task(object):
 
     __metaclass__ = abc.ABCMeta
 
-    def __init__(self, script_file, image, resource_param, log_dir):
-        self.script_file = script_file
+    def __init__(self, task_name, image, resource_param, log_dir):
+        
+        self.script_file = "%s/script/%s.sh" % (os.path.dirname(__file__), task_name)
         self.image = image
         self.resource_param = resource_param
         self.log_dir = log_dir

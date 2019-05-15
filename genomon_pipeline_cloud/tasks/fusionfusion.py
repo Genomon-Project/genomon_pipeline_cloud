@@ -10,7 +10,7 @@ class Fusionfusion(abstract_task.Abstract_task):
     def __init__(self, output_dir, task_dir, sample_conf, param_conf, run_conf):
     
         super(Fusionfusion, self).__init__(
-            "%s/script/%s.sh" % (os.path.dirname(__file__), self.__class__.task_name),
+            self.__class__.task_name,
             param_conf.get("fusionfusion", "image"),
             param_conf.get("fusionfusion", "resource"),
             output_dir + "/logging")
