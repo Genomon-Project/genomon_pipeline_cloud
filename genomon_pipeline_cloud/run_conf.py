@@ -6,7 +6,7 @@ import datetime
 date_format = "{year:0>4d}-{month:0>2d}-{day:0>2d} {hour:0>2d}:{min:0>2d}:{second:0>2d}"
 timestamp_format = "{year:0>4d}{month:0>2d}{day:0>2d}-{hour:0>2d}{min:0>2d}{second:0>2d}"
 
-import __init__ as ini
+import genomon_pipeline_cloud.__init__ as ini
 
 class Run_conf(object):
     """

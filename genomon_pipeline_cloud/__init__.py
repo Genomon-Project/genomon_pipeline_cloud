@@ -1,7 +1,7 @@
 __version__ = '0.3.0'
 
 import argparse
-import run
+import genomon_pipeline_cloud.run
 
 def main():
 
@@ -17,5 +17,5 @@ def main():
     aparser.add_argument("--dryrun", help = "For dry run ", action = 'store_true')
     args = aparser.parse_args()
 
-    run.run(args)
+    genomon_pipeline_cloud.run.run(args)
 

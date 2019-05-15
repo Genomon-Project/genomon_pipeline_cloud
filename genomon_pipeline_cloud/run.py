@@ -2,10 +2,10 @@
 
 import sys, os, multiprocessing
    
-import batch_engine as be
-import sample_conf as sc
-import run_conf as rc
-import storage as st
+import genomon_pipeline_cloud.batch_engine as be
+import genomon_pipeline_cloud.sample_conf as sc
+import genomon_pipeline_cloud.run_conf as rc
+import genomon_pipeline_cloud.storage as st
 
 if sys.version_info.major == 2:
     import ConfigParser as cp
@@ -62,19 +62,19 @@ def run(args):
     # RNA
     if args.analysis_type == "rna":
 
-        import tasks.star_alignment
-        import tasks.fusion_count
-        import tasks.fusion_merge
-        import tasks.fusionfusion
-        import tasks.genomon_expression
-        import tasks.intron_retention
+        import genomon_pipeline_cloud.tasks.star_alignment as star_alignment
+        import genomon_pipeline_cloud.tasks.fusion_count as fusion_count
+        import genomon_pipeline_cloud.tasks.fusion_merge as fusion_merge
+        import genomon_pipeline_cloud.tasks.fusionfusion as fusionfusion
+        import genomon_pipeline_cloud.tasks.genomon_expression as genomon_expression
+        import genomon_pipeline_cloud.tasks.intron_retention as intron_retention
 
-        star_alignment_task = tasks.star_alignment.Star_alignment(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
-        fusion_count_task = tasks.fusion_count.Fusion_count(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
-        fusion_merge_task = tasks.fusion_merge.Fusion_merge(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
-        fusionfusion_task = tasks.fusionfusion.Fusionfusion(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
-        genomon_expression_task = tasks.genomon_expression.Genomon_expression(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
-        intron_retention_task = tasks.intron_retention.Intron_retention(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
+        star_alignment_task = star_alignment.Star_alignment(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
+        fusion_count_task = fusion_count.Fusion_count(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
+        fusion_merge_task = fusion_merge.Fusion_merge(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
+        fusionfusion_task = fusionfusion.Fusionfusion(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
+        genomon_expression_task = genomon_expression.Genomon_expression(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
+        intron_retention_task = intron_retention.Intron_retention(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
         
         p_star = multiprocessing.Process(target = batch_engine.execute, args = (star_alignment_task,))
         p_star.start()
@@ -97,27 +97,27 @@ def run(args):
     # DNA
     elif args.analysis_type == "dna":
     
-        import tasks.bwa_alignment
-        import tasks.sv_parse
-        import tasks.sv_merge
-        import tasks.sv_filt
-        import tasks.mutation_call
-        import tasks.genomon_qc
-        import tasks.pmsignature
+        import genomon_pipeline_cloud.tasks.bwa_alignment as bwa_alignment
+        import genomon_pipeline_cloud.tasks.sv_parse as sv_parse
+        import genomon_pipeline_cloud.tasks.sv_merge as sv_merge
+        import genomon_pipeline_cloud.tasks.sv_filt as sv_filt
+        import genomon_pipeline_cloud.tasks.mutation_call as mutation_call
+        import genomon_pipeline_cloud.tasks.genomon_qc as genomon_qc
+        import genomon_pipeline_cloud.tasks.pmsignature as pmsignature
         
-        bwa_alignment_task = tasks.bwa_alignment.Bwa_alignment(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
+        bwa_alignment_task = bwa_alignment.Bwa_alignment(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
         p_bwa = multiprocessing.Process(target = batch_engine.execute, args = (bwa_alignment_task,))
 
-        sv_parse_task = tasks.sv_parse.SV_parse(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
-        sv_merge_task = tasks.sv_merge.SV_merge(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
-        sv_filt_task = tasks.sv_filt.SV_filt(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
+        sv_parse_task = sv_parse.SV_parse(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
+        sv_merge_task = sv_merge.SV_merge(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
+        sv_filt_task = sv_filt.SV_filt(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
         p_sv = multiprocessing.Process(target = batch_engine.seq_execute, args = ([sv_parse_task,sv_merge_task,sv_filt_task],))
 
-        mutation_call_task = tasks.mutation_call.Mutation_call(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
-        pmsignature_task = tasks.pmsignature.Pmsignature(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
+        mutation_call_task = mutation_call.Mutation_call(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
+        pmsignature_task = pmsignature.Pmsignature(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
         p_mutation = multiprocessing.Process(target = batch_engine.seq_execute, args = ([mutation_call_task,pmsignature_task],))
 
-        qc_task = tasks.genomon_qc.Genomon_qc(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
+        qc_task = genomon_qc.Genomon_qc(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
         p_qc = multiprocessing.Process(target = batch_engine.execute, args = (qc_task,))
         
         p_bwa.start()
@@ -175,4 +175,3 @@ if __name__ == "__main__":
                              "--dryrun"], 
                         namespace = rna)
     run(rna)
-    

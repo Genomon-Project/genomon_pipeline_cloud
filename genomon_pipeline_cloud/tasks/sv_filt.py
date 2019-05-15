@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 
 import os
-import abstract_task
+import genomon_pipeline_cloud.abstract_task as abstract_task
  
 class SV_filt(abstract_task.Abstract_task):
 
