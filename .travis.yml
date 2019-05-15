@@ -2,14 +2,44 @@ sudo: false
 
 language: python
 
-python:
-  - "2.7"
-  - "3.6"
-
-env:
-  matrix:
-    - MODE=dna
-    - MODE=rna
+matrix:
+  include:
+    - name: "Python 3.8 and dna"
+      python: 3.8-dev
+      dist: xenial
+      env: MODE=dna
+      env: EXEC=1
+    - name: "Python 3.8 and rna"
+      python: 3.8-dev
+      dist: xenial
+      env: MODE=rna
+      env: EXEC=1
+    - name: "Python 3.7 and dna"
+      python: 3.7
+      dist: xenial
+      env: MODE=dna
+      env: EXEC=1
+    - name: "Python 3.7 and rna"
+      python: 3.7
+      dist: xenial
+      env: MODE=rna
+      env: EXEC=1
+    - name: "Python 3.6 and dna"
+      python: 3.7
+      env: MODE=dna
+      env: EXEC=0
+    - name: "Python 3.6 and rna"
+      python: 3.6
+      env: MODE=rna
+      env: EXEC=0
+    - name: "Python 2.7 and dna"
+      dist: xenial
+      env: MODE=dna
+      env: EXEC=0
+    - name: "Python 2.7 and rna"
+      dist: xenial
+      env: MODE=rna
+      env: EXEC=0
 
 before_script:
  - mkdir ~/.aws;
@@ -28,7 +58,7 @@ before_script:
 
 script:
   - python setup.py build install
-  - travis_wait 30 genomon_pipeline_cloud ${MODE} test/sample_${MODE}.csv ${AWS_S3_BUCKET}/${MODE} test/param_${MODE}_ecsub.cfg --engine ecsub
+  - if [ ${EXEC} == 1 ]; then travis_wait 60 script -c "genomon_pipeline_cloud ${MODE} test/sample_${MODE}.csv ${AWS_S3_BUCKET}/${MODE} test/param_${MODE}_ecsub.cfg --engine ecsub" 2>&1 | tee dummy.log; fi
 
 notifications:
   emails:
