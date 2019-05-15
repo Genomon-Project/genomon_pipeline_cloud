@@ -1,17 +1,16 @@
 #! /usr/bin/env python
 
 import os
-import pkg_resources
-from ..abstract_task import *
+import abstract_task
  
-class Genomon_expression(Abstract_task):
+class Genomon_expression(abstract_task.Abstract_task):
 
     task_name = "genomon-expression"
 
     def __init__(self, output_dir, task_dir, sample_conf, param_conf, run_conf):
 
         super(Genomon_expression, self).__init__(
-            pkg_resources.resource_filename("genomon_pipeline_cloud", "script/{}.sh".format(self.__class__.task_name)),
+            "%s/script/%s.sh" % (os.path.dirname(__file__), self.__class__.task_name),
             param_conf.get("genomon_expression", "image"),
             param_conf.get("genomon_expression", "resource"),
             output_dir + "/logging")
@@ -26,21 +25,23 @@ class Genomon_expression(Abstract_task):
         task_file = "{}/{}-tasks-{}-{}.tsv".format(task_dir, self.__class__.task_name, run_conf.get_owner_info(), run_conf.analysis_timestamp)
         with open(task_file, 'w') as hout:
             
-            print >> hout, '\t'.join(["--env SAMPLE",
-                                      "--input-recursive INPUT_DIR",
-                                      "--env INPUT_BAM",
-                                      "--output-recursive OUTPUT_DIR",
-                                      "--env OPTION"])
+            hout.write('\t'.join(["--env SAMPLE",
+                                  "--input-recursive INPUT_DIR",
+                                  "--env INPUT_BAM",
+                                  "--output-recursive OUTPUT_DIR",
+                                  "--env OPTION"]) 
+                                  + "\n")
             for sample in sample_conf.expression:
 
                 bam = sample_conf.bam_file[sample]
                 bam_dir = os.path.dirname(bam)
                 bam_file = os.path.basename(bam)
 
-                print >> hout, '\t'.join([sample,
-                                          bam_dir,
-                                          bam_file,
-                                          output_dir + "/expression/" + sample,
-                                          param_conf.get("genomon_expression", "genomon_expression_option")])
+                hout.write('\t'.join([sample,
+                                      bam_dir,
+                                      bam_file,
+                                      output_dir + "/expression/" + sample,
+                                      param_conf.get("genomon_expression", "genomon_expression_option")]) 
+                                      + "\n")
 
         return task_file

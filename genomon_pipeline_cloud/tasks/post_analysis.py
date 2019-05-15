@@ -1,16 +1,16 @@
 #! /usr/bin/env python
 
-import pkg_resources
-from ..abstract_task import *
+import os
+import abstract_task
  
-class PostAnalysis(Abstract_task):
+class PostAnalysis(abstract_task.Abstract_task):
 
     task_name = "post_analysis"
 
     def __init__(self, output_dir, task_dir, sample_conf, param_conf, run_conf, mode):
 
         super(PostAnalysis, self).__init__(
-            pkg_resources.resource_filename("genomon_pipeline_cloud", "script/{}.sh".format(self.__class__.task_name)),
+            "%s/script/%s.sh" % (os.path.dirname(__file__), self.__class__.task_name),
             param_conf.get("post_analysis", "image"),
             param_conf.get("post_analysis", "resource"),
             output_dir + "/logging")
@@ -149,12 +149,12 @@ class PostAnalysis(Abstract_task):
         task_file = "{}/{}-tasks-{}-{}.tsv".format(task_dir, self.__class__.task_name, run_conf.get_owner_info(), run_conf.analysis_timestamp)
         with open(task_file, 'w') as hout:
 
-            print >> hout, '\t'.join(["\t".join(header),
+            hout.write('\t'.join(["\t".join(header),
                                       "--input SAMPLE_SHEET",
                                       "--input CONFIG_FILE",
                                       "--output-recursive OUTPUT_DIR",
                                       "--env MODE",
-                                      "--env ADD_OPTION"])
+                                      "--env ADD_OPTION"]) + "\n")
             """
             import pprint
             pprint.pprint (header)
@@ -162,12 +162,13 @@ class PostAnalysis(Abstract_task):
             pprint.pprint (option)
             """
             if param_conf.getboolean("post_analysis", "enable") and len(data) > 0:
-                print >> hout, '\t'.join(["\t".join(data),
-                                          "s3://hgc-aokad/output_dna/dna.csv",
-                                          "s3://hgc-aokad/conf/genomon_post_analysis.cfg",
-                                          output_dir + "/post_analysis/" + run_conf.sample_conf_name,
-                                          mode,
-                                          " ".join(option)])
+                hout.write('\t'.join(["\t".join(data),
+                                      "s3://hgc-aokad/output_dna/dna.csv",
+                                      "s3://hgc-aokad/conf/genomon_post_analysis.cfg",
+                                      output_dir + "/post_analysis/" + run_conf.sample_conf_name,
+                                      mode,
+                                      " ".join(option)])
+                                      + "\n")
 
         return task_file
 

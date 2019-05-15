@@ -1,17 +1,16 @@
 #! /usr/bin/env python
 
 import os
-import pkg_resources
-from ..abstract_task import *
+import abstract_task
  
-class Intron_retention(Abstract_task):
+class Intron_retention(abstract_task.Abstract_task):
 
     task_name = "intron-retention"
 
     def __init__(self, output_dir, task_dir, sample_conf, param_conf, run_conf):
 
         super(Intron_retention, self).__init__(
-            pkg_resources.resource_filename("genomon_pipeline_cloud", "script/{}.sh".format(self.__class__.task_name)),
+            "%s/script/%s.sh" % (os.path.dirname(__file__), self.__class__.task_name),
             param_conf.get("intron_retention", "image"),
             param_conf.get("intron_retention", "resource"),
             output_dir + "/logging")
@@ -26,11 +25,12 @@ class Intron_retention(Abstract_task):
         task_file = "{}/{}-tasks-{}-{}.tsv".format(task_dir, self.__class__.task_name, run_conf.get_owner_info(), run_conf.analysis_timestamp)
         with open(task_file, 'w') as hout:
             
-            print >> hout, '\t'.join(["--env SAMPLE",
-                                      "--input-recursive INPUT_DIR",
-                                      "--env INPUT_BAM",
-                                      "--output-recursive OUTPUT_DIR",
-                                      "--env OPTION"])
+            hout.write('\t'.join(["--env SAMPLE",
+                                  "--input-recursive INPUT_DIR",
+                                  "--env INPUT_BAM",
+                                  "--output-recursive OUTPUT_DIR",
+                                  "--env OPTION"]) 
+                                  + "\n")
 
             for sample in sample_conf.intron_retention:
 
@@ -38,10 +38,11 @@ class Intron_retention(Abstract_task):
                 bam_dir = os.path.dirname(bam)
                 bam_file = os.path.basename(bam)
 
-                print >> hout, '\t'.join([sample,
-                                          bam_dir,
-                                          bam_file,
-                                          output_dir + "/intron_retention/" + sample,
-                                          param_conf.get("intron_retention", "intron_retention_option")])
+                hout.write('\t'.join([sample,
+                                      bam_dir,
+                                      bam_file,
+                                      output_dir + "/intron_retention/" + sample,
+                                      param_conf.get("intron_retention", "intron_retention_option")]) 
+                                      + "\n")
 
         return task_file

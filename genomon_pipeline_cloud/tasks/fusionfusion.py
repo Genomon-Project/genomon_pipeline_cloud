@@ -1,17 +1,16 @@
 #! /usr/bin/env python
 
 import os
-import pkg_resources
-from ..abstract_task import *
+import abstract_task
  
-class Fusionfusion(Abstract_task):
+class Fusionfusion(abstract_task.Abstract_task):
 
     task_name = "fusionfusion"
 
     def __init__(self, output_dir, task_dir, sample_conf, param_conf, run_conf):
     
         super(Fusionfusion, self).__init__(
-            pkg_resources.resource_filename("genomon_pipeline_cloud", "script/{}.sh".format(self.__class__.task_name)),
+            "%s/script/%s.sh" % (os.path.dirname(__file__), self.__class__.task_name),
             param_conf.get("fusionfusion", "image"),
             param_conf.get("fusionfusion", "resource"),
             output_dir + "/logging")
@@ -26,14 +25,15 @@ class Fusionfusion(Abstract_task):
         task_file = "{}/{}-tasks-{}-{}.tsv".format(task_dir, self.__class__.task_name, run_conf.get_owner_info(), run_conf.analysis_timestamp)
         with open(task_file, 'w') as hout:
             
-            print >> hout, '\t'.join(["--env SAMPLE",
-                                      "--input INPUT",
-                                      "--output-recursive OUTPUT_DIR",
-                                      "--env OPTION",
-                                      "--env FILT_OPTION",
-                                      "--input REFERENCE",
-                                      "--input-recursive MERGED_COUNT_DIR",
-                                      "--env PANEL_NAME"])
+            hout.write('\t'.join(["--env SAMPLE",
+                                  "--input INPUT",
+                                  "--output-recursive OUTPUT_DIR",
+                                  "--env OPTION",
+                                  "--env FILT_OPTION",
+                                  "--input REFERENCE",
+                                  "--input-recursive MERGED_COUNT_DIR",
+                                  "--env PANEL_NAME"]) 
+                                  + "\n")
 
             for sample, panel_name  in sample_conf.fusion:
 
@@ -54,6 +54,6 @@ class Fusionfusion(Abstract_task):
                      record.append("")
                      record.append("")
 
-                print >> hout, '\t'.join(record)
+                hout.write('\t'.join(record) + "\n")
 
         return task_file

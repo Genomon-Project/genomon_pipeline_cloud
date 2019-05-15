@@ -4,6 +4,8 @@ language: python
 
 python:
   - "2.7"
+  - "3.6"
+  - "3.7"
 
 env:
   matrix:
@@ -27,7 +29,7 @@ before_script:
 
 script:
   - python setup.py build install
-  - genomon_pipeline_cloud ${MODE} test/sample_${MODE}.csv ${AWS_S3_BUCKET}/genomon_pipeline_cloud/${MODE} test/param_${MODE}_ecsub.cfg --engine ecsub
+  - genomon_pipeline_cloud ${MODE} test/sample_${MODE}.csv ${AWS_S3_BUCKET}/${MODE} test/param_${MODE}_ecsub.cfg --engine ecsub
 
 notifications:
   emails:

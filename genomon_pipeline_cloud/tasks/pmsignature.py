@@ -1,16 +1,16 @@
 #! /usr/bin/env python
 
-import pkg_resources
-from ..abstract_task import *
+import os
+import abstract_task
 
-class Pmsignature(Abstract_task):
+class Pmsignature(abstract_task.Abstract_task):
     
     task_name = "pmsignature"
     
     def __init__(self, output_dir, task_dir, sample_conf, param_conf, run_conf):
         
         super(Pmsignature, self).__init__(
-            pkg_resources.resource_filename("genomon_pipeline_cloud", "script/{}.sh".format(self.__class__.task_name)),
+            "%s/script/%s.sh" % (os.path.dirname(__file__), self.__class__.task_name),
             param_conf.get("pmsignature", "image"),
             param_conf.get("pmsignature", "resource"),
             output_dir + "/logging")
@@ -50,32 +50,34 @@ class Pmsignature(Abstract_task):
                                      "--env TRIALNUM",
                                      "--env TXDB_TRANSCRIPT"])
             if header == None:
-                print >> hout, header_text
+                hout.write(header_text + "\n")
             
             else:
-                print >> hout, '\t'.join([header, header_text])
+                hout.write('\t'.join([header, header_text]) + "\n")
                 
                 if param_conf.getboolean("pmsignature", "enable"):
-                    print >> hout, '\t'.join([data,
-                                              output_dir + "/pmsignature/" + run_conf.sample_conf_name,
-                                              "ind",
-                                              param_conf.get("pmsignature", "bgflag"),
-                                              param_conf.get("pmsignature", "bs_genome"),
-                                              param_conf.get("pmsignature", "signum_min"),
-                                              param_conf.get("pmsignature", "signum_max"),
-                                              param_conf.get("pmsignature", "trdirflag"),
-                                              param_conf.get("pmsignature", "trialnum"),
-                                              param_conf.get("pmsignature", "txdb_transcript")])
+                    hout.write('\t'.join([data,
+                                          output_dir + "/pmsignature/" + run_conf.sample_conf_name,
+                                          "ind",
+                                          param_conf.get("pmsignature", "bgflag"),
+                                          param_conf.get("pmsignature", "bs_genome"),
+                                          param_conf.get("pmsignature", "signum_min"),
+                                          param_conf.get("pmsignature", "signum_max"),
+                                          param_conf.get("pmsignature", "trdirflag"),
+                                          param_conf.get("pmsignature", "trialnum"),
+                                          param_conf.get("pmsignature", "txdb_transcript")]) 
+                                          + "\n")
                 
                 if param_conf.getboolean("signature", "enable"):
-                    print >> hout, '\t'.join([data,
-                                              output_dir + "/pmsignature/" + run_conf.sample_conf_name,
-                                              "full",
-                                              param_conf.get("signature", "bgflag"),
-                                              param_conf.get("signature", "bs_genome"),
-                                              param_conf.get("signature", "signum_min"),
-                                              param_conf.get("signature", "signum_max"),
-                                              param_conf.get("signature", "trdirflag"),
-                                              param_conf.get("signature", "trialnum"),
-                                              param_conf.get("signature", "txdb_transcript")])
+                    hout.write('\t'.join([data,
+                                          output_dir + "/pmsignature/" + run_conf.sample_conf_name,
+                                          "full",
+                                          param_conf.get("signature", "bgflag"),
+                                          param_conf.get("signature", "bs_genome"),
+                                          param_conf.get("signature", "signum_min"),
+                                          param_conf.get("signature", "signum_max"),
+                                          param_conf.get("signature", "trdirflag"),
+                                          param_conf.get("signature", "trialnum"),
+                                          param_conf.get("signature", "txdb_transcript")]) 
+                                          + "\n")
         return task_file

@@ -1,16 +1,16 @@
 #! /usr/bin/env python
 
-import pkg_resources
-from ..abstract_task import *
+import os
+import abstract_task
  
-class SV_merge(Abstract_task):
+class SV_merge(abstract_task.Abstract_task):
 
     task_name = "sv-merge"
 
     def __init__(self, output_dir, task_dir, sample_conf, param_conf, run_conf):
 
         super(SV_merge, self).__init__(
-            pkg_resources.resource_filename("genomon_pipeline_cloud", "script/{}.sh".format(self.__class__.task_name)),
+            "%s/script/%s.sh" % (os.path.dirname(__file__), self.__class__.task_name),
             param_conf.get("sv_merge", "image"),
             param_conf.get("sv_merge", "resource"),
             output_dir + "/logging")
@@ -47,7 +47,7 @@ class SV_merge(Abstract_task):
                 header_li.append("--input-recursive INPUT_DIR_" + str(cnt))
                 header_li.append("--env SAMPLE_" + str(cnt))
             
-            print >> hout, '\t'.join(header_li)
+            hout.write('\t'.join(header_li) + "\n")
 
             for panel_name in sample_conf.control_panel:
                 if panel_name in control_panel_list_uniq:
@@ -66,7 +66,7 @@ class SV_merge(Abstract_task):
                         record.append("")
                         record.append("")
             
-                    print >> hout, '\t'.join(record)
+                    hout.write('\t'.join(record) + "\n")
 
         return task_file
 

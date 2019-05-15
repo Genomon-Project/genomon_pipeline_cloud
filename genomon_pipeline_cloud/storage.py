@@ -9,7 +9,7 @@ class Storage(object):
 
         """
         if region is None and zone is None:
-            print >> sys.stderr, "region or zone should not be None."
+            print ("region or zone should not be None.")
             sys.exit(1)
         """
         self.provider = None
@@ -31,7 +31,7 @@ class Storage(object):
         elif storage_path.startswith("gs://"):
             self.__upload_to_gcs(local_file_path, storage_path, create_bucket)
         else:
-            raise ValueError, "Storage path should starts with 's3://' or 'gs://'."
+            raise ValueError ("Storage path should starts with 's3://' or 'gs://'.")
 
 
     def __get_bucket_name_from_storage_path(self, storage_path):
@@ -41,9 +41,16 @@ class Storage(object):
         elif storage_path.startswith("gs://"):
             return re.sub(r'^gs://', '', storage_path).split('/')[0]
         else:
-            raise ValueError, "Storage path should starts with 's3://' or 'gs://'."
+            raise ValueError ("Storage path should starts with 's3://' or 'gs://'.")
 
 
+    def __print_error (self, message):
+        if sys.version_info.major == 2:
+            print >> sys.stderr, message    
+        else:
+            #print (message, file = sys.stderr)
+            print (message)
+            
     # #####################
     # upload
     # #####################
@@ -54,10 +61,10 @@ class Storage(object):
 
         if not self.__check_bucket_exist_aws(target_bucket_name):
             if create_bucket:
-                print ("bucket %s is not exist." % (target_bucket_name))
+                self.__print_error ("bucket %s is not exist." % (target_bucket_name))
                 self.__create_bucket_aws(bucket_name = target_bucket_name)
             else:
-                print >> sys.stderr, "No bucket: " + target_bucket_name
+                self.__print_error ("No bucket: " + target_bucket_name)
                 sys.exit(1)
 
         # Upload to the S3
@@ -78,13 +85,13 @@ class Storage(object):
                 out, err = proc.communicate()
                 if proc.returncode == 1:
                     if "ServiceException" in err:
-                        print >> sys.stderr, "Bucket " + target_bucket_name + " already exists."
+                        self.__print_error ("Bucket " + target_bucket_name + " already exists.")
                         sys.exit(1)
                     else:
-                        print >> sys.stderr, "An Error happend while creating Buckt " + target_bucket_name + "."
+                        self.__print_error ("An Error happend while creating Buckt " + target_bucket_name + ".")
                         sys.exit(1)
             else:
-                print >> sys.stderr, "No bucket: " + target_bucket_name
+                self.__print_error ("No bucket: " + target_bucket_name)
                 sys.exit(1)
 
         # Upload to the Google Cloud Storage
@@ -128,7 +135,7 @@ class Storage(object):
         proc = subprocess.Popen(["aws", "s3", "mb", "s3://" + bucket_name], stdout = subprocess.PIPE, stderr = subprocess.PIPE)
         out, err = proc.communicate()
         if proc.returncode != 0:
-            print(err)
+            self.__print_error (err)
             sys.exit(1)
                 
     def __create_bucket_gcs(self, bucket_name):
@@ -137,10 +144,10 @@ class Storage(object):
         out, err = proc.communicate()
         if proc.returncode == 1:
             if "ServiceException" in err:
-                print >> sys.stderr, "Bucket " + bucket_name + " already exists."
+                self.__print_error ("Bucket " + bucket_name + " already exists.")
                 sys.exit(1)
             else:
-                print >> sys.stderr, "An Error happend while creating Buckt " + bucket_name + "."
+                self.__print_error ("An Error happend while creating Buckt " + bucket_name + ".")
                 sys.exit(1)
 
 

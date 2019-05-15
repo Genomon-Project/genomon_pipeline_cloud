@@ -1,11 +1,12 @@
 #! /usr/bin/env python
 
 import os
-import subprocess
 import datetime
 
 date_format = "{year:0>4d}-{month:0>2d}-{day:0>2d} {hour:0>2d}:{min:0>2d}:{second:0>2d}"
 timestamp_format = "{year:0>4d}{month:0>2d}{day:0>2d}-{hour:0>2d}{min:0>2d}{second:0>2d}"
+
+import __init__ as ini
 
 class Run_conf(object):
     """
@@ -41,8 +42,9 @@ class Run_conf(object):
                                       second = now.second)
 
         # pipeline version
-        proc = subprocess.Popen(['genomon_pipeline_cloud --version 2>&1'], shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        self.pipeline_version = (proc.communicate()[0]).split("\n")[0]
+        #proc = subprocess.Popen(['genomon_pipeline_cloud --version 2>&1'], shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        #self.pipeline_version = (proc.communicate()[0]).split("\n")[0]
+        self.pipeline_version = ini.__version__
         
         # path to upload
         [name, ext] = os.path.splitext(os.path.basename(sample_conf_file))

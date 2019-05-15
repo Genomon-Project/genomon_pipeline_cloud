@@ -1,17 +1,16 @@
 #! /usr/bin/env python
 
 import os
-import pkg_resources
-from ..abstract_task import *
+import abstract_task
  
-class Mutation_call(Abstract_task):
+class Mutation_call(abstract_task.Abstract_task):
 
     task_name = "mutation-call"
 
     def __init__(self, output_dir, task_dir, sample_conf, param_conf, run_conf):
 
         super(Mutation_call, self).__init__(
-            pkg_resources.resource_filename("genomon_pipeline_cloud", "script/{}.sh".format(self.__class__.task_name)),
+            "%s/script/%s.sh" % (os.path.dirname(__file__), self.__class__.task_name),
             param_conf.get("mutation_call", "image"),
             param_conf.get("mutation_call", "resource"),
             output_dir + "/logging")
@@ -24,33 +23,34 @@ class Mutation_call(Abstract_task):
         task_file = "{}/{}-tasks-{}-{}.tsv".format(task_dir, self.__class__.task_name, run_conf.get_owner_info(), run_conf.analysis_timestamp)
         with open(task_file, 'w') as hout:
 
-            print >> hout, '\t'.join(["--env SAMPLE1",
-                                      "--env SAMPLE2",
-                                      "--env CONTROL_BAM_LIST",
-                                      "--input-recursive INPUT_DIR1",
-                                      "--input-recursive INPUT_DIR2",
-                                      "--env INPUT_BAM1",
-                                      "--env INPUT_BAM2",
-                                      "--output-recursive OUTPUT_DIR",
-                                      "--env META",
-                                      "--input-recursive REFERENCE",
-                                      "--input-recursive HOTSPOT_DB",
-                                      "--input-recursive ANNOTATION_DB",
-                                      "--env FISHER_SINGLE_OPTION",
-                                      "--env FISHER_SINGLE_SAMTOOLS",
-                                      "--env FISHER_PAIR_OPTION",
-                                      "--env FISHER_PAIR_SAMTOOLS",
-                                      "--env FISHER_INTERVAL_LIST",
-                                      "--env HOTSPOT_OPTION",
-                                      "--env HOTSPOT_SAMTOOLS",
-                                      "--env REALIGNMENT_OPTION",
-                                      "--env INDEL_OPTION",
-                                      "--env INDEL_SAMTOOLS",
-                                      "--env BREAKPOINT_OPTION",
-                                      "--env FILTER_PAIR_OPTION",
-                                      "--env FILTER_SINGLE_OPTION",
-                                      "--env ACTIVE_HGVD_2016_FLAG",
-                                      "--env ACTIVE_EXAC_FLAG"])
+            hout.write('\t'.join(["--env SAMPLE1",
+                                  "--env SAMPLE2",
+                                  "--env CONTROL_BAM_LIST",
+                                  "--input-recursive INPUT_DIR1",
+                                  "--input-recursive INPUT_DIR2",
+                                  "--env INPUT_BAM1",
+                                  "--env INPUT_BAM2",
+                                  "--output-recursive OUTPUT_DIR",
+                                  "--env META",
+                                  "--input-recursive REFERENCE",
+                                  "--input-recursive HOTSPOT_DB",
+                                  "--input-recursive ANNOTATION_DB",
+                                  "--env FISHER_SINGLE_OPTION",
+                                  "--env FISHER_SINGLE_SAMTOOLS",
+                                  "--env FISHER_PAIR_OPTION",
+                                  "--env FISHER_PAIR_SAMTOOLS",
+                                  "--env FISHER_INTERVAL_LIST",
+                                  "--env HOTSPOT_OPTION",
+                                  "--env HOTSPOT_SAMTOOLS",
+                                  "--env REALIGNMENT_OPTION",
+                                  "--env INDEL_OPTION",
+                                  "--env INDEL_SAMTOOLS",
+                                  "--env BREAKPOINT_OPTION",
+                                  "--env FILTER_PAIR_OPTION",
+                                  "--env FILTER_SINGLE_OPTION",
+                                  "--env ACTIVE_HGVD_2016_FLAG",
+                                  "--env ACTIVE_EXAC_FLAG"]) 
+                                  + "\n")
 
             for sample in sample_conf.mutation_call:
 
@@ -69,33 +69,34 @@ class Mutation_call(Abstract_task):
                     normal_bam_dir = os.path.dirname(normal_bam)
                     normal_bam_file = os.path.basename(normal_bam)
 
-                print >> hout, '\t'.join([sample_tumor,
-                                          sample_normal,
-                                          control_panel,
-                                          tumor_bam_dir,
-                                          normal_bam_dir,
-                                          tumor_bam_file,
-                                          normal_bam_file,
-                                          output_dir + "/mutation/" + sample_tumor,
-                                          run_conf.get_meta_info(param_conf.get("mutation_call", "image")),
-                                          param_conf.get("mutation_call", "reference"),
-                                          param_conf.get("mutation_call", "hotspot_database"),
-                                          param_conf.get("mutation_call", "annotation_database"),
-                                          param_conf.get("mutation_call", "fisher_single_option"),
-                                          param_conf.get("mutation_call", "fisher_single_samtools"),
-                                          param_conf.get("mutation_call", "fisher_pair_option"),
-                                          param_conf.get("mutation_call", "fisher_pair_samtools"),
-                                          param_conf.get("mutation_call", "fisher_interval_list"),
-                                          param_conf.get("mutation_call", "hotspot_call_option"),
-                                          param_conf.get("mutation_call", "hotspot_call_samtools"),
-                                          param_conf.get("mutation_call", "realignment_option"),
-                                          param_conf.get("mutation_call", "indel_option"),
-                                          param_conf.get("mutation_call", "indel_samtools"),
-                                          param_conf.get("mutation_call", "breakpoint_option"),
-                                          param_conf.get("mutation_call", "filter_pair_option"),
-                                          param_conf.get("mutation_call", "filter_single_option"),
-                                          param_conf.get("mutation_call", "active_hgvd_2016_flag"),
-                                          param_conf.get("mutation_call", "active_exac_flag")])
+                hout.write('\t'.join([sample_tumor,
+                                      sample_normal,
+                                      control_panel,
+                                      tumor_bam_dir,
+                                      normal_bam_dir,
+                                      tumor_bam_file,
+                                      normal_bam_file,
+                                      output_dir + "/mutation/" + sample_tumor,
+                                      run_conf.get_meta_info(param_conf.get("mutation_call", "image")),
+                                      param_conf.get("mutation_call", "reference"),
+                                      param_conf.get("mutation_call", "hotspot_database"),
+                                      param_conf.get("mutation_call", "annotation_database"),
+                                      param_conf.get("mutation_call", "fisher_single_option"),
+                                      param_conf.get("mutation_call", "fisher_single_samtools"),
+                                      param_conf.get("mutation_call", "fisher_pair_option"),
+                                      param_conf.get("mutation_call", "fisher_pair_samtools"),
+                                      param_conf.get("mutation_call", "fisher_interval_list"),
+                                      param_conf.get("mutation_call", "hotspot_call_option"),
+                                      param_conf.get("mutation_call", "hotspot_call_samtools"),
+                                      param_conf.get("mutation_call", "realignment_option"),
+                                      param_conf.get("mutation_call", "indel_option"),
+                                      param_conf.get("mutation_call", "indel_samtools"),
+                                      param_conf.get("mutation_call", "breakpoint_option"),
+                                      param_conf.get("mutation_call", "filter_pair_option"),
+                                      param_conf.get("mutation_call", "filter_single_option"),
+                                      param_conf.get("mutation_call", "active_hgvd_2016_flag"),
+                                      param_conf.get("mutation_call", "active_exac_flag")]) 
+                                      + "\n")
 
         return task_file
 

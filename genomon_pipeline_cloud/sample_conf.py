@@ -51,7 +51,7 @@ class Sample_conf(object):
             if line_data[0].startswith('#'): continue
              
             # remove spaces
-            line_data = map(lambda x: x.strip(' '), line_data)
+            line_data = list(map(lambda x: x.strip(' '), line_data))
 
             # skip if all the elements are empty
             if len(line_data) == line_data.count(''): continue

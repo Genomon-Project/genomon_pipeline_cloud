@@ -1,17 +1,16 @@
 #! /usr/bin/env python
 
 import os
-import pkg_resources
-from ..abstract_task import *
+import abstract_task
 
-class Paplot(Abstract_task):
+class Paplot(abstract_task.Abstract_task):
     
     task_name = "paplot"
     
     def __init__(self, output_dir, task_dir, sample_conf, param_conf, run_conf):
         
         super(Paplot, self).__init__(
-            pkg_resources.resource_filename("genomon_pipeline_cloud", "script/{}.sh".format(self.__class__.task_name)),
+            "%s/script/%s.sh" % (os.path.dirname(__file__), self.__class__.task_name),
             param_conf.get("paplot", "image"),
             param_conf.get("paplot", "resource"),
             output_dir + "/logging")
@@ -92,10 +91,10 @@ class Paplot(Abstract_task):
                                      "--env REMARKS",
                                      "--env TITLE"])
             if len(header) == 0:
-                print >> hout, header_text
+                hout.write(header_text + "\n")
             
             else:
-                print >> hout, '\t'.join(['\t'.join(header), header_text])
+                hout.write('\t'.join(['\t'.join(header), header_text]) + "\n")
                 
                 if param_conf.getboolean("paplot", "enable"):
                     remarks = param_conf.get("paplot", "remarks")
@@ -104,11 +103,12 @@ class Paplot(Abstract_task):
                         remarks += "<li>" + param_conf.get(soft, "image") + "</li>"
                     remarks += "</ul>"
                     
-                    print >> hout, '\t'.join(['\t'.join(data),
-                                              param_conf.get("paplot", "config_file"),
-                                              output_dir + "/paplot/" + run_conf.sample_conf_name,
-                                              remarks,
-                                              param_conf.get("paplot", "title")])
+                    hout.write('\t'.join(['\t'.join(data),
+                                          param_conf.get("paplot", "config_file"),
+                                          output_dir + "/paplot/" + run_conf.sample_conf_name,
+                                          remarks,
+                                          param_conf.get("paplot", "title")]) 
+                                          + "\n")
         
         return task_file
 

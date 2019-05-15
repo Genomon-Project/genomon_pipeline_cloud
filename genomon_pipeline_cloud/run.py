@@ -1,22 +1,27 @@
 #! /usr/bin/env python
 
 import sys, os, multiprocessing
-from ConfigParser import SafeConfigParser
-from batch_engine import Batch_engine, Dsub_factory, Azmon_factory, Ecsub_factory, Awsub_factory
-from sample_conf import Sample_conf
-from run_conf import Run_conf
-from storage import Storage
+   
+import batch_engine as be
+import sample_conf as sc
+import run_conf as rc
+import storage as st
+
+if sys.version_info.major == 2:
+    import ConfigParser as cp
+else:
+    import configparser as cp
 
 def run(args):
     args.output_dir = args.output_dir.rstrip("/")
     
-    sample_conf = Sample_conf()
+    sample_conf = sc.Sample_conf()
     sample_conf.parse_file(args.sample_conf_file, args.output_dir, args.analysis_type)
     
-    param_conf = SafeConfigParser()
+    param_conf = cp.ConfigParser()
     param_conf.read(args.param_conf_file)
 
-    run_conf = Run_conf(sample_conf_file = args.sample_conf_file, 
+    run_conf = rc.Run_conf(sample_conf_file = args.sample_conf_file, 
                         param_conf_file = args.param_conf_file,
                         analysis_type = args.analysis_type,
                         output_dir = args.output_dir)
@@ -26,30 +31,30 @@ def run(args):
     tmp_dir = os.getcwd() + "/tmp"
     if not os.path.exists(tmp_dir):
         os.makedirs(tmp_dir)
-        print >> sys.stdout, "Creating temporary directory: " +  tmp_dir
+        print ("Creating temporary directory: " +  tmp_dir)
 
     log_dir = os.getcwd() + "/log"
     if not os.path.exists(log_dir):
         os.makedirs(log_dir)
-        print >> sys.stdout, "Creating log directory: " +  log_dir
+        print ("Creating log directory: " +  log_dir)
         
     # preparing batch job engine
     if args.engine == "dsub":
-        factory = Dsub_factory()
+        factory = be.Dsub_factory()
     elif args.engine == "azmon":
-        factory = Azmon_factory()
+        factory = be.Azmon_factory()
     elif args.engine == "ecsub":
-        factory = Ecsub_factory()
+        factory = be.Ecsub_factory()
         factory.s3_wdir = args.output_dir + "/ecsub"
-        factory.wdir = "/tmp/ecsub"
+        factory.wdir = tmp_dir + "/ecsub"
     else:
-        factory = Awsub_factory()
+        factory = be.Awsub_factory()
 
     factory.dryrun = args.dryrun
-    batch_engine = Batch_engine(factory, param_conf.get("general", "instance_option"))
+    batch_engine = be.Batch_engine(factory, param_conf.get("general", "instance_option"))
     
     # upload config files
-    storage = Storage(dryrun = args.dryrun)
+    storage = st.Storage(dryrun = args.dryrun)
     storage.upload(args.sample_conf_file, run_conf.sample_conf_storage_path, create_bucket = True)
     storage.upload(args.param_conf_file, run_conf.param_conf_storage_path, create_bucket = True)
     
@@ -57,19 +62,19 @@ def run(args):
     # RNA
     if args.analysis_type == "rna":
 
-        from tasks.star_alignment import Star_alignment
-        from tasks.fusion_count import Fusion_count   
-        from tasks.fusion_merge import Fusion_merge 
-        from tasks.fusionfusion import Fusionfusion    
-        from tasks.genomon_expression import Genomon_expression
-        from tasks.intron_retention import Intron_retention
+        import tasks.star_alignment
+        import tasks.fusion_count
+        import tasks.fusion_merge
+        import tasks.fusionfusion
+        import tasks.genomon_expression
+        import tasks.intron_retention
 
-        star_alignment_task = Star_alignment(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
-        fusion_count_task = Fusion_count(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
-        fusion_merge_task = Fusion_merge(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
-        fusionfusion_task = Fusionfusion(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
-        genomon_expression_task = Genomon_expression(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
-        intron_retention_task = Intron_retention(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
+        star_alignment_task = tasks.star_alignment.Star_alignment(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
+        fusion_count_task = tasks.fusion_count.Fusion_count(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
+        fusion_merge_task = tasks.fusion_merge.Fusion_merge(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
+        fusionfusion_task = tasks.fusionfusion.Fusionfusion(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
+        genomon_expression_task = tasks.genomon_expression.Genomon_expression(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
+        intron_retention_task = tasks.intron_retention.Intron_retention(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
         
         p_star = multiprocessing.Process(target = batch_engine.execute, args = (star_alignment_task,))
         p_star.start()
@@ -92,32 +97,27 @@ def run(args):
     # DNA
     elif args.analysis_type == "dna":
     
-        from tasks.bwa_alignment import Bwa_alignment
-        from tasks.sv_parse import SV_parse
-        from tasks.sv_merge import SV_merge
-        from tasks.sv_filt import SV_filt
-        #from tasks.control_call import Control_call
-        #from tasks.control_merge import Control_merge
-        from tasks.mutation_call import Mutation_call
-        from tasks.genomon_qc import Genomon_qc
-        from tasks.pmsignature import Pmsignature
+        import tasks.bwa_alignment
+        import tasks.sv_parse
+        import tasks.sv_merge
+        import tasks.sv_filt
+        import tasks.mutation_call
+        import tasks.genomon_qc
+        import tasks.pmsignature
         
-        bwa_alignment_task = Bwa_alignment(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
+        bwa_alignment_task = tasks.bwa_alignment.Bwa_alignment(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
         p_bwa = multiprocessing.Process(target = batch_engine.execute, args = (bwa_alignment_task,))
 
-        sv_parse_task = SV_parse(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
-        sv_merge_task = SV_merge(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
-        sv_filt_task = SV_filt(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
+        sv_parse_task = tasks.sv_parse.SV_parse(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
+        sv_merge_task = tasks.sv_merge.SV_merge(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
+        sv_filt_task = tasks.sv_filt.SV_filt(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
         p_sv = multiprocessing.Process(target = batch_engine.seq_execute, args = ([sv_parse_task,sv_merge_task,sv_filt_task],))
 
-        #control_call_task = Control_call(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
-        #control_merge_task = Control_merge(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
-        mutation_call_task = Mutation_call(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
-        pmsignature_task = Pmsignature(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
-        # p_mutation = multiprocessing.Process(target = batch_engine.seq_execute, args = ([control_call_task,control_merge_task,mutation_call_task,pmsignature_task],))
+        mutation_call_task = tasks.mutation_call.Mutation_call(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
+        pmsignature_task = tasks.pmsignature.Pmsignature(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
         p_mutation = multiprocessing.Process(target = batch_engine.seq_execute, args = ([mutation_call_task,pmsignature_task],))
 
-        qc_task = Genomon_qc(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
+        qc_task = tasks.genomon_qc.Genomon_qc(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
         p_qc = multiprocessing.Process(target = batch_engine.execute, args = (qc_task,))
         
         p_bwa.start()
@@ -142,3 +142,37 @@ def run(args):
     
     if args.engine == "ecsub":
         factory.print_summary(run_conf, log_dir)
+
+if __name__ == "__main__":
+
+    import argparse
+    
+    aparser = argparse.ArgumentParser(prog = "genomon_pipeline_cloud")
+    aparser.add_argument("--version", action = "version", version = "genomon_pipeline_cloud-0.0.0")
+    aparser.add_argument("--output_dir", type = str, default = "./test")
+    aparser.add_argument("--engine", choices = ["awsub", "dsub", "azmon", "ecsub"], type = str, default = "ecsub")
+    aparser.add_argument("--dryrun", action = 'store_true')
+    aparser.add_argument('analysis_type', choices=['dna', 'rna'])
+    aparser.add_argument("sample_conf_file", type = str)
+    aparser.add_argument("param_conf_file", type = str)
+    
+    class C:
+        pass
+    
+    dna = C()
+    aparser.parse_args(args=['dna', 
+                             os.path.dirname(__file__) + "/../example_conf/sample_dna.csv",
+                             os.path.dirname(__file__) + "/../example_conf/param_dna_ecsub.cfg",
+                             "--dryrun"], 
+                        namespace = dna)
+    run(dna)
+    
+    
+    rna = C()
+    aparser.parse_args(args=['rna', 
+                             os.path.dirname(__file__) + "/../example_conf/sample_rna.csv",
+                             os.path.dirname(__file__) + "/../example_conf/param_rna_ecsub.cfg",
+                             "--dryrun"], 
+                        namespace = rna)
+    run(rna)
+    

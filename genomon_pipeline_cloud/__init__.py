@@ -1,7 +1,7 @@
-__version__ = '0.2.1'
+__version__ = '0.3.0'
 
 import argparse
-from genomon_pipeline_cloud.run import run
+import run
 
 def main():
 
@@ -12,10 +12,10 @@ def main():
     aparser.add_argument("output_dir", default = None, type = str,
                          help = "Output directory for Google Cloud Storage or AWS S3 bucket")
     aparser.add_argument("param_conf_file", help = "Parameter config file", type = str)
-    aparser.add_argument("--engine", choices = ["awsub", "dsub", "azmon", "ecsub"], default = "awsub", type = str,
+    aparser.add_argument("--engine", choices = ["awsub", "dsub", "azmon", "ecsub"], default = "ecsub", type = str,
                          help = "Batch job engine")
     aparser.add_argument("--dryrun", help = "For dry run ", action = 'store_true')
     args = aparser.parse_args()
 
-    run(args)
+    run.run(args)
 

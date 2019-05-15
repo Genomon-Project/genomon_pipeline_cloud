@@ -1,17 +1,16 @@
 #! /usr/bin/env python
 
 import os
-import pkg_resources
-from ..abstract_task import *
+import abstract_task
  
-class Fusion_count(Abstract_task):
+class Fusion_count(abstract_task.Abstract_task):
 
     task_name = "fusion-count"
 
     def __init__(self, output_dir, task_dir, sample_conf, param_conf, run_conf):
 
         super(Fusion_count, self).__init__(
-            pkg_resources.resource_filename("genomon_pipeline_cloud", "script/{}.sh".format(self.__class__.task_name)),
+            "%s/script/%s.sh" % (os.path.dirname(__file__), self.__class__.task_name),
             param_conf.get("fusion_count_control", "image"),
             param_conf.get("fusion_count_control", "resource"),
             output_dir + "/logging")
@@ -24,11 +23,12 @@ class Fusion_count(Abstract_task):
         task_file = "{}/{}-tasks-{}-{}.tsv".format(task_dir, self.__class__.task_name, run_conf.get_owner_info(), run_conf.analysis_timestamp)
         with open(task_file, 'w') as hout:
 
-            print >> hout, '\t'.join(["--env SAMPLE",
-                                      "--input INPUT",
-                                      "--output-recursive OUTPUT_DIR",
-                                      "--env META",
-                                      "--env OPTION"])
+            hout.write('\t'.join(["--env SAMPLE",
+                                  "--input INPUT",
+                                  "--output-recursive OUTPUT_DIR",
+                                  "--env META",
+                                  "--env OPTION"]) 
+                                  + "\n")
 
             control_panel_li = []
             for tumor_sample, panel_name  in sample_conf.fusion:
@@ -45,11 +45,12 @@ class Fusion_count(Abstract_task):
                 bam = sample_conf.bam_file[sample]
                 bam_dir = os.path.dirname(bam)
 
-                print >> hout, '\t'.join([sample,
-                                          bam_dir + "/" + sample + ".Chimeric.out.sam",
-                                          output_dir + "/fusion/control_panel/" + sample,
-                                          run_conf.get_meta_info(param_conf.get("fusion_count_control", "image")),
-                                          param_conf.get("fusion_count_control", "chimera_utils_count_option")])
+                hout.write('\t'.join([sample,
+                                      bam_dir + "/" + sample + ".Chimeric.out.sam",
+                                      output_dir + "/fusion/control_panel/" + sample,
+                                      run_conf.get_meta_info(param_conf.get("fusion_count_control", "image")),
+                                      param_conf.get("fusion_count_control", "chimera_utils_count_option")]) 
+                                      + "\n")
 
         return task_file
 
