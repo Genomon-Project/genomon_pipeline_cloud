@@ -66,7 +66,8 @@ before_script:
 
 script:
   - python setup.py build install
-  - if [ ${EXEC} == 1 ]; then travis_wait 60 script -c "genomon_pipeline_cloud ${MODE} test/sample_${MODE}.csv ${AWS_S3_BUCKET}/${MODE} test/param_${MODE}_ecsub.cfg --engine ecsub" 2>&1 | tee dummy.log; fi
+  - if [ ${EXEC} == 1 ] && [ ${MODE} == "dna" ]; then genomon_pipeline_cloud ${MODE} test/sample_${MODE}.csv ${AWS_S3_BUCKET}/${MODE} test/param_${MODE}_ecsub.cfg --engine ecsub; fi
+  - if [ ${EXEC} == 1 ] && [ ${MODE} == "rna" ]; then travis_wait 60 genomon_pipeline_cloud ${MODE} test/sample_${MODE}.csv ${AWS_S3_BUCKET}/${MODE} test/param_${MODE}_ecsub.cfg --engine ecsub; fi
 
 notifications:
   emails:
