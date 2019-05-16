@@ -21,13 +21,13 @@ matrix:
       dist: xenial
       env:
         - MODE=dna
-        - EXEC=0
+        - EXEC=1
     - name: "Python 3.7 and rna"
       python: 3.7
       dist: xenial
       env:
         - MODE=rna
-        - EXEC=0
+        - EXEC=1
     - name: "Python 3.6 and dna"
       python: 3.6
       env:
@@ -42,22 +42,22 @@ matrix:
       python: 3.5
       env:
         - MODE=dna
-        - EXEC=1
+        - EXEC=0
     - name: "Python 3.5 and rna"
       python: 3.5
       env:
         - MODE=rna
-        - EXEC=1
+        - EXEC=0
     - name: "Python 3.4 and dna"
       python: 3.4
       env:
         - MODE=dna
-        - EXEC=1
+        - EXEC=0
     - name: "Python 3.4 and rna"
       python: 3.4
       env:
         - MODE=rna
-        - EXEC=1
+        - EXEC=0
     - name: "Python 2.7 and dna"
       python: 2.7
       env:
