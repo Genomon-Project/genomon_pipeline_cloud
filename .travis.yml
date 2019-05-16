@@ -9,25 +9,25 @@ matrix:
       dist: xenial
       env: 
         - MODE=dna
-        - EXEC=1
+        - EXEC=0
     - name: "Python 3.8 and rna"
       python: 3.8-dev
       dist: xenial
       env: 
         - MODE=rna
-        - EXEC=1
+        - EXEC=0
     - name: "Python 3.7 and dna"
       python: 3.7
       dist: xenial
       env:
         - MODE=dna
-        - EXEC=1
+        - EXEC=0
     - name: "Python 3.7 and rna"
       python: 3.7
       dist: xenial
       env:
         - MODE=rna
-        - EXEC=1
+        - EXEC=0
     - name: "Python 3.6 and dna"
       python: 3.6
       env:
@@ -38,6 +38,26 @@ matrix:
       env:
         - MODE=rna
         - EXEC=0
+    - name: "Python 3.5 and dna"
+      python: 3.5
+      env:
+        - MODE=dna
+        - EXEC=1
+    - name: "Python 3.5 and rna"
+      python: 3.5
+      env:
+        - MODE=rna
+        - EXEC=1
+    - name: "Python 3.4 and dna"
+      python: 3.4
+      env:
+        - MODE=dna
+        - EXEC=1
+    - name: "Python 3.4 and rna"
+      python: 3.4
+      env:
+        - MODE=rna
+        - EXEC=1
     - name: "Python 2.7 and dna"
       python: 2.7
       env:
@@ -66,8 +86,9 @@ before_script:
 
 script:
   - python setup.py build install
-  - if [ ${EXEC} == 1 ] && [ ${MODE} == "dna" ]; then genomon_pipeline_cloud ${MODE} test/sample_${MODE}.csv ${AWS_S3_BUCKET}/${MODE} test/param_${MODE}_ecsub.cfg --engine ecsub; fi
+  - if [ ${EXEC} == 1 ] && [ ${MODE} == "dna" ]; then                genomon_pipeline_cloud ${MODE} test/sample_${MODE}.csv ${AWS_S3_BUCKET}/${MODE} test/param_${MODE}_ecsub.cfg --engine ecsub; fi
   - if [ ${EXEC} == 1 ] && [ ${MODE} == "rna" ]; then travis_wait 60 genomon_pipeline_cloud ${MODE} test/sample_${MODE}.csv ${AWS_S3_BUCKET}/${MODE} test/param_${MODE}_ecsub.cfg --engine ecsub; fi
+  - if [ ${EXEC} == 0 ]; then                                        genomon_pipeline_cloud ${MODE} test/sample_${MODE}.csv ${AWS_S3_BUCKET}/${MODE} test/param_${MODE}_ecsub.cfg --engine ecsub --dryrun; fi
 
 notifications:
   emails:
