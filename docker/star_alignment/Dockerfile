@@ -12,9 +12,9 @@ RUN echo "deb http://deb.debian.org/debian stretch main" > /etc/apt/sources.list
 ##########
 ## STAR
 
-RUN wget https://github.com/alexdobin/STAR/archive/2.5.3a.tar.gz && \
-    tar xzvf 2.5.3a.tar.gz && \
-    mv STAR-2.5.3a/bin/Linux_x86_64_static/STAR /usr/local/bin
+RUN wget https://github.com/alexdobin/STAR/archive/2.7.1a.tar.gz && \
+    tar xzvf 2.7.1a.tar.gz && \
+    mv STAR-2.7.1a/bin/Linux_x86_64_static/STAR /usr/local/bin
  
 ##########
 # Samtools
