@@ -12,18 +12,18 @@ RUN echo "deb http://deb.debian.org/debian stretch main" > /etc/apt/sources.list
     mkdir -p /tools && \
     \
     cd /tools && \
-    echo "build bwa-0.7.8" && \
-    wget http://sourceforge.net/projects/bio-bwa/files/bwa-0.7.8.tar.bz2 && \
-    tar xjvf bwa-0.7.8.tar.bz2 && \
-    cd bwa-0.7.8 && \
+    echo "build bwa-0.7.17" && \
+    wget http://sourceforge.net/projects/bio-bwa/files/bwa-0.7.17.tar.bz2 && \
+    tar xjvf bwa-0.7.17.tar.bz2 && \
+    cd bwa-0.7.17 && \
     make && \
     \ 
     cd /tools && \
-    echo "build samtools-1.2" && \
-    wget -nc https://sourceforge.net/projects/samtools/files/samtools/1.2/samtools-1.2.tar.bz2 && \
-    tar xjvf samtools-1.2.tar.bz2 && \
-    rm -f samtools-1.2.tar.bz2 && \
-    cd samtools-1.2 && \
+    echo "build samtools-1.9" && \
+    wget -nc https://sourceforge.net/projects/samtools/files/samtools/1.9/samtools-1.9.tar.bz2 && \
+    tar xjvf samtools-1.9.tar.bz2 && \
+    rm -f samtools-1.9.tar.bz2 && \
+    cd samtools-1.9 && \
     make && \
     make install && \
     \ 
