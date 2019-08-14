@@ -15,11 +15,11 @@ fi
 if [ ! _${NORMAL_SAMPLE} = "_None" ]
 then
     NORMAL_BAM=${NORMAL_BAM_DIR}/${NORMAL_BAM}
-    ARGUMNET="${ARGUMENT} --matched_control_bam ${NORMAL_BAM}"
+    ARGUMENT="${ARGUMENT} --matched_control_bam ${NORMAL_BAM}"
 
     if [ ! _${CONTROL_PANEL} = "_None" ]
     then
-        ARGUMNET="${ARGUMENT} --matched_control_label ${NORMAL_SAMPLE}"
+        ARGUMENT="${ARGUMENT} --matched_control_label ${NORMAL_SAMPLE}"
     fi
 fi
 
