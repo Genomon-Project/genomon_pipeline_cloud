@@ -1,20 +1,16 @@
-FROM python:2.7.14
-# debian 8.9
+FROM debian:9.11
 
-MAINTAINER Kenichi Chiba <kchiba@hgc.jp>
+MAINTAINER Ai Okada <aokada@ncc.go.jp>
 
-RUN echo "deb http://deb.debian.org/debian stretch main" > /etc/apt/sources.list && \
-    echo "deb http://deb.debian.org/debian stretch-updates main" >> /etc/apt/sources.list && \
-    echo "deb http://security.debian.org stretch/updates main" >> /etc/apt/sources.list && \
-    apt-get -y update && \
-    apt-get install -y dpkg-dev gcc g++ libc6-dev make patch tar unzip
+RUN apt-get -y update && \
+    apt-get install -y wget dpkg-dev gcc g++ libc6-dev make patch tar unzip zlib1g-dev libbz2-dev liblzma-dev autoconf autotools-dev libtool pkg-config
 
 ##########
 ## STAR
 
-RUN wget https://github.com/alexdobin/STAR/archive/2.7.1a.tar.gz && \
-    tar xzvf 2.7.1a.tar.gz && \
-    mv STAR-2.7.1a/bin/Linux_x86_64_static/STAR /usr/local/bin
+RUN wget https://github.com/alexdobin/STAR/archive/2.7.2b.tar.gz && \
+    tar xzvf 2.7.2b.tar.gz && \
+    mv STAR-2.7.2b/bin/Linux_x86_64_static/STAR /usr/local/bin
  
 ##########
 # Samtools
@@ -22,8 +18,7 @@ RUN wget https://github.com/alexdobin/STAR/archive/2.7.1a.tar.gz && \
 RUN wget https://github.com/samtools/samtools/releases/download/1.7/samtools-1.7.tar.bz2 && \
     tar jxvf samtools-1.7.tar.bz2 && \
     cd samtools-1.7/htslib-1.7 && \
-    ./configure §§ make && make install && \
-    cd ../ && ./configure --without-curses && make && make install
+    ./configure --without-curses && make && make install
 
 
 ##########
