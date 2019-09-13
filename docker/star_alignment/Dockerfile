@@ -17,7 +17,7 @@ RUN wget https://github.com/alexdobin/STAR/archive/2.7.2b.tar.gz && \
 
 RUN wget https://github.com/samtools/samtools/releases/download/1.7/samtools-1.7.tar.bz2 && \
     tar jxvf samtools-1.7.tar.bz2 && \
-    cd samtools-1.7/htslib-1.7 && \
+    cd samtools-1.7 && \
     ./configure --without-curses && make && make install
 
 
