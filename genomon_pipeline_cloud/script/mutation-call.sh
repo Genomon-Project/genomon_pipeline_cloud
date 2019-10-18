@@ -105,13 +105,13 @@ if [ _${ACTIVE_HGVD_2016_FLAG} = "_True" ]
 then
     HGVD_header="HGVD_20160412:#Sample,HGVD_20160412:Filter,HGVD_20160412:NR,HGVD_20160412:NA,HGVD_20160412:Frequency(NA/(NA+NR))"
     tmp_header=`echo $HGVD_header | tr "," "\t"`
-    print_header=${print_header}"\t"${tmp_header}
+    print_header=`echo -e "${print_header}\t${tmp_header}"`
 fi
 if [ _${ACTIVE_EXAC_FLAG} = "_True" ]
 then
     ExAC_header="ExAC:Filter,ExAC:AC_Adj,ExAC:AN_Adj,ExAC:Frequency(AC_Adj/AN_Adj),ExAC:AC_POPMAX,ExAC:AN_POPMAX,ExAC:Frequency(AC_POPMAX/AN_POPMAX),ExAC:POPMAX"
     tmp_header=`echo $ExAC_header | tr "," "\t"`
-    print_header=${print_header}"\t"${tmp_header}
+    print_header=`echo -e "${print_header}\t${tmp_header}"`
 fi
 
 echo "$META" > ${OUTPUT_PREF}.genomon_mutation.result.txt
