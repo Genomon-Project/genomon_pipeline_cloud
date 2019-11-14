@@ -30,7 +30,7 @@ if [ "${INPUT_BAM-UNDEF}" != "UNDEF" ]; then
         rm ${OUTPUT_PREF}.orphans2.txt
     fi
 fi
-/tools/bwa-0.7.8/bwa mem \
+/tools/bwa-0.7.17/bwa mem \
     ${BWA_OPTION} \
     ${REFERENCE} \
     ${FASTQ1} \
