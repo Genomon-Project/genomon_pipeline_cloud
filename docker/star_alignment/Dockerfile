@@ -8,9 +8,9 @@ RUN apt-get -y update && \
 ##########
 ## STAR
 
-RUN wget https://github.com/alexdobin/STAR/archive/2.5.2a.tar.gz && \
-    tar xzvf 2.5.2a.tar.gz && \
-    mv STAR-2.5.2a/bin/Linux_x86_64_static/STAR /usr/local/bin
+RUN wget https://github.com/alexdobin/STAR/archive/2.7.2b.tar.gz && \
+    tar xzvf 2.7.2b.tar.gz && \
+    mv STAR-2.7.2b/bin/Linux_x86_64_static/STAR /usr/local/bin
  
 ##########
 # Samtools
