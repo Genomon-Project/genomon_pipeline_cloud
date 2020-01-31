@@ -26,7 +26,8 @@ class Control_call(abstract_task.Abstract_task):
                                   "--input-recursive INPUT_DIR",
                                   "--output-recursive OUTPUT_DIR",
                                   "--env META",
-                                  "--input-recursive REFERENCE",
+                                  "--input REFERENCE",
+                                  "--input REFERENCE_IDX",
                                   "--env FISHER_SINGLE_OPTION",
                                   "--env FISHER_SINGLE_SAMTOOLS"]) 
                                   + "\n")
@@ -47,6 +48,7 @@ class Control_call(abstract_task.Abstract_task):
                                       output_dir + "/mutation/control_panel/" + sample,
                                       run_conf.get_meta_info(param_conf.get("control_call", "image")),
                                       param_conf.get("control_call", "reference"),
+                                      param_conf.get("control_call", "reference_idx"),
                                       param_conf.get("control_call", "fisher_single_option"),
                                       param_conf.get("control_call", "fisher_single_samtools")]) 
                                       + "\n")

@@ -6,8 +6,6 @@ set -o nounset
 export PATH=/usr/local/bin:${PATH}
 export LD_LIBRARY_PATH=/usr/local/lib
 OUTPUT_PREF=${OUTPUT_DIR}/${SAMPLE1}
-INTERVAL_LIST=${REFERENCE}/${FISHER_INTERVAL_LIST}
-REFERENCE=${REFERENCE}/GRCh37.fa
 SAMTOOLS=/usr/local/bin/samtools
 BLAT=/tools/userApps/bin/blat
 
@@ -20,7 +18,7 @@ if [ _${SAMPLE2} = "_None" ]; then
 
     # Fisher's Exact Test
     if [ "_${FISHER_INTERVAL_LIST}" != "_" ]; then
-        FISHER_PAIR_OPTION="${FISHER_SINGLE_OPTION} -L ${INTERVAL_LIST} "
+        FISHER_PAIR_OPTION="${FISHER_SINGLE_OPTION} -L ${FISHER_INTERVAL_LIST} "
     fi
     if [ "_${FISHER_SINGLE_SAMTOOLS}" != "_" ]; then
         FISHER_SINGLE_OPTION="${FISHER_SINGLE_OPTION} --samtools_params "
@@ -39,7 +37,7 @@ else
 
     # Fisher's Exact Test
     if [ "_${FISHER_INTERVAL_LIST}" != "_" ]; then
-        FISHER_PAIR_OPTION="${FISHER_PAIR_OPTION} -L ${INTERVAL_LIST} "
+        FISHER_PAIR_OPTION="${FISHER_PAIR_OPTION} -L ${FISHER_INTERVAL_LIST} "
     fi
     if [ "_${FISHER_PAIR_SAMTOOLS}" != "_" ]; then
         FISHER_PAIR_OPTION="${FISHER_PAIR_OPTION} --samtools_params "
@@ -50,7 +48,7 @@ else
     if [ "_${HOTSPOT_SAMTOOLS}" != "_" ]; then
         HOTSPOT_OPTION="${HOTSPOT_OPTION} -S "
     fi
-    hotspotCall ${HOTSPOT_OPTION} "${HOTSPOT_SAMTOOLS}" ${INPUT_BAM1} ${INPUT_BAM2} ${OUTPUT_PREF}.hotspot_mutations.txt ${HOTSPOT_DB}/GRCh37_hotspot_database_v20170919.txt 
+    hotspotCall ${HOTSPOT_OPTION} "${HOTSPOT_SAMTOOLS}" ${INPUT_BAM1} ${INPUT_BAM2} ${OUTPUT_PREF}.hotspot_mutations.txt ${HOTSPOT_DB} 
     mutil merge_hotspot -i ${OUTPUT_PREF}.hotspot_mutations.txt -f ${OUTPUT_PREF}.fisher_mutations.txt -o ${OUTPUT_PREF}.fisher_hotspot_mutations.txt --hotspot_header
     
     # Local realignment using blat. The candidate mutations are varidated.
@@ -123,7 +121,7 @@ if [ _${SAMPLE2} = "_None" ]
 then 
     mutil filter -i ${OUTPUT_PREF}.genomon_mutation.result.txt -o ${OUTPUT_PREF}.genomon_mutation.result.filt.txt ${FILTER_SINGLE_OPTION}
 else
-    mutil filter -i ${OUTPUT_PREF}.genomon_mutation.result.txt -o ${OUTPUT_PREF}.genomon_mutation.result.filt.txt ${FILTER_PAIR_OPTION} --hotspot_db ${HOTSPOT_DB}/GRCh37_hotspot_database_v20170919.txt
+    mutil filter -i ${OUTPUT_PREF}.genomon_mutation.result.txt -o ${OUTPUT_PREF}.genomon_mutation.result.filt.txt ${FILTER_PAIR_OPTION} --hotspot_db ${HOTSPOT_DB}
 fi
 
 rm -f ${OUTPUT_PREF}.ExAC.txt

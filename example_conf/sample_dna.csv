@@ -3,7 +3,7 @@
 5929_control,s3://genomon-bucket/sample/exome/5929_control/sequence1.fastq,s3://genomon-bucket/sample/exome/5929_control/sequence2.fastq
 
 [mutation_call]
-5929_tumor,5929_control,None
+5929_control,None,None
 
 [sv_detection]
 5929_tumor,5929_control,None
