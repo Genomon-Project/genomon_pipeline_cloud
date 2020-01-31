@@ -1,0 +1,14 @@
+.git
+.idea
+build
+dist
+docker
+example_conf
+log
+test
+tmp
+.python-version
+.travis.yml
+LICENSE
+Dockerfile
+genomon_pipeline_cloud.egg-info
