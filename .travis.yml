@@ -1,21 +1,7 @@
-sudo: false
-
 language: python
 
 matrix:
   include:
-    - name: "Python 3.8 and dna"
-      python: 3.8-dev
-      dist: xenial
-      env: 
-        - MODE=dna
-        - EXEC=0
-    - name: "Python 3.8 and rna"
-      python: 3.8-dev
-      dist: xenial
-      env: 
-        - MODE=rna
-        - EXEC=0
     - name: "Python 3.7 and dna"
       python: 3.7
       dist: xenial
