@@ -41,6 +41,7 @@ class Genomon_qc(abstract_task.Abstract_task):
                                   "--env INCL_BED_WIDTH",
                                   "--env I_BED_LINES",
                                   "--env I_BED_WIDTH",
+                                  "--env GRC_FLAG",
                                   "--env SAMTOOLS_PARAMS"]) 
                                   + "\n")
 
@@ -63,6 +64,7 @@ class Genomon_qc(abstract_task.Abstract_task):
                                       param_conf.get("qc", "wgs_incl_bed_width"),
                                       param_conf.get("qc", "wgs_i_bed_lines"),
                                       param_conf.get("qc", "wgs_i_bed_width"),
+                                      param_conf.get("qc", "wgs_grc_flag"),
                                       param_conf.get("qc", "samtools_params")]) 
                                       + "\n")
 

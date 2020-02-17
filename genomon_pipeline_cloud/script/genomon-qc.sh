@@ -28,6 +28,7 @@ then
         --incl_bed_width ${INCL_BED_WIDTH} \
         --i_bed_lines ${I_BED_LINES} \
         --i_bed_width ${I_BED_WIDTH} \
+        --grc_flag ${GRC_FLAG} \
         --ld_library_path ${ld_library_path} \
         --bedtools $bedtools \
         --samtools $samtools \
