@@ -50,7 +50,10 @@ class Genomon_qc(abstract_task.Abstract_task):
                 bam = sample_conf.bam_file[sample]
                 bam_dir = os.path.dirname(bam)
                 bam_file = os.path.basename(bam)
-
+                wgs_grc_flag = ""
+                if param_conf.get("qc", "wgs_grc_flag"):
+                    wgs_grc_flag = "--grc_flag"
+                
                 hout.write('\t'.join([sample,
                                       bam_dir,
                                       bam_file,
@@ -64,7 +67,7 @@ class Genomon_qc(abstract_task.Abstract_task):
                                       param_conf.get("qc", "wgs_incl_bed_width"),
                                       param_conf.get("qc", "wgs_i_bed_lines"),
                                       param_conf.get("qc", "wgs_i_bed_width"),
-                                      param_conf.get("qc", "wgs_grc_flag"),
+                                      wgs_grc_flag,
                                       param_conf.get("qc", "samtools_params")]) 
                                       + "\n")
 

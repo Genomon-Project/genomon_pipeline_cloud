@@ -28,13 +28,13 @@ then
         --incl_bed_width ${INCL_BED_WIDTH} \
         --i_bed_lines ${I_BED_LINES} \
         --i_bed_width ${I_BED_WIDTH} \
-        --grc_flag ${GRC_FLAG} \
         --ld_library_path ${ld_library_path} \
         --bedtools $bedtools \
         --samtools $samtools \
         --samtools_params "${SAMTOOLS_PARAMS}" \
         --coverage_text ${COVERAGE_TEXT} \
-        --del_tempfile True
+        ${GRC_FLAG} \
+        --del_tempfile
 
 else
     genomon_qc exome $input_file $output_pre.coverage \
@@ -44,7 +44,7 @@ else
         --samtools $samtools \
         --samtools_params "${SAMTOOLS_PARAMS}" \
         --coverage_text ${COVERAGE_TEXT} \
-        --del_tempfile True
+        --del_tempfile
 fi
 
 # merge
