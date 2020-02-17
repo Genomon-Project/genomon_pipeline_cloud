@@ -51,7 +51,7 @@ class Genomon_qc(abstract_task.Abstract_task):
                 bam_dir = os.path.dirname(bam)
                 bam_file = os.path.basename(bam)
                 wgs_grc_flag = ""
-                if param_conf.get("qc", "wgs_grc_flag"):
+                if param_conf.get("qc", "wgs_grc_flag").lower() == "true":
                     wgs_grc_flag = "--grc_flag"
                 
                 hout.write('\t'.join([sample,
