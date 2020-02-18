@@ -44,6 +44,7 @@ else
         --samtools $samtools \
         --samtools_params "${SAMTOOLS_PARAMS}" \
         --coverage_text ${COVERAGE_TEXT} \
+        ${GRC_FLAG} \
         --del_tempfile
 fi
 
