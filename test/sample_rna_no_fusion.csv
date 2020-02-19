@@ -1,0 +1,14 @@
+[fastq]
+MCF-7,s3://genomon-bucket-ohio/sample/rna/tumor/tumor.sequence1.fastq,s3://genomon-bucket-ohio/sample/rna/tumor/tumor.sequence2.fastq
+
+[fusion]
+
+[expression]
+MCF-7
+
+[intron_retention]
+MCF-7
+
+[qc]
+MCF-7
+
