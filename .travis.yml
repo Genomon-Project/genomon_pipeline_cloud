@@ -18,12 +18,12 @@ matrix:
       python: 3.6
       env:
         - MODE=dna
-        - EXEC=0
+        - EXEC=2
     - name: "Python 3.6 and rna"
       python: 3.6
       env:
         - MODE=rna
-        - EXEC=0
+        - EXEC=2
     - name: "Python 3.5 and dna"
       python: 3.5
       env:
@@ -72,6 +72,8 @@ before_script:
 
 script:
   - python setup.py build install
+  - if [ ${EXEC} == 2 ] && [ ${MODE} == "dna" ]; then                genomon_pipeline_cloud ${MODE} test/sample_${MODE}.csv ${AWS_S3_BUCKET}/${MODE} test/param_${MODE}_ecsub_spot_grch38d1v1.cfg --engine ecsub; fi
+  - if [ ${EXEC} == 2 ] && [ ${MODE} == "rna" ]; then travis_wait 60 genomon_pipeline_cloud ${MODE} test/sample_${MODE}.csv ${AWS_S3_BUCKET}/${MODE} test/param_${MODE}_ecsub_spot_grch38d1v1.cfg --engine ecsub; fi
   - if [ ${EXEC} == 1 ] && [ ${MODE} == "dna" ]; then                genomon_pipeline_cloud ${MODE} test/sample_${MODE}.csv ${AWS_S3_BUCKET}/${MODE} test/param_${MODE}_ecsub.cfg --engine ecsub; fi
   - if [ ${EXEC} == 1 ] && [ ${MODE} == "rna" ]; then travis_wait 60 genomon_pipeline_cloud ${MODE} test/sample_${MODE}.csv ${AWS_S3_BUCKET}/${MODE} test/param_${MODE}_ecsub.cfg --engine ecsub; fi
   - if [ ${EXEC} == 0 ]; then                                        genomon_pipeline_cloud ${MODE} test/sample_${MODE}.csv ${AWS_S3_BUCKET}/${MODE} test/param_${MODE}_ecsub.cfg --engine ecsub --dryrun; fi
