@@ -73,7 +73,7 @@ before_script:
 script:
   - python setup.py build install
   - if [ ${EXEC} == 2 ] && [ ${MODE} == "dna" ]; then                genomon_pipeline_cloud ${MODE} test/sample_${MODE}_no_mutation.csv ${AWS_S3_BUCKET}/${MODE}.${EXEC} test/param_${MODE}_ecsub_spot_grch38d1v1.cfg --engine ecsub; fi
-  - if [ ${EXEC} == 2 ] && [ ${MODE} == "rna" ]; then travis_wait 60 genomon_pipeline_cloud ${MODE} test/sample_${MODE}.csv ${AWS_S3_BUCKET}/${MODE}.${EXEC} test/param_${MODE}_ecsub_spot_grch38d1v1.cfg --engine ecsub; fi
+  - if [ ${EXEC} == 2 ] && [ ${MODE} == "rna" ]; then travis_wait 60 genomon_pipeline_cloud ${MODE} test/sample_${MODE}_no_fusion.csv ${AWS_S3_BUCKET}/${MODE}.${EXEC} test/param_${MODE}_ecsub_spot_grch38d1v1.cfg --engine ecsub; fi
   - if [ ${EXEC} == 1 ] && [ ${MODE} == "dna" ]; then                genomon_pipeline_cloud ${MODE} test/sample_${MODE}.csv ${AWS_S3_BUCKET}/${MODE}.${EXEC} test/param_${MODE}_ecsub.cfg --engine ecsub; fi
   - if [ ${EXEC} == 1 ] && [ ${MODE} == "rna" ]; then travis_wait 60 genomon_pipeline_cloud ${MODE} test/sample_${MODE}.csv ${AWS_S3_BUCKET}/${MODE}.${EXEC} test/param_${MODE}_ecsub.cfg --engine ecsub; fi
   - if [ ${EXEC} == 0 ]; then                                        genomon_pipeline_cloud ${MODE} test/sample_${MODE}.csv ${AWS_S3_BUCKET}/${MODE}.${EXEC} test/param_${MODE}_ecsub.cfg --engine ecsub --dryrun; fi
