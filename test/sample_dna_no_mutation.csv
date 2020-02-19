@@ -1,0 +1,14 @@
+[fastq]
+5929_tumor,s3://genomon-bucket-ohio/sample/exome/5929_tumor/sequence2_1.fastq,s3://genomon-bucket-ohio/sample/exome/5929_tumor/sequence2_2.fastq
+5929_control,s3://genomon-bucket-ohio/sample/exome/5929_control/sequence2_1.fastq,s3://genomon-bucket-ohio/sample/exome/5929_control/sequence2_2.fastq
+
+[mutation_call]
+
+
+[sv_detection]
+5929_tumor,5929_control,None
+
+[qc]
+5929_tumor
+5929_control
+
