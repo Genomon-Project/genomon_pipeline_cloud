@@ -54,10 +54,10 @@ RUN pip install pysam==0.15.1 && \
     pip install PyVCF==0.6.8 && \
     \
     cd /tools && \
-    wget -nc https://github.com/Genomon-Project/GenomonMutationFilter/archive/v0.2.10.zip && \
-    unzip v0.2.10.zip && \
-    rm -f v0.2.10.zip && \
-    cd GenomonMutationFilter-0.2.10 && \
+    wget -nc https://github.com/Genomon-Project/GenomonMutationFilter/archive/v0.2.8.zip && \
+    unzip v0.2.8.zip && \
+    rm -f v0.2.8.zip && \
+    cd GenomonMutationFilter-0.2.8 && \
     python setup.py install && \
     \
     cd /tools && \
