@@ -1,5 +1,8 @@
 language: python
-
+branches:
+  only:
+    - master
+    
 matrix:
   include:
     - name: "Python 3.7 and dna, GRCh37"
