@@ -65,7 +65,7 @@ class Paplot(abstract_task.Abstract_task):
         items = {"star": ["", ""], "fusion": ["", ""], "qc": ["", ""], "sv": ["", ""], "mutation": ["", ""], "signature": ["", ""], "pmsignature": ["", ""]}
         
         if run_conf.analysis_type == "rna":
-            items["star"]       = to_oneliner_starqc("starqc", sample_conf.qc, sample_conf.bam_file, ".Log.final.out")
+            items["star"]       = to_oneliner_starqc("starqc", sample_conf.qc, sample_conf.star_bam_file, ".Log.final.out")
             items["fusion"]     = to_oneliner("fusion", sample_conf.fusion, output_dir + "/fusion", ".genomonFusion.result.filt.txt")
         
         elif run_conf.analysis_type == "dna":

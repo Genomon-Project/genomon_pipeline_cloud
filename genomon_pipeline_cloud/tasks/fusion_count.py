@@ -42,7 +42,7 @@ class Fusion_count(abstract_task.Abstract_task):
 
             for sample in control_sample_li_uniq:
 
-                bam = sample_conf.bam_file[sample]
+                bam = sample_conf.star_bam_file[sample]
                 bam_dir = os.path.dirname(bam)
 
                 hout.write('\t'.join([sample,

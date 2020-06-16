@@ -34,7 +34,7 @@ class Intron_retention(abstract_task.Abstract_task):
 
             for sample in sample_conf.intron_retention:
 
-                bam = sample_conf.bam_file[sample]
+                bam = sample_conf.star_bam_file[sample]
                 bam_dir = os.path.dirname(bam)
                 bam_file = os.path.basename(bam)
 

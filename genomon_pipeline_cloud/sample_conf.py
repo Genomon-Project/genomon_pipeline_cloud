@@ -6,7 +6,8 @@ class Sample_conf(object):
 
     def __init__(self):
 
-        self.bam_file = {}
+        self.bwa_bam_file = {}
+        self.star_bam_file = {}
 
         self.fastq = {}
         self.bam_tofastq = {}
@@ -196,9 +197,10 @@ class Sample_conf(object):
                 """
                 self.fastq[sampleID] = [sequence1, sequence2]
                 if analysis_type == "rna":
-                    self.bam_file[sampleID] = output_dir+"/star/"+sampleID+"/"+sampleID+".Aligned.sortedByCoord.out.bam"
+                    self.star_bam_file[sampleID] = output_dir+"/star/"+sampleID+"/"+sampleID+".Aligned.sortedByCoord.out.bam"
+                    self.bwa_bam_file[sampleID] = output_dir+"/bam/"+sampleID+"/"+sampleID+".markdup.bam"
                 elif analysis_type == "dna":
-                    self.bam_file[sampleID] = output_dir+"/bam/"+sampleID+"/"+sampleID+".markdup.bam"
+                    self.bwa_bam_file[sampleID] = output_dir+"/bam/"+sampleID+"/"+sampleID+".markdup.bam"
 
             elif mode == 'bam_tofastq':
 
@@ -229,9 +231,10 @@ class Sample_conf(object):
                 """
                 self.bam_tofastq[sampleID] = sequences
                 if analysis_type == "rna":
-                    self.bam_file[sampleID] = output_dir+"/star/"+sampleID+"/"+sampleID+".Aligned.sortedByCoord.out.bam"
+                    self.star_bam_file[sampleID] = output_dir+"/star/"+sampleID+"/"+sampleID+".Aligned.sortedByCoord.out.bam"
+                    self.bwa_bam_file[sampleID] = output_dir+"/bam/"+sampleID+"/"+sampleID+".markdup.bam"
                 elif analysis_type == "dna":
-                    self.bam_file[sampleID] = output_dir+"/bam/"+sampleID+"/"+sampleID+".markdup.bam"
+                    self.bwa_bam_file[sampleID] = output_dir+"/bam/"+sampleID+"/"+sampleID+".markdup.bam"
                 
             elif mode == 'bam_import':
 
@@ -247,8 +250,12 @@ class Sample_conf(object):
 
                 sampleID_list.append(sampleID)
 
-                if len(row) != 2:
-                    err_msg = sampleID + ": only one bam file is allowed"
+                if (analysis_type == 'dna' and len(row) == 2) or \
+                        (analysis_type == 'rna' and len(row) == 3):
+                    if analysis_type == 'dna':
+                        err_msg = sampleID + ": only one bam file is allowed"
+                    elif analysis_type == 'rna':
+                        err_msg = sampleID + ": STAR and BWA bam files are required"
                     raise ValueError(err_msg)
 
                 sequence = row[1]
@@ -266,7 +273,11 @@ class Sample_conf(object):
                 """
 
                 self.bam_import[sampleID] = sequence
-                self.bam_file[sampleID] = sequence
+                if analysis_type == "rna":
+                    self.bwa_bam_file[sampleID] = row[2]
+                    self.star_bam_file[sampleID] = sequence
+                elif analysis_type == "dna":
+                    self.bwa_bam_file[sampleID] = sequence
 
 
             elif mode == 'mutation_call':

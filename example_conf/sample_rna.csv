@@ -1,6 +1,9 @@
 [fastq]
 MCF-7,s3://genomon-bucket/sample/rna/tumor/tumor.sequence1.fastq,s3://genomon-bucket/sample/rna/tumor/tumor.sequence2.fastq
 
+[sv_detection]
+MCF-7,None,None
+
 [fusion]
 MCF-7,None
 

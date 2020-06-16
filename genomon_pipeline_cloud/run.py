@@ -62,12 +62,28 @@ def run(args):
     # RNA
     if args.analysis_type == "rna":
 
+        import genomon_pipeline_cloud.tasks.bwa_alignment as bwa_alignment
+        import genomon_pipeline_cloud.tasks.sv_parse as sv_parse
+        import genomon_pipeline_cloud.tasks.sv_merge as sv_merge
+        import genomon_pipeline_cloud.tasks.sv_filt as sv_filt
         import genomon_pipeline_cloud.tasks.star_alignment as star_alignment
         import genomon_pipeline_cloud.tasks.fusion_count as fusion_count
         import genomon_pipeline_cloud.tasks.fusion_merge as fusion_merge
         import genomon_pipeline_cloud.tasks.fusionfusion as fusionfusion
         import genomon_pipeline_cloud.tasks.genomon_expression as genomon_expression
         import genomon_pipeline_cloud.tasks.intron_retention as intron_retention
+
+        bwa_alignment_task = \
+            bwa_alignment.Bwa_alignment(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
+        sv_parse_task = \
+            sv_parse.SV_parse(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
+        sv_merge_task = \
+            sv_merge.SV_merge(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
+        sv_filt_task = \
+            sv_filt.SV_filt(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
+        p_sv = multiprocessing.Process(target=batch_engine.seq_execute,
+                                       args=([bwa_alignment_task, sv_parse_task, sv_merge_task, sv_filt_task],))
+        p_sv.start()
 
         star_alignment_task = star_alignment.Star_alignment(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
         fusion_count_task = fusion_count.Fusion_count(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
@@ -91,6 +107,7 @@ def run(args):
         p_fusion.join()
         p_expression.join()
         p_ir.join()
+        p_sv.join()
         
 
     ##########
