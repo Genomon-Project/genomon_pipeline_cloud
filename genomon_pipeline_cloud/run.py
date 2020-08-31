@@ -73,17 +73,37 @@ def run(args):
         import genomon_pipeline_cloud.tasks.genomon_expression as genomon_expression
         import genomon_pipeline_cloud.tasks.intron_retention as intron_retention
 
-        bwa_alignment_task = \
-            bwa_alignment.Bwa_alignment(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
-        sv_parse_task = \
-            sv_parse.SV_parse(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
-        sv_merge_task = \
-            sv_merge.SV_merge(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
-        sv_filt_task = \
-            sv_filt.SV_filt(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
-        p_sv = multiprocessing.Process(target=batch_engine.seq_execute,
-                                       args=([bwa_alignment_task, sv_parse_task, sv_merge_task, sv_filt_task],))
-        p_sv.start()
+        do_run_sv = sample_conf.sv_detection is not None and \
+                    len(sample_conf.sv_detection) > 0
+
+        if do_run_sv:
+            bwa_alignment_task = \
+                bwa_alignment.Bwa_alignment(args.output_dir,
+                                            tmp_dir,
+                                            sample_conf,
+                                            param_conf,
+                                            run_conf)
+            sv_parse_task = \
+                sv_parse.SV_parse(args.output_dir,
+                                  tmp_dir,
+                                  sample_conf,
+                                  param_conf,
+                                  run_conf)
+            sv_merge_task = \
+                sv_merge.SV_merge(args.output_dir,
+                                  tmp_dir,
+                                  sample_conf,
+                                  param_conf,
+                                  run_conf)
+            sv_filt_task = \
+                sv_filt.SV_filt(args.output_dir, tmp_dir, sample_conf,
+                                param_conf, run_conf)
+            p_sv = multiprocessing.Process(target=batch_engine.seq_execute,
+                                           args=([bwa_alignment_task,
+                                                  sv_parse_task,
+                                                  sv_merge_task,
+                                                  sv_filt_task],))
+            p_sv.start()
 
         star_alignment_task = star_alignment.Star_alignment(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
         fusion_count_task = fusion_count.Fusion_count(args.output_dir, tmp_dir, sample_conf, param_conf, run_conf)
@@ -107,8 +127,9 @@ def run(args):
         p_fusion.join()
         p_expression.join()
         p_ir.join()
-        p_sv.join()
-        
+        if do_run_sv:
+            p_sv.join()
+
 
     ##########
     # DNA
