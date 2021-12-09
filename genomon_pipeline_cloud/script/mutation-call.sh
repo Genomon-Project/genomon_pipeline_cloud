@@ -18,7 +18,7 @@ if [ _${SAMPLE2} = "_None" ]; then
 
     # Fisher's Exact Test
     if [ "_${FISHER_INTERVAL_LIST}" != "_" ]; then
-        FISHER_PAIR_OPTION="${FISHER_SINGLE_OPTION} -L ${FISHER_INTERVAL_LIST} "
+        FISHER_SINGLE_OPTION="${FISHER_SINGLE_OPTION} -L ${FISHER_INTERVAL_LIST} "
     fi
     if [ "_${FISHER_SINGLE_SAMTOOLS}" != "_" ]; then
         FISHER_SINGLE_OPTION="${FISHER_SINGLE_OPTION} --samtools_params "
