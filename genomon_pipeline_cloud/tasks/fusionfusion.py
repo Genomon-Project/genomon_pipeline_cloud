@@ -26,7 +26,7 @@ class Fusionfusion(abstract_task.Abstract_task):
         with open(task_file, 'w') as hout:
             
             hout.write('\t'.join(["--env SAMPLE",
-                                  "--input INPUT",
+                                  "--input-recursive INPUT_DIR",
                                   "--output-recursive OUTPUT_DIR",
                                   "--env OPTION",
                                   "--env FILT_OPTION",
@@ -41,7 +41,7 @@ class Fusionfusion(abstract_task.Abstract_task):
                 bam_dir = os.path.dirname(bam)
 
                 record = [sample,
-                          bam_dir +"/"+ sample + ".Chimeric.out.sam",
+                          bam_dir,
                           output_dir + "/fusion/" + sample,
                           param_conf.get("fusionfusion", "fusionfusion_option"),
                           param_conf.get("fusionfusion", "filt_option"),
