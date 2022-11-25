@@ -42,14 +42,14 @@ class SV_filt(abstract_task.Abstract_task):
     
             for tumor_sample, normal_sample, control_panel_name in sample_conf.sv_detection:
 
-                tumor_bam = sample_conf.bam_file[tumor_sample]
+                tumor_bam = sample_conf.bwa_bam_file[tumor_sample]
                 tumor_bam_dir = os.path.dirname(tumor_bam)
                 tumor_bam_file = os.path.basename(tumor_bam)
 
                 normal_bam_dir = ""
                 normal_bam_file = ""
                 if normal_sample is not None:
-                    normal_bam = sample_conf.bam_file[normal_sample]
+                    normal_bam = sample_conf.bwa_bam_file[normal_sample]
                     normal_bam_dir = os.path.dirname(normal_bam)
                     normal_bam_file = os.path.basename(normal_bam)
 

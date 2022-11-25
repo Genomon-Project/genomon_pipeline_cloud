@@ -59,14 +59,14 @@ class Mutation_call(abstract_task.Abstract_task):
                 sample_normal = sample[1] if sample[1] != None else "None"
                 control_panel = sample[2] if sample[2] != None else "None"
 
-                tumor_bam = sample_conf.bam_file[sample_tumor]
+                tumor_bam = sample_conf.bwa_bam_file[sample_tumor]
                 tumor_bam_dir = os.path.dirname(tumor_bam)
                 tumor_bam_file = os.path.basename(tumor_bam)
                 
                 normal_bam_dir = "" 
                 normal_bam_file = "" 
                 if sample_normal != "None": 
-                    normal_bam = sample_conf.bam_file[sample_normal]
+                    normal_bam = sample_conf.bwa_bam_file[sample_normal]
                     normal_bam_dir = os.path.dirname(normal_bam)
                     normal_bam_file = os.path.basename(normal_bam)
 

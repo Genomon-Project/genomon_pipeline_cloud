@@ -44,7 +44,7 @@ class SV_parse(abstract_task.Abstract_task):
             for sample_name in sorted(sample_list_for_parse):
                 if sample_name in list(sample_conf.bam_tofastq.keys()) + list(sample_conf.fastq.keys()) + list(sample_conf.bam_import.keys()):
 
-                    bam = sample_conf.bam_file[sample_name]
+                    bam = sample_conf.bwa_bam_file[sample_name]
                     bam_dir = os.path.dirname(bam)
                     bam_file = os.path.basename(bam)
 

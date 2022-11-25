@@ -47,7 +47,7 @@ class Genomon_qc(abstract_task.Abstract_task):
 
             for sample in sample_conf.qc:
 
-                bam = sample_conf.bam_file[sample]
+                bam = sample_conf.bwa_bam_file[sample]
                 bam_dir = os.path.dirname(bam)
                 bam_file = os.path.basename(bam)
                 

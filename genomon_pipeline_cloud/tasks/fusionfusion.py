@@ -37,7 +37,7 @@ class Fusionfusion(abstract_task.Abstract_task):
 
             for sample, panel_name  in sample_conf.fusion:
 
-                bam = sample_conf.bam_file[sample]
+                bam = sample_conf.star_bam_file[sample]
                 bam_dir = os.path.dirname(bam)
 
                 record = [sample,

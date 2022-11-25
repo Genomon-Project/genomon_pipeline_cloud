@@ -33,7 +33,7 @@ class Genomon_expression(abstract_task.Abstract_task):
                                   + "\n")
             for sample in sample_conf.expression:
 
-                bam = sample_conf.bam_file[sample]
+                bam = sample_conf.star_bam_file[sample]
                 bam_dir = os.path.dirname(bam)
                 bam_file = os.path.basename(bam)
 
